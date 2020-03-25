@@ -10,3 +10,11 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+import os
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+with open(os.path.join(ROOT_DIR, "version.txt"), "r") as version_file:
+    VERSION = version_file.read().strip()
+
+__version__ = VERSION
