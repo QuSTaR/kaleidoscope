@@ -21,6 +21,21 @@ import matplotlib.pyplot as plt
 
 def cnot_error_density(backends, figsize=None, xlim=None,
                       text_xval=None, xticks=None):
+    """Plot CNOT error distribution for one or more IBMQ backends.
+
+    Parameters:
+        backends (list or IBMQBackend): A single or list of IBMQBackend.
+        figsize (tuple): Optional figure size in inches.
+        xlim (list or tuple): Optional lower and upper limits of cnot error values.
+        text_xval (float): Optional xaxis value at which to start the backend text.
+        xticks (list): Optional list of xaxis ticks to plot.
+
+    Returns:
+        Figure: A matplotlib Figure instance.
+    
+    Raises:
+        ValueError: A backend with <2 qubits was passed.
+    """
     
     if not isinstance(backends, list):
         backends = [backends]
