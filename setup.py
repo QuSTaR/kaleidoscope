@@ -19,9 +19,17 @@ import os
 import sys
 import setuptools
 
-REQUIREMENTS = []
+REQUIREMENTS = ['qiskit>=0.16',
+                'numpy>=1.15',
+                'matplotlib>=3.1',
+                'seaborn>=0.9.0', 
+                'jupyter',
+                'plotly>=4.4',
+               ]
 
-PACKAGES = ['kaleidoscope']
+PACKAGES = ['kaleidoscope',
+            'kaleidoscope/backends',
+            'kaleidoscope/backends/mpl']
 PACKAGE_DATA = {
     'kaleidoscope': ['version.txt']
 }
