@@ -12,19 +12,18 @@
 # that they have been altered from the originals.
 """Kaleidoscope
 
-Quantum visualization package.
+A visualization toolkit for Qiskit and the IBM Quantum devices.
 """
 
 import os
-import sys
 import setuptools
 
 REQUIREMENTS = ['qiskit>=0.16',
                 'numpy>=1.15',
                 'matplotlib>=3.1',
-                'seaborn>=0.9.0', 
+                'seaborn>=0.9.0',
                 'jupyter',
-                'plotly>=4.4',
+                'plotly>=4.5',
                ]
 
 PACKAGES = ['kaleidoscope',
@@ -49,7 +48,7 @@ setuptools.setup(
     packages=PACKAGES,
     cmake_source_dir='.',
     description=DESCRIPTION,
-    long_description = LONG_DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
     url="",
     author="kaleidoscope Development Team",
     author_email="nonhermitian@gmail.com",
@@ -69,7 +68,7 @@ setuptools.setup(
         "Topic :: Scientific/Engineering",
     ],
     install_requires=REQUIREMENTS,
-    package_data = PACKAGE_DATA,
+    package_data=PACKAGE_DATA,
     include_package_data=True,
     zip_safe=False
 )
