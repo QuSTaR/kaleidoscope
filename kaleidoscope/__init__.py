@@ -18,3 +18,5 @@ with open(os.path.join(ROOT_DIR, "version.txt"), "r") as version_file:
     VERSION = version_file.read().strip()
 
 __version__ = VERSION
+
+from .backends.mpl import *

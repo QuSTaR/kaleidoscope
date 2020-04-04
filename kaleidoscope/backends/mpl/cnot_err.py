@@ -72,23 +72,23 @@ def cnot_error_density(backends, figsize=None, xlim=None,
             for item in qubit:
                 if item['name'] == 'readout_error':
                     meas_errs.append(item['value'])
-        cx_errors.append(np.asarray(cx_errs))
+        cx_errors.append(100*np.asarray(cx_errs))
         
     max_cx_err = max([cerr.max() for cerr in cx_errors])
     if xlim is None:
-        xlim=[0, max_cx_err+0.02]
+        xlim=[0, max_cx_err+2]
         
     if text_xval is None:
         text_xval = 0.8*xlim[1]
 
     for idx, back in enumerate(backends):
         cx_density = gaussian_kde(cx_errors[idx])
-        xs = np.linspace(xlim[0], xlim[1],2000)
+        xs = np.linspace(xlim[0], xlim[1], 2000)
         cx_density.covariance_factor = lambda : 0.15
         cx_density._compute_covariance()
 
-        plt.plot(xs,cx_density(xs)+offset*idx, zorder=idx, color=colors[idx])
-        plt.fill_between(xs,offset*idx, cx_density(xs)+offset*idx,zorder=idx, color=colors[idx])
+        plt.plot(xs,100*cx_density(xs)+offset*idx, zorder=idx, color=colors[idx])
+        plt.fill_between(xs,offset*idx, 100*cx_density(xs)+offset*idx,zorder=idx, color=colors[idx])
 
     
         qv_val = back.configuration().quantum_volume
@@ -109,8 +109,8 @@ def cnot_error_density(backends, figsize=None, xlim=None,
     if xticks is None:
         xticks = np.round(np.linspace(xlim[0], xlim[1], 4), 2)
     else:
-        xticks = np.asarray(xticks)/100.0
-    plt.xticks(xticks, labels=np.ceil(100*xticks),color=text_color, fontsize=20)
+        xticks = np.asarray(xticks)
+    plt.xticks(np.floor(xticks), labels=np.floor(xticks), color=text_color, fontsize=20)
     plt.tick_params(axis='x', colors=text_color)
     plt.xlabel('Gate Error (%)', fontsize=18, color=text_color)
     plt.title('CNOT Error Distributions', fontsize=18, color=text_color)
