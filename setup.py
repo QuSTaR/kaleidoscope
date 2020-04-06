@@ -81,8 +81,8 @@ setuptools.setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     url="",
-    author="kaleidoscope Development Team",
-    author_email="nonhermitian@gmail.com",
+    author="Paul Nation",
+    author_email="paul.nation@ibm.com",
     license="Apache 2.0",
     classifiers=[
         "Environment :: Web Environment",
