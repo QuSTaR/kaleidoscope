@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# This file is part of Kaleidoscope.
 #
 # (C) Copyright IBM 2020.
 #
@@ -10,5 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+
+"""Matplotlib functions for backend plotting"""
 
 from .cnot_err import cnot_error_density

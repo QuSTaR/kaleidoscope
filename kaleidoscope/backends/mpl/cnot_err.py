@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# This file is part of Kaleidoscope.
 #
 # (C) Copyright IBM 2020.
 #
@@ -11,16 +12,17 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+"""CNOT error density plot"""
+
 import numpy as np
 import seaborn as sns
 from scipy.stats import gaussian_kde
-import matplotlib
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
 def cnot_error_density(backends, figsize=None, xlim=None,
-                      text_xval=None, xticks=None):
+                       text_xval=None, xticks=None):
     """Plot CNOT error distribution for one or more IBMQ backends.
 
     Parameters:
@@ -32,24 +34,24 @@ def cnot_error_density(backends, figsize=None, xlim=None,
 
     Returns:
         Figure: A matplotlib Figure instance.
-    
+
     Raises:
         ValueError: A backend with <2 qubits was passed.
     """
-    
+
     if not isinstance(backends, list):
         backends = [backends]
-        
+
     for back in backends:
         if back.configuration().n_qubits < 2:
             raise ValueError('Number of backend qubits must be > 1')
-    
+
     # Attempt to autosize if figsize=None
     if figsize is None:
         if len(backends) > 1:
-            fig = plt.figure(figsize=(12,len(backends)*1.5))
+            fig = plt.figure(figsize=(12, len(backends)*1.5))
         else:
-            fig = plt.figure(figsize=(12,2))
+            fig = plt.figure(figsize=(12, 2))
 
     text_color = 'k'
     offset = -100
@@ -73,24 +75,24 @@ def cnot_error_density(backends, figsize=None, xlim=None,
                 if item['name'] == 'readout_error':
                     meas_errs.append(item['value'])
         cx_errors.append(100*np.asarray(cx_errs))
-        
+
     max_cx_err = max([cerr.max() for cerr in cx_errors])
     if xlim is None:
-        xlim=[0, max_cx_err+2]
-        
+        xlim = [0, max_cx_err+2]
+
     if text_xval is None:
         text_xval = 0.8*xlim[1]
 
     for idx, back in enumerate(backends):
         cx_density = gaussian_kde(cx_errors[idx])
         xs = np.linspace(xlim[0], xlim[1], 2000)
-        cx_density.covariance_factor = lambda : 0.15
+        cx_density.covariance_factor = lambda: 0.15
         cx_density._compute_covariance()
 
-        plt.plot(xs,100*cx_density(xs)+offset*idx, zorder=idx, color=colors[idx])
-        plt.fill_between(xs,offset*idx, 100*cx_density(xs)+offset*idx,zorder=idx, color=colors[idx])
+        plt.plot(xs, 100*cx_density(xs)+offset*idx, zorder=idx, color=colors[idx])
+        plt.fill_between(xs, offset*idx,
+                         100*cx_density(xs)+offset*idx, zorder=idx, color=colors[idx])
 
-    
         qv_val = back.configuration().quantum_volume
         if qv_val:
             qv = "(QV"+str(qv_val)+")"
@@ -105,7 +107,7 @@ def cnot_error_density(backends, figsize=None, xlim=None,
     # get rid of the frame
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
-    
+
     if xticks is None:
         xticks = np.round(np.linspace(xlim[0], xlim[1], 4), 2)
     else:
@@ -115,8 +117,8 @@ def cnot_error_density(backends, figsize=None, xlim=None,
     plt.xlabel('Gate Error (%)', fontsize=18, color=text_color)
     plt.title('CNOT Error Distributions', fontsize=18, color=text_color)
     fig.tight_layout()
-    
-    if matplotlib.get_backend() in ['module://ipykernel.pylab.backend_inline',
-                                    'nbAgg']:
-            plt.close(fig)
+
+    if mpl.get_backend() in ['module://ipykernel.pylab.backend_inline',
+                             'nbAgg']:
+        plt.close(fig)
     return fig
