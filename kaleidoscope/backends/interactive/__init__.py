@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# This file is part of Kaleidoscope.
 #
 # (C) Copyright IBM 2020.
 #

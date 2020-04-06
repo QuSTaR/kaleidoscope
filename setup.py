@@ -16,6 +16,7 @@ A visualization toolkit for Qiskit and the IBM Quantum devices.
 """
 
 import os
+import subprocess
 import setuptools
 
 REQUIREMENTS = ['qiskit>=0.16',
@@ -27,8 +28,10 @@ REQUIREMENTS = ['qiskit>=0.16',
                ]
 
 PACKAGES = ['kaleidoscope',
+            'kaleidoscope/interactive',
             'kaleidoscope/backends',
             'kaleidoscope/backends/mpl']
+
 PACKAGE_DATA = {
     'kaleidoscope': ['version.txt']
 }
@@ -42,11 +45,39 @@ VERSION_PATH = os.path.abspath(
 with open(VERSION_PATH, 'r') as fd:
     VERSION = fd.read().rstrip()
 
+
+# Add command for running pylint from setup.py
+class PylintCommand(setuptools.Command):
+    """Run Pylint on all Kaleidoscope Python source files."""
+    description = 'Run Pylint on Kaleidoscope Python source files'
+    user_options = [
+        # The format is (long option, short option, description).
+        ('pylint-rcfile=', None, 'path to Pylint config file')]
+
+    def initialize_options(self):
+        """Set default values for options."""
+        # Each user option must be listed here with their default value.
+        self.pylint_rcfile = ''  # pylint: disable=attribute-defined-outside-init
+
+    def finalize_options(self):
+        """Post-process options."""
+        if self.pylint_rcfile:
+            assert os.path.exists(self.pylint_rcfile), (
+                'Pylint config file %s does not exist.' % self.pylint_rcfile)
+
+    def run(self):
+        """Run command."""
+        command = ['pylint']
+        if self.pylint_rcfile:
+            command.append('--rcfile=%s' % self.pylint_rcfile)
+        command.append(os.getcwd()+"/kaleidoscope")
+        subprocess.run(command, stderr=subprocess.STDOUT, check=False)
+
+
 setuptools.setup(
     name='kaleidoscope',
     version=VERSION,
     packages=PACKAGES,
-    cmake_source_dir='.',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     url="",
@@ -67,6 +98,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering",
     ],
+    cmdclass={'lint': PylintCommand},
     install_requires=REQUIREMENTS,
     package_data=PACKAGE_DATA,
     include_package_data=True,

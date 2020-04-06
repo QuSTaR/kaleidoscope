@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # This file is part of Kaleidoscope.
 #
 # (C) Copyright IBM 2020.
@@ -12,6 +11,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Visualization routines for IBMQ backends."""
+"""Interactive plotting routines"""
 
-from .mpl.cnot_err import cnot_error_density
+from .histogram import counts_histogram
