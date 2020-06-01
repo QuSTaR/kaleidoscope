@@ -19,12 +19,15 @@ import os
 import subprocess
 import setuptools
 
-REQUIREMENTS = ['qiskit>=0.16',
+REQUIREMENTS = ['qiskit-terra>=0.14',
+                'qiskit-ibmq-provider>=0.7',
                 'numpy>=1.15',
                 'matplotlib>=3.1',
                 'seaborn>=0.9.0',
                 'jupyter',
-                'plotly>=4.5',
+                'plotly>=4.6',
+                'colorcet',
+
                ]
 
 PACKAGES = ['kaleidoscope',
