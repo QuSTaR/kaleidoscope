@@ -166,11 +166,11 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     return PlotlyFigure(fig)
 
 
-def bloch_multi_disc(rho, figsize=None, titles=False, as_widget=False):
+def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
     """Plot Bloch discs for a multi-qubit state
     Parameters:
         rho (list or ndarray or Statevector or DensityMatrix): Input statevector, density matrix.
-        figsize (tuple): Figure size in pixels, default=(150,125*num_qubits).
+        figsize (tuple): Figure size in pixels, default=(125*num_qubits, 150).
         titles (bool): Display titles.
         as_widget (bool): Return plot as a widget.
 
@@ -191,7 +191,7 @@ def bloch_multi_disc(rho, figsize=None, titles=False, as_widget=False):
     ncols = num
 
     if figsize is None:
-        figsize = (150, ncols*125)
+        figsize = (ncols*125, 150)
 
     if titles:
         titles = ["Qubit {}".format(k) for k in range(num)] + ["\u2329Z\u232A"]
