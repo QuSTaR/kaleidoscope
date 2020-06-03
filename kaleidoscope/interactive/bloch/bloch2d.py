@@ -93,7 +93,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     """Plot a Bloch disc for a single qubit.
 
     Parameters:
-        rho (ndarray or Statevector or DensityMatrix): Input statevector or density matrix.
+        rho (list or ndarray or Statevector or DensityMatrix): Input statevector or density matrix.
         figsize (tuple): Figure size in pixels, default=(200,375).
         title (bool): Display title.
         as_widget (bool): Return plot as a widget.
@@ -105,9 +105,11 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     """
     if isinstance(rho, (Statevector, DensityMatrix)):
         rho = rho.data
-
-    rho = np.asarray(rho, dtype=complex)
-    comp = bloch_components(rho)
+    if len(rho) != 3:
+        rho = np.asarray(rho, dtype=complex)
+        comp = bloch_components(rho)
+    else:
+        comp = [rho]
 
     if title:
         title = ["Qubit 0"] + ["\u2329Z\u232A"]
