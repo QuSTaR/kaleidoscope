@@ -11,7 +11,20 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Interactive plotting routines"""
+"""
+===================================================
+Interactive Plots (:mod:`kaleidoscope.interactive`)
+===================================================
+
+.. currentmodule:: kaleidoscope.interactive
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   counts_histogram
+   bloch_disc
+   bloch_multi_disc
+"""
 
 from .histogram import counts_histogram
 from .bloch.bloch2d import bloch_disc, bloch_multi_disc
