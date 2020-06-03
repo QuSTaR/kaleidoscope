@@ -30,7 +30,7 @@ from kaleidoscope.colors.utils import hex_to_rgb
 from kaleidoscope.colors import BMY_PLOTLY
 
 NORM = plt.Normalize(-1, 1)
-CMAP = cmap = cc.cm.bmy
+CMAP = cc.cm.bmy
 
 
 def bloch_sunburst(vec):
@@ -95,7 +95,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     Parameters:
         rho (list or ndarray or Statevector or DensityMatrix): Input statevector, density matrix,
                                                                or Bloch components.
-        figsize (tuple): Figure size in pixels, default=(200,375).
+        figsize (tuple): Figure size in pixels, default=(200,275).
         title (bool): Display title.
         as_widget (bool): Return plot as a widget.
 
@@ -163,4 +163,73 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     if as_widget:
         PlotlyWidget(fig)
 
+    return PlotlyFigure(fig)
+
+
+def bloch_multi_disc(rho, figsize=None, titles=False, as_widget=False):
+    """Plot Bloch discs for a multi-qubit state
+    Parameters:
+        rho (list or ndarray or Statevector or DensityMatrix): Input statevector, density matrix.
+        figsize (tuple): Figure size in pixels, default=(150,125*num_qubits).
+        titles (bool): Display titles.
+        as_widget (bool): Return plot as a widget.
+
+    Returns:
+        PlotlyFigure: A Plotly figure instance
+        PlotlyWidget : A Plotly widget if `as_widget=True`.
+    """
+
+    if isinstance(rho, (Statevector, DensityMatrix)):
+        rho = rho.data
+
+    rho = np.asarray(rho, dtype=complex)
+
+    comp = bloch_components(rho)
+    num = int(np.log2(rho.shape[0]))
+
+    nrows = 1
+    ncols = num
+
+    if figsize is None:
+        figsize = (150, ncols*125)
+
+    if titles:
+        titles = ["Qubit {}".format(k) for k in range(num)] + ["\u2329Z\u232A"]
+    else:
+        titles = ["" for k in range(num)] + ["\u2329Z\u232A"]
+
+    fig = make_subplots(rows=nrows, cols=ncols+1,
+                        specs=[[{'type': 'domain'}]*ncols+[{'type': 'xy'}]],
+                        subplot_titles=titles,
+                        column_widths=[0.95/num]*num+[0.05])
+
+    for jj in range(num):
+        fig.add_trace(bloch_sunburst(comp[jj]), row=1, col=jj+1)
+
+    zrange = [k*np.ones(1) for k in np.linspace(-1, 1, 100)]
+    fig.append_trace(go.Heatmap(z=zrange,
+                                colorscale=BMY_PLOTLY,
+                                showscale=False,
+                                hoverinfo='none',
+                               ),
+                     row=1, col=num+1)
+
+    fig.update_yaxes(row=1, col=num+1, tickvals=[0, 49, 99],
+                     ticktext=[-1, 0, 1])
+    fig.update_yaxes(row=1, col=num+1, side="right")
+    fig.update_xaxes(row=1, col=num+1, visible=False)
+
+    fig.update_layout(margin=dict(t=50, l=0, r=15, b=30),
+                      width=figsize[0],
+                      height=figsize[1],
+                      hoverlabel=dict(font_size=14,
+                                      font_family="monospace"
+                                     )
+                      )
+    # Makes the subplot titles smaller than the 16pt default
+    for ann in fig['layout']['annotations']:
+        ann['font'] = dict(size=14)
+
+    if as_widget:
+        PlotlyWidget(fig)
     return PlotlyFigure(fig)
