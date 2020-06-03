@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# This file is part of Kaleidoscope.
+
+# This code is part of Kaleidoscope.
 #
 # (C) Copyright IBM 2020.
 #
@@ -11,7 +12,18 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Interactive plotting routines"""
+"""General plotting utility functions"""
 
-from .histogram import counts_histogram
-from .bloch.bloch2d import bloch_disc, bloch_multi_disc
+def hex_to_rgb(hex_color):
+    """Converts a HEX color to a tuple of RGB values.
+
+    Parameters:
+        hex_color (str): Input hex color string.
+
+    Returns:
+        tuple: RGB color values.
+    """
+    hex_color = hex_color.lstrip("#")
+    if len(hex_color) == 3:
+        hex_color = hex_color * 2
+    return int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
