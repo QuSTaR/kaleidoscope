@@ -29,7 +29,7 @@ from kaleidoscope.interactive.bloch.utils import bloch_components
 from kaleidoscope.colors.utils import hex_to_rgb
 from kaleidoscope.colors import BMY_PLOTLY
 
-NORM = plt.Normalize(-1,1)
+NORM = plt.Normalize(-1, 1)
 CMAP = cmap = cc.cm.bmy
 
 
@@ -53,7 +53,7 @@ def bloch_sunburst(vec):
 
     for idx, val in enumerate(vec):
         if abs(val) < 1e-15:
-            vec[idx] = 0 
+            vec[idx] = 0
 
     th = math.atan2(vec[1], vec[0])
 
@@ -74,11 +74,11 @@ def bloch_sunburst(vec):
     th_str = pi_check(th)
     th_str = th_str.replace('pi', '\u03C0')
 
-    hover_text = [wedge_str.format(x=round(vec[0],4),
-                                   y=round(vec[1],4),
-                                   z=round(vec[2],4),
+    hover_text = [wedge_str.format(x=round(vec[0], 4),
+                                   y=round(vec[1], 4),
+                                   z=round(vec[2], 4),
                                    th=th_str,
-                                   nrm = np.round(vec_norm, 4))] + [None]
+                                   nrm=np.round(vec_norm, 4))] + [None]
 
     bloch = go.Sunburst(labels=[" ", "  "],
                         parents=["", " "],
@@ -124,9 +124,9 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
 
     fig.add_trace(bloch_sunburst(comp[0]), row=1, col=1)
 
-    zrange = [k*np.ones(1) for k in np.linspace(-1,1,100)]
+    zrange = [k*np.ones(1) for k in np.linspace(-1, 1, 100)]
 
-    idx = (np.abs(np.linspace(-1,1,100) - comp[0][2])).argmin()
+    idx = (np.abs(np.linspace(-1, 1, 100) - comp[0][2])).argmin()
 
     tickvals = np.array([0, 49, 99, idx])
     idx_sort = np.argsort(tickvals)
@@ -138,11 +138,11 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
                                 colorscale=BMY_PLOTLY,
                                 showscale=False,
                                 hoverinfo='none',
-                               ), 
+                               ),
                      row=1, col=2)
 
     fig.update_yaxes(row=1, col=2, tickvals=tickvals,
-                 ticktext=ticktext)
+                     ticktext=ticktext)
 
     fig.update_yaxes(row=1, col=2, side="right")
     fig.update_xaxes(row=1, col=2, visible=False)
@@ -150,15 +150,14 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     fig.update_layout(margin=dict(t=30, l=10, r=0, b=0),
                       height=figsize[0],
                       width=figsize[1],
-                      hoverlabel=dict(
-                        font_size=14, 
-                        font_family="monospace"
-                    )
+                      hoverlabel=dict(font_size=14,
+                                      font_family="monospace"
+                                     )
                       )
     for ann in fig['layout']['annotations']:
         ann['font'] = dict(size=14)
 
     if as_widget:
         PlotlyWidget(fig)
-    
+
     return PlotlyFigure(fig)

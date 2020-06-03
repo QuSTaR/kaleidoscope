@@ -16,13 +16,13 @@
 import numpy as np
 
 def cmap_to_plotly(cmap):
-    """Convert a color map to a plotly color scale.
+    """Convert a color map to a Plotly RGBA color scale.
 
     Parameters:
         cmap (matplotlib.colors.Colormap): Color map to be converted.
 
     Returns:
-        Color scale.
+        list: RGBA Colorscale.
     """
     pl_entries = 255
     hgt = 1.0/(pl_entries-1)
