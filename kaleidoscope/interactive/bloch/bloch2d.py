@@ -103,6 +103,21 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
         PlotlyFigure: A Plotly figure instance
         PlotlyWidget : A Plotly widget if `as_widget=True`.
 
+    Example:
+        .. jupyter-execute::
+
+            import numpy as np
+            from qiskit import *
+            from qiskit.quantum_info import Statevector
+
+            from kaleidoscope.interactive import bloch_disc
+            qc = QuantumCircuit(1)
+            qc.ry(np.pi*np.random.random(), 0)
+            qc.rz(np.pi*np.random.random(), 0)
+
+            state = Statevector.from_instruction(qc)
+            bloch_disc(state, as_widget=True)
+
     """
     if isinstance(rho, (Statevector, DensityMatrix)):
         rho = rho.data
@@ -161,7 +176,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
         ann['font'] = dict(size=14)
 
     if as_widget:
-        PlotlyWidget(fig)
+        return PlotlyWidget(fig)
 
     return PlotlyFigure(fig)
 
@@ -177,6 +192,27 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
     Returns:
         PlotlyFigure: A Plotly figure instance
         PlotlyWidget : A Plotly widget if `as_widget=True`.
+
+    Example:
+        .. jupyter-execute::
+
+            import numpy as np
+            from qiskit import *
+            from qiskit.quantum_info import Statevector
+            from kaleidoscope.interactive import bloch_multi_disc
+
+            N = 4
+            qc = QuantumCircuit(N)
+            qc.h(range(N))
+            for kk in range(N):
+                qc.ry(2*np.pi*np.random.random(), kk)
+            for kk in range(N-1):
+                qc.cx(kk,kk+1)
+            for kk in range(N):
+                qc.rz(2*np.pi*np.random.random(), kk)
+
+            state = Statevector.from_instruction(qc)
+            bloch_multi_disc(state, as_widget=True)
     """
 
     if isinstance(rho, (Statevector, DensityMatrix)):
@@ -231,5 +267,5 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
         ann['font'] = dict(size=14)
 
     if as_widget:
-        PlotlyWidget(fig)
+        return PlotlyWidget(fig)
     return PlotlyFigure(fig)
