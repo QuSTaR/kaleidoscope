@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # This file is part of Kaleidoscope.
 #
 # (C) Copyright IBM 2020.
@@ -11,7 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Interactive plotting routines"""
+"""Tools for colors"""
+import colorcet as cc
+from kaleidoscope.colors.cmap import cmap_to_plotly
 
-from .histogram import counts_histogram
-from .bloch.bloch2d import bloch_disc
+# The Blue->Magenta->Yellow sequential color map from ColorCet for plotly
+BMY_PLOTLY = cmap_to_plotly(cc.cm.bmy)

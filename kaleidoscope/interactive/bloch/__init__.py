@@ -11,7 +11,5 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Interactive plotting routines"""
-
-from .histogram import counts_histogram
-from .bloch.bloch2d import bloch_disc
+"""Bloch sphere plotting routines"""
+from .bloch2d import bloch_disc

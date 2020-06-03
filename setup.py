@@ -22,6 +22,8 @@ import setuptools
 REQUIREMENTS = ['qiskit-terra>=0.14',
                 'qiskit-ibmq-provider>=0.7',
                 'numpy>=1.15',
+                'scipy>=1.3',
+                'numba>=0.46',
                 'matplotlib>=3.1',
                 'seaborn>=0.9.0',
                 'jupyter',
@@ -31,9 +33,13 @@ REQUIREMENTS = ['qiskit-terra>=0.14',
                ]
 
 PACKAGES = ['kaleidoscope',
-            'kaleidoscope/interactive',
             'kaleidoscope/backends',
-            'kaleidoscope/backends/mpl']
+            'kaleidoscope/backends/interactive',
+            'kaleidoscope/backends/mpl',
+            'kaleidoscope/colors',
+            'kaleidoscope/interactive',
+            'kaleidoscope/interactive/bloch'
+            ]
 
 PACKAGE_DATA = {
     'kaleidoscope': ['version.txt']
