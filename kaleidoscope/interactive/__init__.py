@@ -14,4 +14,4 @@
 """Interactive plotting routines"""
 
 from .histogram import counts_histogram
-from .bloch.bloch2d import bloch_disc
+from .bloch.bloch2d import bloch_disc, bloch_multi_disc

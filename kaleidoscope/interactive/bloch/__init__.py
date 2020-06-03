@@ -12,4 +12,4 @@
 # that they have been altered from the originals.
 
 """Bloch sphere plotting routines"""
-from .bloch2d import bloch_disc
+from .bloch2d import bloch_disc, bloch_multi_disc
