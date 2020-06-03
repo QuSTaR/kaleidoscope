@@ -2,7 +2,7 @@
 Kaleidoscope
 ############
 
-Kaleidoscope is a visualization package for the `Qiskit <https://qiskit.org/>`_. quantum computing framework.
+Kaleidoscope is a visualization package for the `Qiskit <https://qiskit.org/>`_ quantum computing framework.
 
 
 .. toctree::
