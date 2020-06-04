@@ -12,7 +12,8 @@
 # that they have been altered from the originals.
 """Kaleidoscope
 
-A visualization toolkit for Qiskit and the IBM Quantum devices.
+Kaleidoscope is visualization toolkit for Qiskit and the
+IBM roster of Quantum devices.
 """
 
 import os

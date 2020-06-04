@@ -29,20 +29,22 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import kaleidoscope as kal
+
 """
 Sphinx documentation builder
 """
 
+# The short X.Y version
+version = kal.__version__
+# The full version, including alpha/beta/rc tags
+release = kal.__version__
+
+
 # -- Project information -----------------------------------------------------
-project = 'Kaleidoscope'
+project = 'Kaleidoscope {}'.format(version)
 copyright = '2020, Kaleidoscope Team'  # pylint: disable=redefined-builtin
 author = 'Kaleidoscope Development Team'
-
-# The short X.Y version
-version = ''
-# The full version, including alpha/beta/rc tags
-release = '0.0.3'
-
 # -- General configuration ---------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -100,9 +102,6 @@ language = None
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
-
-# The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'colorful'
 
 # A boolean that decides whether module names are prepended to all object names
 # (for object types where a “module” of some kind is defined), e.g. for
