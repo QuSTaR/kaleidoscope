@@ -38,7 +38,8 @@ PACKAGES = ['kaleidoscope',
             'kaleidoscope/backends/mpl',
             'kaleidoscope/colors',
             'kaleidoscope/interactive',
-            'kaleidoscope/interactive/bloch'
+            'kaleidoscope/interactive/bloch',
+            'kaleidoscope/test'
             ]
 
 PACKAGE_DATA = {
