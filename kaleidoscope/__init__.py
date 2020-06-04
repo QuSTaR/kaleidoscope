@@ -12,7 +12,14 @@
 """Kaleidoscope"""
 
 import os
-from .version import version as __version__
 
-from .interactive import *
-from .backends.mpl import *
+# This is needed because version info is only generated
+# at setup.  This should only fall back when not using
+# setup.py lint or style to check.
+try:
+    from .version import version as __version__
+except ImportError:
+    __version__ = '0.0.0'
+
+from kaleidoscope.interactive import *
+from kaleidoscope.backends.mpl import *
