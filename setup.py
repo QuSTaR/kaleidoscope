@@ -32,15 +32,7 @@ REQUIREMENTS = ['qiskit-terra>=0.14',
 
                ]
 
-PACKAGES = ['kaleidoscope',
-            'kaleidoscope/backends',
-            'kaleidoscope/backends/interactive',
-            'kaleidoscope/backends/mpl',
-            'kaleidoscope/colors',
-            'kaleidoscope/interactive',
-            'kaleidoscope/interactive/bloch',
-            'kaleidoscope/test'
-            ]
+PACKAGES = setuptools.find_namespace_packages()
 
 PACKAGE_DATA = {
     'kaleidoscope': ['version.txt']
