@@ -36,6 +36,7 @@ def count_set_bits(val):
     val = (val & 0x0000ffff) + ((val >> 16) & 0x0000ffff)
     return val
 
+
 @jit(complex128(complex128[:], int32[:], int32[:], complex128[:]),
      nopython=True, cache=True)
 def expect_psi_csr(data, ind, ptr, vec):
