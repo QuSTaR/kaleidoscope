@@ -15,6 +15,7 @@
 """Colormap routines"""
 import numpy as np
 
+
 def cmap_to_plotly(cmap):
     """Convert a color map to a Plotly RGBA color scale.
 

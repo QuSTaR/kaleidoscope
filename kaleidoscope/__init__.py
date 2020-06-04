@@ -13,12 +13,13 @@
 
 import os
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+# This is needed because version info is only generated
+# at setup.  This should only fall back when not using
+# setup.py lint or style to check.
+try:
+    from .version import version as __version__
+except ImportError:
+    __version__ = '0.0.0'
 
-with open(os.path.join(ROOT_DIR, "version.txt"), "r") as version_file:
-    VERSION = version_file.read().strip()
-
-__version__ = VERSION
-
-from .interactive import *
-from .backends.mpl import *
+from kaleidoscope.interactive import *
+from kaleidoscope.backends.mpl import *

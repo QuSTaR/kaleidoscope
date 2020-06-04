@@ -1,0 +1,100 @@
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+notifications:
+  email: false
+
+_stage_generic_linux: &stage_generic_linux
+  os: linux
+  dist: bionic
+  language: python
+  install:
+    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda info -a
+    - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+    - source activate test-environment
+    - pip install -U -r requirements.txt
+    - pip install -U -r requirements-dev.txt
+    - python setup.py install
+
+    
+_stage_linux_38: &stage_linux_38_lint_style
+  <<: *stage_generic_linux
+  name: "Python 3.8 Lint"
+  python: 3.8
+  script:
+    - pylint -rn kaleidoscope
+    - pycodestyle --max-line-length=100 kaleidoscope
+  install:
+    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda info -a
+    - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+    - source activate test-environment
+    - pip install -U -r requirements.txt
+    - pip install -U -r requirements-dev.txt
+
+  
+_stage_linux_38: &stage_linux_38
+  <<: *stage_generic_linux
+  name: "Python 3.8"
+  python: 3.8
+  before_script:
+    - mkdir kaleidoscope_testing
+    - cd kaleidoscope_testing
+  script:
+    - pytest -p no:warnings --pyargs kaleidoscope
+
+_stage_osx_38: &stage_osx_38
+  os: osx
+  name: "Python 3.8, OSX 10.13, XCode 10"
+  osx_image: xcode10
+  language: generic
+  # change dir
+  before_script:
+    - mkdir kaleidoscope_testing
+    - cd kaleidoscope_testing
+  # command to run tests
+  script:
+    - pytest -p no:warnings --pyargs kaleidoscope
+  install:
+    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda info -a
+    - conda create -q -n test-environment python=3.8
+    - source activate test-environment
+    - pip install -U -r requirements.txt
+    - pip install -U -r requirements-dev.txt
+    - python setup.py install
+
+stages:
+  - lint
+  - test
+
+jobs:
+  include:
+    - stage: lint
+      <<: *stage_linux_38_lint_style
+    - stage: test
+      <<: *stage_linux_38
+    - stage: test
+      <<: *stage_osx_38

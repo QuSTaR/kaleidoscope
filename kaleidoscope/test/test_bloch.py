@@ -12,19 +12,21 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""General plotting utility functions"""
+"""Tests for Bloch routines"""
+
+import numpy as np
+from kaleidoscope.interactive.bloch.utils import bloch_components
 
 
-def hex_to_rgb(hex_color):
-    """Converts a HEX color to a tuple of RGB values.
+def test_bloch_components():
+    """Tests the Bloch components function"""
 
-    Parameters:
-        hex_color (str): Input hex color string.
+    # |0> state
+    state = np.array([1, 0], dtype=complex)
+    comp = bloch_components(state)[0]
+    assert np.allclose(comp, [0, 0, 1])
 
-    Returns:
-        tuple: RGB color values.
-    """
-    hex_color = hex_color.lstrip("#")
-    if len(hex_color) == 3:
-        hex_color = hex_color * 2
-    return int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+    # |1> state
+    state = np.array([0, 1], dtype=complex)
+    comp = bloch_components(state)[0]
+    assert np.allclose(comp, [0, 0, -1])

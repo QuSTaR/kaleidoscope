@@ -18,6 +18,7 @@ import numpy as np
 import scipy.sparse as sp
 from numba import vectorize, uint32, int32, complex128, jit, prange
 
+
 @vectorize([uint32(uint32)], target='parallel', nopython=True, cache=True)
 def count_set_bits(val):
     """Computes the number of set bits in a uint32 value.
@@ -32,8 +33,9 @@ def count_set_bits(val):
     val = (val & 0x33333333) + ((val >> 2) & 0x33333333)
     val = (val & 0x0f0f0f0f) + ((val >> 4) & 0x0f0f0f0f)
     val = (val & 0x00ff00ff) + ((val >> 8) & 0x00ff00ff)
-    val = (val & 0x0000ffff) + ((val >> 16) &0x0000ffff)
+    val = (val & 0x0000ffff) + ((val >> 16) & 0x0000ffff)
     return val
+
 
 @jit(complex128(complex128[:], int32[:], int32[:], complex128[:]),
      nopython=True, cache=True)
@@ -61,6 +63,7 @@ def expect_psi_csr(data, ind, ptr, vec):
             temp += data[jj]*vec[ind[jj]]
         expt += cval*temp
     return expt
+
 
 def sparse_pauli(num_qubits, idx, kind):
     """Returns a sparse CSR pauli matrix.
