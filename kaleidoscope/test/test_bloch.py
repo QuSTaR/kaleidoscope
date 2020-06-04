@@ -22,6 +22,11 @@ def test_bloch_components():
     """Tests the Bloch components function"""
 
     # |0> state
-    state = np.array([0, 0], dtype=complex)
-    comp = bloch_components(state)
-    assert np.allclose(comp, [0, 0, 0]) 
+    state = np.array([1, 0], dtype=complex)
+    comp = bloch_components(state)[0]
+    assert np.allclose(comp, [0, 0, 1]) 
+
+    # |1> state
+    state = np.array([0, 1], dtype=complex)
+    comp = bloch_components(state)[0]
+    assert np.allclose(comp, [0, 0, -1]) 
