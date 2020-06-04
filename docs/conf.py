@@ -41,6 +41,10 @@ version = kal.__version__
 release = kal.__version__
 
 
+rst_prolog = """
+.. |version| replace:: {0}
+""".format(kal.version.short_version)
+
 # -- Project information -----------------------------------------------------
 project = 'Kaleidoscope {}'.format(version)
 copyright = '2020, Kaleidoscope Team'  # pylint: disable=redefined-builtin
