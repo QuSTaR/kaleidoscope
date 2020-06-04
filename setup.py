@@ -65,6 +65,7 @@ if not ISRELEASED:
 def write_version_py(filename='kaleidoscope/version.py'):
     cnt = """\
 # THIS FILE IS GENERATED FROM KALEIDOSCOPE SETUP.PY
+# pylint: disable=missing-module-docstring
 short_version = '%(version)s'
 version = '%(fullversion)s'
 release = %(isrelease)s
