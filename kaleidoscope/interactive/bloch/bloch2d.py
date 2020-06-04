@@ -156,8 +156,9 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
                                 colorscale=BMY_PLOTLY,
                                 showscale=False,
                                 hoverinfo='none',
-                               ),
-                     row=1, col=2)
+                                ),
+                     row=1, col=2
+                     )
 
     fig.update_yaxes(row=1, col=2, tickvals=tickvals,
                      ticktext=ticktext)
@@ -170,7 +171,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
                       width=figsize[1],
                       hoverlabel=dict(font_size=14,
                                       font_family="monospace"
-                                     )
+                                      )
                       )
     for ann in fig['layout']['annotations']:
         ann['font'] = dict(size=14)
@@ -248,7 +249,7 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
                                 colorscale=BMY_PLOTLY,
                                 showscale=False,
                                 hoverinfo='none',
-                               ),
+                                ),
                      row=1, col=num+1)
 
     fig.update_yaxes(row=1, col=num+1, tickvals=[0, 49, 99],
@@ -261,7 +262,7 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
                       height=figsize[1],
                       hoverlabel=dict(font_size=14,
                                       font_family="monospace"
-                                     )
+                                      )
                       )
     # Makes the subplot titles smaller than the 16pt default
     for ann in fig['layout']['annotations']:

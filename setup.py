@@ -76,6 +76,26 @@ class PylintCommand(setuptools.Command):
         subprocess.run(command, stderr=subprocess.STDOUT, check=False)
 
 
+# Add command for running PEP8 tests from setup.py
+class StyleCommand(setuptools.Command):
+    """Run pep8 from setup."""
+    description = 'Run style from setup'
+    user_options = [
+        # The format is (long option, short option, description).
+        ('abc', None, 'abc')]
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        """Run command."""
+        command = 'pycodestyle --max-line-length=100 kaleidoscope'
+        subprocess.run(command, shell=True, stderr=subprocess.STDOUT)
+
+
 setuptools.setup(
     name='kaleidoscope',
     version=VERSION,
@@ -100,7 +120,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering",
     ],
-    cmdclass={'lint': PylintCommand},
+    cmdclass={'lint': PylintCommand, 'style': StyleCommand},
     install_requires=REQUIREMENTS,
     package_data=PACKAGE_DATA,
     include_package_data=True,

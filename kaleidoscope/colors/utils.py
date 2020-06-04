@@ -14,6 +14,7 @@
 
 """General plotting utility functions"""
 
+
 def hex_to_rgb(hex_color):
     """Converts a HEX color to a tuple of RGB values.
 
