@@ -16,13 +16,6 @@ notifications:
 _stage_generic_linux: &stage_generic_linux
   os: linux
   language: python
-  # change dir
-  before_script:
-    - mkdir kaleidoscope_testing
-    - cd kaleidoscope_testing
-  # command to run tests
-  script:
-    - pytest --pyargs kaleidoscope
   install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
@@ -36,11 +29,37 @@ _stage_generic_linux: &stage_generic_linux
     - pip install -U -r requirements-dev.txt
     - python setup.py install
 
+    
+_stage_linux_38: &stage_linux_38_lint
+  <<: *stage_generic_linux
+  name: "Python 3.8"
+  dist: xenial
+  python: 3.8
+  script:
+    - python setup.py lint
+  install:
+    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda info -a
+    - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+    - source activate test-environment
+    - pip install -U -r requirements.txt
+    - pip install -U -r requirements-dev.txt
+
+  
 _stage_linux_38: &stage_linux_38
   <<: *stage_generic_linux
   name: "Python 3.8"
   dist: xenial
   python: 3.8
+  before_script:
+    - mkdir kaleidoscope_testing
+    - cd kaleidoscope_testing
+  script:
+    - pytest -p no:warnings --pyargs kaleidoscope
 
 _stage_osx_38: &stage_osx_38
   os: osx
@@ -53,7 +72,7 @@ _stage_osx_38: &stage_osx_38
     - cd kaleidoscope_testing
   # command to run tests
   script:
-    - pytest --pyargs kaleidoscope
+    - pytest -p no:warnings --pyargs kaleidoscope
   install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
@@ -68,10 +87,13 @@ _stage_osx_38: &stage_osx_38
     - python setup.py install
 
 stages:
+  - lint
   - test
 
 jobs:
   include:
+    - stage: lint
+      <<: *stage_linux_38_lint
     - stage: test
       <<: *stage_linux_38
     - stage: test
