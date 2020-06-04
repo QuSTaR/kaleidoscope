@@ -36,7 +36,7 @@ _stage_linux_38: &stage_linux_38_lint
   name: "Python 3.8 Lint"
   python: 3.8
   script:
-    - python setup.py lint
+    - pylint -rn kaleidoscope
   install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
