@@ -12,13 +12,7 @@
 """Kaleidoscope"""
 
 import os
-
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-
-with open(os.path.join(ROOT_DIR, "version.txt"), "r") as version_file:
-    VERSION = version_file.read().strip()
-
-__version__ = VERSION
+from .version import version as __version__
 
 from .interactive import *
 from .backends.mpl import *

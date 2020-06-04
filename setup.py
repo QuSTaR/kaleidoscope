@@ -16,8 +16,16 @@ A visualization toolkit for Qiskit and the IBM Quantum devices.
 """
 
 import os
+import sys
 import subprocess
 import setuptools
+
+
+MAJOR = 0
+MINOR = 0
+MICRO = 3
+ISRELEASED = False
+VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
 REQUIREMENTS = ['qiskit-terra>=0.14',
                 'qiskit-ibmq-provider>=0.7',
@@ -29,23 +37,55 @@ REQUIREMENTS = ['qiskit-terra>=0.14',
                 'jupyter',
                 'plotly>=4.6',
                 'colorcet',
-
                ]
 
 PACKAGES = setuptools.find_namespace_packages()
-
 PACKAGE_DATA = {
-    'kaleidoscope': ['version.txt']
 }
 
 DOCLINES = __doc__.split('\n')
 DESCRIPTION = DOCLINES[0]
 LONG_DESCRIPTION = "\n".join(DOCLINES[2:])
 
-VERSION_PATH = os.path.abspath(
-    os.path.join(os.path.join(os.path.dirname(__file__), 'kaleidoscope', 'VERSION.txt')))
-with open(VERSION_PATH, 'r') as fd:
-    VERSION = fd.read().rstrip()
+
+def git_short_hash():
+    try:
+        git_str = "+" + os.popen('git log -1 --format="%h"').read().strip()
+    except:  # pylint: disable=bare-except
+        git_str = ""
+    else:
+        if git_str == '+': #fixes setuptools PEP issues with versioning
+            git_str = ''
+    return git_str
+
+FULLVERSION = VERSION
+if not ISRELEASED:
+    FULLVERSION += '.dev'+str(MICRO)+git_short_hash()
+
+def write_version_py(filename='kaleidoscope/version.py'):
+    cnt = """\
+# THIS FILE IS GENERATED FROM KALEIDOSCOPE SETUP.PY
+short_version = '%(version)s'
+version = '%(fullversion)s'
+release = %(isrelease)s
+"""
+    a = open(filename, 'w')
+    try:
+        a.write(cnt % {'version': VERSION, 'fullversion':
+                FULLVERSION, 'isrelease': str(ISRELEASED)})
+    finally:
+        a.close()
+
+local_path = os.path.dirname(os.path.abspath(sys.argv[0]))
+os.chdir(local_path)
+sys.path.insert(0, local_path)
+sys.path.insert(0, os.path.join(local_path, 'kaleidoscope'))  # to retrive _version
+
+# always rewrite _version
+if os.path.exists('kaleidoscope/version.py'):
+    os.remove('kaleidoscope/version.py')
+
+write_version_py()
 
 
 # Add command for running pylint from setup.py
@@ -93,7 +133,7 @@ class StyleCommand(setuptools.Command):
     def run(self):
         """Run command."""
         command = 'pycodestyle --max-line-length=100 kaleidoscope'
-        subprocess.run(command, shell=True, stderr=subprocess.STDOUT)
+        subprocess.run(command, shell=True, check=True, stderr=subprocess.STDOUT)
 
 
 setuptools.setup(
