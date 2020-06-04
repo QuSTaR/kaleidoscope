@@ -15,6 +15,7 @@ notifications:
 
 _stage_generic_linux: &stage_generic_linux
   os: linux
+  dist: bionic
   language: python
   install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
@@ -32,8 +33,7 @@ _stage_generic_linux: &stage_generic_linux
     
 _stage_linux_38: &stage_linux_38_lint
   <<: *stage_generic_linux
-  name: "Python 3.8"
-  dist: xenial
+  name: "Python 3.8 Lint"
   python: 3.8
   script:
     - python setup.py lint
@@ -53,7 +53,6 @@ _stage_linux_38: &stage_linux_38_lint
 _stage_linux_38: &stage_linux_38
   <<: *stage_generic_linux
   name: "Python 3.8"
-  dist: xenial
   python: 3.8
   before_script:
     - mkdir kaleidoscope_testing
