@@ -18,7 +18,6 @@ import threading
 from qiskit import IBMQ, Aer
 from qiskit.providers import BaseBackend
 from qiskit.providers.aer.noise import NoiseModel
-from qiskit.providers.ibmq.exceptions import IBMQAccountCredentialsNotFound
 from qiskit.providers.models import QasmBackendConfiguration, PulseBackendConfiguration
 
 
@@ -32,7 +31,11 @@ class _Credentials():
 
 
 class DeviceSimulator(BaseBackend):
-    """This is a dummy backend just for testing purposes."""
+    """This is a simulator for a real IBMQ system.
+
+    This class can be used as a drop in replacement for a IBMQ quantum
+    device.
+    """
 
     def __init__(self, backend, backend_name, local=True):
         """FakeBackend initializer.
@@ -78,12 +81,7 @@ def get_ibmq_systems():
 
     Returns:
         dict: A dict of all IBMQ systems that a user has access to.
-
-    Raises:
-        ValueError: No providers found.
     """
-    if not any(IBMQ.providers()):
-        raise ValueError('No providers found.  Try IBMQ.load_account() first.')
     ibmq_backends = {}
     for pro in IBMQ.providers():
         for back in pro.backends():
@@ -113,11 +111,28 @@ def _system_loader(service):
 
 
 class KaleidoscopeSimulatorService():
-    """A service for IBMQ device simulators
+    """A service for IBMQ device simulators.
 
-    Devices are loaded async, and the name corresponds to
-    which simulator is doing the computation, e.g. `aer_*`
-    or `ibmq_*`.
+    Simulators are constructed from noise models that correspond
+    to the latest calibration data returned from the devices.
+
+    System simulators are loaded async, and the name corresponds to
+    which underlying simulator is doing the computation, e.g. :code:`aer_*`
+    or :code:`ibmq_*`.
+
+    Systems are attached to the service as attributes and the service
+    object is available at the top-level via :code:`Simulators`.
+    For example, a :code:`ibmq_vigo` simulator using :code:`Aer` can be retrieved
+    via:
+
+    .. code-block:: python
+
+        import kaleidoscope as kal
+        sim = kal.Simulators.aer_vigo_simulator
+
+    Attributes:
+        refreshing (bool): Is the service refreshing its simulators async.
+
     """
     def __init__(self):
         self.refreshing = False
@@ -134,7 +149,7 @@ class KaleidoscopeSimulatorService():
         if not any(IBMQ.providers()):
             try:
                 IBMQ.load_account()
-            except IBMQAccountCredentialsNotFound:
+            except Exception:  #pylint: disable=broad-except
                 pass
 
         thread = threading.Thread(target=_system_loader,

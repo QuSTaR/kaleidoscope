@@ -12,6 +12,33 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Visualization routines for IBMQ backends."""
+"""
+===========================================================
+IBM Quantum Backend Routines (:mod:`kaleidoscope.backends`)
+===========================================================
+
+.. currentmodule:: kaleidoscope.backends
+
+System visualizations
+=====================
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   cnot_error_density
+
+
+System Simulators
+=================
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   KaleidoscopeSimulatorService
+
+
+
+"""
 
 from .mpl.cnot_err import cnot_error_density
+from .simulators import KaleidoscopeSimulatorService

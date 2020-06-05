@@ -19,6 +19,7 @@ Kaleidoscope is released under the Apache 2 license.  Kaleidoscope is not an off
   :caption: API
   :hidden:
 
+  Backend Routines<apidocs/backends>
   Interactive Plots<apidocs/interactive>
 
 .. Hiding - Indices and tables

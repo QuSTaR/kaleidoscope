@@ -84,6 +84,8 @@ autodoc_default_options = {
     'inherited-members': None,
 }
 
+autoclass_content = 'both'
+
 
 # If true, figures, tables and code-blocks are automatically numbered if they
 # have a caption.
