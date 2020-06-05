@@ -109,6 +109,8 @@ def _system_loader(service):
         setattr(service, system.name(), system)
         setattr(service, system2.name(), system2)
 
+    service.refreshing = False
+
 
 class KaleidoscopeSimulatorService():
     """A service for IBMQ device simulators
@@ -118,6 +120,7 @@ class KaleidoscopeSimulatorService():
     or `ibmq_*`.
     """
     def __init__(self):
+        self.refreshing = False
         self.refresh()
 
     def __call__(self):
@@ -127,6 +130,7 @@ class KaleidoscopeSimulatorService():
         """Refresh the service for new backends if IBMQ
         account was not loaded before init.
         """
+        self.refreshing = True
         if not any(IBMQ.providers()):
             try:
                 IBMQ.load_account()
