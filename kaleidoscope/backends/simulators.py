@@ -94,6 +94,11 @@ def get_ibmq_systems():
 
 
 def _system_loader(service):
+    if not any(IBMQ.providers()):
+        try:
+            IBMQ.load_account()
+        except Exception:  # pylint: disable=broad-except
+            pass
     systems = get_ibmq_systems()
     for name, system in systems.items():
         new_name = '{}_'+name.split('_')[-1]+'_simulator'
@@ -146,12 +151,6 @@ class KaleidoscopeSimulatorService():
         account was not loaded before init.
         """
         self.refreshing = True
-        if not any(IBMQ.providers()):
-            try:
-                IBMQ.load_account()
-            except Exception:  # pylint: disable=broad-except
-                pass
-
         thread = threading.Thread(target=_system_loader,
                                   args=(self, ))
         thread.start()
