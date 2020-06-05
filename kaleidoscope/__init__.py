@@ -23,3 +23,7 @@ except ImportError:
 
 from kaleidoscope.interactive import *
 from kaleidoscope.backends.mpl import *
+
+from kaleidoscope.backends.simulators import KaleidoscopeSimulatorService
+
+Simulators = KaleidoscopeSimulatorService()
