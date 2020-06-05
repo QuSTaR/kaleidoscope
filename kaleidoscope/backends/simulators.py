@@ -149,7 +149,7 @@ class KaleidoscopeSimulatorService():
         if not any(IBMQ.providers()):
             try:
                 IBMQ.load_account()
-            except Exception:  #pylint: disable=broad-except
+            except Exception:  # pylint: disable=broad-except
                 pass
 
         thread = threading.Thread(target=_system_loader,
