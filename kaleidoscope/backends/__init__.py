@@ -25,7 +25,7 @@ System visualizations
 .. autosummary::
    :toctree: ../stubs/
 
-   cnot_error_density
+   plot_cnot_error_density
 
 
 System Simulators
@@ -40,5 +40,5 @@ System Simulators
 
 """
 
-from .mpl.cnot_err import cnot_error_density
+from .mpl.cnot_err import plot_cnot_error_density
 from .simulators import KaleidoscopeSimulatorService
