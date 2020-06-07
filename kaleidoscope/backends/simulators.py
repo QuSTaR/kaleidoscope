@@ -153,7 +153,7 @@ class KaleidoscopeSimulatorService():
             if attr in self.__dict__:
                 return self.__dict__[attr]
         if attr not in self.__dict__:
-            raise AttributeError("Couldn't load {} simulator.".format(attr))
+            raise AttributeError("Couldn't load {}.".format(attr))
         return self.__dict__[attr]
 
     def refresh(self):
