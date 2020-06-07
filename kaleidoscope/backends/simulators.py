@@ -14,6 +14,7 @@
 
 """Module for creating device simulators automatically"""
 
+import time
 import threading
 from qiskit import IBMQ, Aer
 from qiskit.providers import BaseBackend
@@ -145,6 +146,15 @@ class KaleidoscopeSimulatorService():
 
     def __call__(self):
         return list(vars(self).keys())
+
+    def __getattr__(self, attr):
+        while self.refreshing:
+            time.sleep(0.1)
+            if attr in self.__dict__:
+                return self.__dict__[attr]
+        if attr not in self.__dict__:
+            raise AttributeError("Couldn't load {} simulator.".format(attr))
+        return self.__dict__[attr]
 
     def refresh(self):
         """Refresh the service for new backends if IBMQ
