@@ -14,4 +14,4 @@
 
 """Matplotlib functions for backend plotting"""
 
-from .cnot_err import cnot_error_density
+from .cnot_err import plot_cnot_error_density

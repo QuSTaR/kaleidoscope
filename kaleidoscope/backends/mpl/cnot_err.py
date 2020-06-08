@@ -15,14 +15,17 @@
 """CNOT error density plot"""
 
 import numpy as np
-import seaborn as sns
+import colorcet as cc
 from scipy.stats import gaussian_kde
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
-def cnot_error_density(backends, figsize=None, xlim=None,
-                       text_xval=None, xticks=None):
+CMAP = cc.cm.bmy
+
+
+def plot_cnot_error_density(backends, figsize=None, xlim=None,
+                            text_xval=None, xticks=None):
     """Plot CNOT error distribution for one or more IBMQ backends.
 
     Parameters:
@@ -37,6 +40,18 @@ def cnot_error_density(backends, figsize=None, xlim=None,
 
     Raises:
         ValueError: A backend with <2 qubits was passed.
+
+    Example:
+        .. jupyter-execute::
+
+            from qiskit import *
+            from kaleidoscope.backends import plot_cnot_error_density
+            provider = IBMQ.load_account()
+
+            backends = provider.backends(simulator=False,
+                                         filters=lambda b: b.configuration().n_qubits == 5)
+
+            plot_cnot_error_density(backends)
     """
 
     if not isinstance(backends, list):
@@ -52,10 +67,13 @@ def cnot_error_density(backends, figsize=None, xlim=None,
             fig = plt.figure(figsize=(12, len(backends)*1.5))
         else:
             fig = plt.figure(figsize=(12, 2))
+    else:
+        fig = plt.figure(figsize=figsize)
 
     text_color = 'k'
     offset = -100
-    colors = [mpl.colors.rgb2hex(rgb) for rgb in sns.cubehelix_palette(len(backends))[0:]]
+    norm = plt.Normalize(0, len(backends))
+    colors = [CMAP(norm(kk)) for kk in range(len(backends))]
 
     cx_errors = []
     for idx, back in enumerate(backends):
