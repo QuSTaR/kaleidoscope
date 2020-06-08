@@ -14,6 +14,7 @@
 
 """Module for creating device simulators automatically"""
 
+import time
 import threading
 from qiskit import IBMQ, Aer
 from qiskit.providers import BaseBackend
@@ -126,14 +127,14 @@ class KaleidoscopeSimulatorService():
     or :code:`ibmq_*`.
 
     Systems are attached to the service as attributes and the service
-    object is available at the top-level via :code:`Simulators`.
+    object is available at the top-level via :code:`simulators`.
     For example, a :code:`ibmq_vigo` simulator using :code:`Aer` can be retrieved
     via:
 
-    .. code-block:: python
+    .. jupyter-execute::
 
         import kaleidoscope as kal
-        sim = kal.Simulators.aer_vigo_simulator
+        sim = kal.simulators.aer_vigo_simulator
 
     Attributes:
         refreshing (bool): Is the service refreshing its simulators async.
@@ -145,6 +146,18 @@ class KaleidoscopeSimulatorService():
 
     def __call__(self):
         return list(vars(self).keys())
+
+    def __getattr__(self, attr):
+        if 'aer' in attr or 'ibmq' in attr:
+            while self.refreshing:
+                time.sleep(0.1)
+                if attr in self.__dict__:
+                    return self.__dict__[attr]
+            if attr not in self.__dict__:
+                raise AttributeError("Couldn't load {}.".format(attr))
+            return self.__dict__[attr]
+        else:
+            raise AttributeError("Simulators does not have attribute {}".format(attr))
 
     def refresh(self):
         """Refresh the service for new backends if IBMQ

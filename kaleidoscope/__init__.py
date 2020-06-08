@@ -26,4 +26,4 @@ from kaleidoscope.backends.mpl import *
 
 from kaleidoscope.backends.simulators import KaleidoscopeSimulatorService
 
-Simulators = KaleidoscopeSimulatorService()
+simulators = KaleidoscopeSimulatorService()
