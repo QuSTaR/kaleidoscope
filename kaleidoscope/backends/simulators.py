@@ -134,7 +134,7 @@ class KaleidoscopeSimulatorService():
     .. code-block:: python
 
         import kaleidoscope as kal
-        sim = kal.Simulators.aer_vigo_simulator
+        sim = kal.simulators.aer_vigo_simulator
 
     Attributes:
         refreshing (bool): Is the service refreshing its simulators async.
