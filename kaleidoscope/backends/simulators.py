@@ -148,13 +148,16 @@ class KaleidoscopeSimulatorService():
         return list(vars(self).keys())
 
     def __getattr__(self, attr):
-        while self.refreshing:
-            time.sleep(0.1)
-            if attr in self.__dict__:
-                return self.__dict__[attr]
-        if attr not in self.__dict__:
-            raise AttributeError("Couldn't load {}.".format(attr))
-        return self.__dict__[attr]
+        if 'aer' in attr or 'ibmq' in attr:
+            while self.refreshing:
+                time.sleep(0.1)
+                if attr in self.__dict__:
+                    return self.__dict__[attr]
+            if attr not in self.__dict__:
+                raise AttributeError("Couldn't load {}.".format(attr))
+            return self.__dict__[attr]
+        else:
+            raise AttributeError("Simulators does not have attribute {}".format(attr))
 
     def refresh(self):
         """Refresh the service for new backends if IBMQ
