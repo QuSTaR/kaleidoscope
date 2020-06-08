@@ -127,11 +127,11 @@ class KaleidoscopeSimulatorService():
     or :code:`ibmq_*`.
 
     Systems are attached to the service as attributes and the service
-    object is available at the top-level via :code:`Simulators`.
+    object is available at the top-level via :code:`simulators`.
     For example, a :code:`ibmq_vigo` simulator using :code:`Aer` can be retrieved
     via:
 
-    .. code-block:: python
+    .. jupyter-execute::
 
         import kaleidoscope as kal
         sim = kal.simulators.aer_vigo_simulator
