@@ -15,6 +15,7 @@
 """Module for creating device simulators automatically"""
 
 import time
+import warnings
 import threading
 from qiskit import IBMQ, Aer
 from qiskit.providers import BaseBackend
@@ -101,17 +102,19 @@ def _system_loader(service):
         except Exception:  # pylint: disable=broad-except
             pass
     systems = get_ibmq_systems()
-    for name, system in systems.items():
-        new_name = '{}_'+name.split('_')[-1]+'_simulator'
-        system = DeviceSimulator(system,
-                                 new_name.format('aer'),
-                                 local=True)
-        system2 = DeviceSimulator(system,
-                                  new_name.format('ibmq'),
-                                  local=False)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        for name, system in systems.items():
+            new_name = '{}_'+name.split('_')[-1]+'_simulator'
+            system = DeviceSimulator(system,
+                                     new_name.format('aer'),
+                                     local=True)
+            system2 = DeviceSimulator(system,
+                                      new_name.format('ibmq'),
+                                      local=False)
 
-        setattr(service, system.name(), system)
-        setattr(service, system2.name(), system2)
+            setattr(service, system.name(), system)
+            setattr(service, system2.name(), system2)
 
     service.refreshing = False
 
