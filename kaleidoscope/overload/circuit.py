@@ -27,6 +27,11 @@ from qiskit.providers.ibmq.job import job_monitor as ibmq_monitor
 
 
 class QuantumCircuit(qiskit.circuit.quantumcircuit.QuantumCircuit):
+    """A QuantumCircuit class that contains additional functionality.
+
+    Attributes:
+        target_backend (BaseBackend): A backend to target.
+    """
 
     def __rshift__(self, target):
         """Add a target backend to circuit.
