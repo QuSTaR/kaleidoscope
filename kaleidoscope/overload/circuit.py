@@ -173,6 +173,7 @@ def aer_wait(self, monitor=False):
         aer_monitor(self, interval=1e-3)
     return self.result().get_counts()
 
+
 def ibmq_wait(self, monitor=False):
     """Monitor IBMQ jobs
 
