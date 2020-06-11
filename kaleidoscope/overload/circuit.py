@@ -31,7 +31,12 @@ class QuantumCircuit(qiskit.circuit.quantumcircuit.QuantumCircuit):
 
     Attributes:
         target_backend (BaseBackend): A backend to target.
+        is_kal (bool): Is this an overloaded Kaleidoscope circuit.
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.target_backend = None
+        self.is_kal = True
 
     def __rshift__(self, target):
         """Add a target backend to circuit.
@@ -157,7 +162,7 @@ class QuantumCircuit(qiskit.circuit.quantumcircuit.QuantumCircuit):
             if self.target_backend:
                 backend = self.target_backend
         new_qc = transpile(self, backend=backend, **kwargs)
-        return self.wrap_circuit(new_qc)
+        return self._wrap_circuit(new_qc, inplace=True)
 
 
 def aer_wait(self, monitor=False):
