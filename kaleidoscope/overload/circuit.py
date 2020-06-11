@@ -162,7 +162,9 @@ class QuantumCircuit(qiskit.circuit.quantumcircuit.QuantumCircuit):
             if self.target_backend:
                 backend = self.target_backend
         new_qc = transpile(self, backend=backend, **kwargs)
-        return self._wrap_circuit(new_qc, inplace=True)
+        out = self._wrap_circuit(new_qc, inplace=True)
+        out.target_backend = self.target_backend
+        return out
 
 
 def aer_wait(self, monitor=False):
