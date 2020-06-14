@@ -13,3 +13,4 @@
 
 """Bloch sphere plotting routines"""
 from .bloch2d import bloch_disc, bloch_multi_disc
+from .bloch3d import bloch_sphere
