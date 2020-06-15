@@ -27,18 +27,6 @@ System visualizations
 
    plot_cnot_error_density
 
-
-System Simulators
-=================
-
-.. autosummary::
-   :toctree: ../stubs/
-
-   KaleidoscopeSimulatorService
-
-
-
 """
 
 from .mpl.cnot_err import plot_cnot_error_density
-from .simulators import KaleidoscopeSimulatorService
