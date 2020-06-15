@@ -12,33 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-===========================================================
-IBM Quantum Backend Routines (:mod:`kaleidoscope.backends`)
-===========================================================
+"""Qiskit services"""
 
-.. currentmodule:: kaleidoscope.backends
-
-System visualizations
-=====================
-
-.. autosummary::
-   :toctree: ../stubs/
-
-   plot_cnot_error_density
-
-
-System Simulators
-=================
-
-.. autosummary::
-   :toctree: ../stubs/
-
-   KaleidoscopeSimulatorService
-
-
-
-"""
-
-from .mpl.cnot_err import plot_cnot_error_density
 from .simulators import KaleidoscopeSimulatorService
+
+simulators = KaleidoscopeSimulatorService()

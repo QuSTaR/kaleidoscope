@@ -14,4 +14,4 @@
 
 """Overlaoding of various Qiskit functionality"""
 
-from kaleidoscope.overload.circuit import QuantumCircuit
+from .circuit import QuantumCircuit

@@ -22,8 +22,3 @@ except ImportError:
     __version__ = '0.0.0'
 
 from kaleidoscope.interactive import *
-from kaleidoscope.backends.mpl import *
-
-from kaleidoscope.backends.simulators import KaleidoscopeSimulatorService
-
-simulators = KaleidoscopeSimulatorService()

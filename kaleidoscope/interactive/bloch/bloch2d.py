@@ -23,7 +23,6 @@ import matplotlib.colors
 import colorcet as cc
 
 from qiskit.circuit.tools import pi_check
-from qiskit.quantum_info.states import Statevector, DensityMatrix
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
 from kaleidoscope.interactive.bloch.utils import bloch_components
 from kaleidoscope.colors.utils import hex_to_rgb
@@ -119,7 +118,9 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
             bloch_disc(state, as_widget=True)
 
     """
-    if isinstance(rho, (Statevector, DensityMatrix)):
+    # A hack so I do not have to import the actual instances from Qiskit.
+    if rho.__class__.__name__ in ['Statevector', 'DensityMatrix'] \
+        and 'qiskit' in rho.__class__.__module__:
         rho = rho.data
     if len(rho) != 3:
         rho = np.asarray(rho, dtype=complex)
@@ -170,7 +171,8 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
                       height=figsize[0],
                       width=figsize[1],
                       hoverlabel=dict(font_size=14,
-                                      font_family="monospace"
+                                      font_family="monospace",
+                                      align='left'
                                       )
                       )
     for ann in fig['layout']['annotations']:
@@ -216,8 +218,9 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
             state = Statevector.from_instruction(qc)
             bloch_multi_disc(state, as_widget=True)
     """
-
-    if isinstance(rho, (Statevector, DensityMatrix)):
+    # A hack so I do not have to import the actual instances from Qiskit.
+    if rho.__class__.__name__ in ['Statevector', 'DensityMatrix'] \
+        and 'qiskit' in rho.__class__.__module__:
         rho = rho.data
 
     rho = np.asarray(rho, dtype=complex)
@@ -261,7 +264,8 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
                       width=figsize[0],
                       height=figsize[1],
                       hoverlabel=dict(font_size=14,
-                                      font_family="monospace"
+                                      font_family="monospace",
+                                      align='left'
                                       )
                       )
     # Makes the subplot titles smaller than the 16pt default
