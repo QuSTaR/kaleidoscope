@@ -135,7 +135,7 @@ class StyleCommand(setuptools.Command):
     def run(self):
         """Run command."""
         command = 'pycodestyle --max-line-length=100 kaleidoscope'
-        subprocess.run(command, shell=True, check=True, stderr=subprocess.STDOUT)
+        subprocess.run(command, shell=True, check=False, stderr=subprocess.STDOUT)
 
 
 setuptools.setup(

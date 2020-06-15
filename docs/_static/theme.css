@@ -10266,6 +10266,10 @@ p a:hover {
   color: #ee4c2c;
 }
 
+.wy-nav-top{
+  background: #808080;
+}
+
 ul.pytorch-breadcrumbs {
   padding-left: 0;
   list-style-type: none;

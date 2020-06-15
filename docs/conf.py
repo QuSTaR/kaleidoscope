@@ -65,7 +65,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.extlinks',
-    'jupyter_sphinx.execute',
+    'jupyter_sphinx',
 ]
 html_static_path = ['_static']
 templates_path = ['_templates']

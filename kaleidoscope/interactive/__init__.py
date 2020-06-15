@@ -23,8 +23,10 @@ Interactive Plots (:mod:`kaleidoscope.interactive`)
 
    counts_histogram
    bloch_disc
+   bloch_sphere
    bloch_multi_disc
 """
 
 from .histogram import counts_histogram
 from .bloch.bloch2d import bloch_disc, bloch_multi_disc
+from .bloch.bloch3d import bloch_sphere
