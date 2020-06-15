@@ -120,7 +120,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     """
     # A hack so I do not have to import the actual instances from Qiskit.
     if rho.__class__.__name__ in ['Statevector', 'DensityMatrix'] \
-        and 'qiskit' in rho.__class__.__module__:
+            and 'qiskit' in rho.__class__.__module__:
         rho = rho.data
     if len(rho) != 3:
         rho = np.asarray(rho, dtype=complex)
@@ -220,7 +220,7 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
     """
     # A hack so I do not have to import the actual instances from Qiskit.
     if rho.__class__.__name__ in ['Statevector', 'DensityMatrix'] \
-        and 'qiskit' in rho.__class__.__module__:
+            and 'qiskit' in rho.__class__.__module__:
         rho = rho.data
 
     rho = np.asarray(rho, dtype=complex)
