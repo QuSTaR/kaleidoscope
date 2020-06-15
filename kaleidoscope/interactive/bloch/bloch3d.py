@@ -159,9 +159,8 @@ def bloch_sphere(vectors=None,
                                        mode='markers',
                                        marker=dict(size=7, color=mcolors),
                                        )
-                         )
+                          )
             idx += 1
-
 
     if vectors is not None:
 
@@ -201,8 +200,8 @@ def bloch_sphere(vectors=None,
                                        mode="lines",
                                        hoverinfo=None,
                                        line=dict(color=color_str, width=10)
-                                      )
-                         )
+                                       )
+                          )
 
             fig.add_trace(go.Cone(x=[vec[0]], y=[vec[1]], z=[vec[2]],
                                   u=[vec[0]], v=[vec[1]], w=[vec[2]],
@@ -231,9 +230,9 @@ def bloch_sphere(vectors=None,
                                             font=dict(size=annotation_fontsize,
                                                       color="#ffffff",
                                                       family="Courier New, monospace",
-                                                     ),
+                                                      ),
                                             )
-                                      )
+                                       )
     # Start construction of sphere
     # Sphere
     fig.add_trace(BSPHERE())
@@ -246,14 +245,12 @@ def bloch_sphere(vectors=None,
     for kk in LONGS:
         fig.add_trace(kk)
 
-
     # z-axis
     fig.add_trace(ZAXIS)
     # x-axis
     fig.add_trace(XAXIS)
     # y-axis
     fig.add_trace(YAXIS)
-
 
     # zaxis label
     fig.add_trace(Z0LABEL(fontsize=label_fontsize))
@@ -285,7 +282,7 @@ def bloch_sphere(vectors=None,
                       scene_camera=dict(eye=dict(x=1.5,
                                                  y=0.4,
                                                  z=0.4)
-                                       )
+                                        )
                       )
     if as_widget:
         return PlotlyWidget(fig)

@@ -40,7 +40,7 @@ def BSPHERE(color="#F1EBEA", opacity=0.15):
                          hoverinfo='skip',
                          colorscale=[[0, color],
                                      [1, color]]
-                        )
+                         )
     return surface
 
 
@@ -69,6 +69,7 @@ def latitudes(num_lines=7):
         ))
     return lats
 
+
 LATS = latitudes()
 
 
@@ -91,9 +92,10 @@ def longitudes(num_lines=7):
                                   hoverinfo='skip',
                                   line=dict(color='#373737',
                                             width=1)
-                                 )
-                    )
+                                  )
+                     )
     return longi
+
 
 LONGS = longitudes()
 
@@ -102,7 +104,7 @@ ZAXIS = go.Scatter3d(x=[0, 0], y=[0, 0], z=[-1, 1],
                      hoverinfo='skip',
                      line=dict(color='#1e1e1e',
                                width=3)
-                    )
+                     )
 
 
 YAXIS = go.Scatter3d(x=[0, 0], y=[-1, 1], z=[0, 0],
@@ -110,14 +112,15 @@ YAXIS = go.Scatter3d(x=[0, 0], y=[-1, 1], z=[0, 0],
                      hoverinfo='skip',
                      line=dict(color='#1e1e1e',
                                width=3)
-                    )
+                     )
 
 XAXIS = go.Scatter3d(x=[-1, 1], y=[0, 0], z=[0, 0],
                      mode="lines",
                      hoverinfo='skip',
                      line=dict(color='#1e1e1e',
                                width=3)
-                    )
+                     )
+
 
 def Z0LABEL(fontsize=16):
     """Z0 state label for sphere.
@@ -135,8 +138,9 @@ def Z0LABEL(fontsize=16):
                          hoverinfo='skip',
                          text='\u007C0\u3009',
                          textfont=dict(size=fontsize)
-                        )
+                         )
     return label
+
 
 def Z1LABEL(fontsize=16):
     """Z1 state label for sphere.
@@ -154,7 +158,7 @@ def Z1LABEL(fontsize=16):
                          hoverinfo='skip',
                          text='\u007C1\u3009',
                          textfont=dict(size=fontsize)
-                        )
+                         )
     return label
 
 
@@ -173,8 +177,9 @@ def XLABEL(fontsize=16):
                          hoverinfo='skip',
                          text='\u007C\u002Bx\u3009',
                          textfont=dict(size=fontsize)
-                        )
+                         )
     return label
+
 
 def YLABEL(fontsize=16):
     """Y+ state label for sphere.
@@ -191,5 +196,5 @@ def YLABEL(fontsize=16):
                          hoverinfo='skip',
                          text='\u007C\u002By\u3009',
                          textfont=dict(size=fontsize)
-                        )
+                         )
     return label
