@@ -1,3 +1,7 @@
 pytest
 pylint
 pycodestyle
+Sphinx>=3.0
+sphinx-rtd-theme>=0.4.0
+jupyter-sphinx
+nbsphinx
