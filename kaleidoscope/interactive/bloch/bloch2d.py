@@ -154,11 +154,11 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
 
     ticktext = [-1, 0, 1, "\u25C0"+str(np.round(zval, 3))]
     if zval <= -0.95:
-        ticktext[0]= ''
+        ticktext[0] = ''
     elif abs(zval) <= 0.05:
-        ticktext[1]= ''
+        ticktext[1] = ''
     elif zval >= 0.95:
-        ticktext[2]= ''
+        ticktext[2] = ''
 
     ticktext = [ticktext[kk] for kk in idx_sort]
 
