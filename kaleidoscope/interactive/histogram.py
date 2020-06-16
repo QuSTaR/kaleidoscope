@@ -12,22 +12,55 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2018.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+# The Hamming distance and internal plot histogram data are part of 
+# Qiskit.  The latter will be modified at some point.
+
 """Interactive histogram from experiment counts"""
 
 import functools
+from collections import Counter, OrderedDict
 import numpy as np
-from qiskit.visualization.counts_visualization import (_plot_histogram_data,
-                                                       VALID_SORTS, DIST_MEAS)
 import plotly.graph_objects as go
 from .plotly_wrapper import PlotlyWidget, PlotlyFigure
 
 
-def counts_histogram(data, figsize=(None, None), color=None,
-                     number_to_keep=None,
-                     sort='asc', target_string=None,
-                     legend=None, bar_labels=True,
-                     title=None, background_color='white',
-                     as_widget=False):
+def hamming_distance(str1, str2):
+    """Calculate the Hamming distance between two bit strings
+
+    Args:
+        str1 (str): First string.
+        str2 (str): Second string.
+    Returns:
+        int: Distance between strings.
+    Raises:
+        ValueError: Strings not same length
+    """
+    if len(str1) != len(str2):
+        raise ValueError('Strings not same length.')
+    return sum(s1 != s2 for s1, s2 in zip(str1, str2))
+
+
+VALID_SORTS = ['asc', 'desc', 'hamming']
+DIST_MEAS = {'hamming': hamming_distance}
+
+def counts_distribution(data, figsize=(None, None), color=None,
+                        number_to_keep=None,
+                        sort='asc', target_string=None,
+                        legend=None, bar_labels=True,
+                        title=None, background_color='white',
+                        as_widget=False):
     """Interactive histogram plot of counts data.
 
     Parameters:
@@ -158,3 +191,52 @@ def counts_histogram(data, figsize=(None, None), color=None,
         return PlotlyWidget(fig)
 
     return PlotlyFigure(fig)
+
+
+def _plot_histogram_data(data, labels, number_to_keep):
+    """Generate the data needed for plotting counts.
+
+    Parameters:
+        data (list or dict): This is either a list of dictionaries or a single
+            dict containing the values to represent (ex {'001': 130})
+        labels (list): The list of bitstring labels for the plot.
+        number_to_keep (int): The number of terms to plot and rest
+            is made into a single bar called 'rest'.
+
+    Returns:
+        tuple: tuple containing:
+            (dict): The labels actually used in the plotting.
+            (list): List of ndarrays for the bars in each experiment.
+            (list): Indices for the locations of the bars for each
+                    experiment.
+    """
+    labels_dict = OrderedDict()
+
+    all_pvalues = []
+    all_inds = []
+    for execution in data:
+        if number_to_keep is not None:
+            data_temp = dict(Counter(execution).most_common(number_to_keep))
+            data_temp["rest"] = sum(execution.values()) - sum(data_temp.values())
+            execution = data_temp
+        values = []
+        for key in labels:
+            if key not in execution:
+                if number_to_keep is None:
+                    labels_dict[key] = 1
+                    values.append(0)
+                else:
+                    values.append(-1)
+            else:
+                labels_dict[key] = 1
+                values.append(execution[key])
+        values = np.array(values, dtype=float)
+        where_idx = np.where(values >= 0)[0]
+        pvalues = values[where_idx] / sum(values[where_idx])
+
+        all_pvalues.append(pvalues)
+        numelem = len(values[where_idx])
+        ind = np.arange(numelem)  # the x locations for the groups
+        all_inds.append(ind)
+
+    return labels_dict, all_pvalues, all_inds
