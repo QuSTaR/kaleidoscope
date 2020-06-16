@@ -68,16 +68,16 @@ def bloch_sunburst(vec):
     wedge_str += "\u2329Y\u232A= {y}<br>"
     wedge_str += "\u2329Z\u232A= {z}<br>"
     wedge_str += "  \u03B8 = {th}<br>"
-    wedge_str += " |\u03C8|= {nrm}"
+    wedge_str += "tr(\u03C1<sup>2</sup>)={pur}"
 
-    th_str = pi_check(th)
+    th_str = pi_check(th, ndigits=3)
     th_str = th_str.replace('pi', '\u03C0')
 
-    hover_text = [wedge_str.format(x=round(vec[0], 4),
-                                   y=round(vec[1], 4),
-                                   z=round(vec[2], 4),
+    hover_text = [wedge_str.format(x=round(vec[0], 3),
+                                   y=round(vec[1], 3),
+                                   z=round(vec[2], 3),
                                    th=th_str,
-                                   nrm=np.round(vec_norm, 4))] + [None]
+                                   pur=np.round(0.5*(1+vec_norm), 3))] + [None]
 
     bloch = go.Sunburst(labels=[" ", "  "],
                         parents=["", " "],
@@ -143,14 +143,23 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
 
     fig.add_trace(bloch_sunburst(comp[0]), row=1, col=1)
 
+    zval = comp[0][2]
     zrange = [k*np.ones(1) for k in np.linspace(-1, 1, 100)]
 
-    idx = (np.abs(np.linspace(-1, 1, 100) - comp[0][2])).argmin()
+    idx = (np.abs(np.linspace(-1, 1, 100) - zval)).argmin()
 
     tickvals = np.array([0, 49, 99, idx])
     idx_sort = np.argsort(tickvals)
     tickvals = tickvals[idx_sort]
-    ticktext = [-1, 0, 1, "\u25C0"+str(np.round(comp[0][2], 3))]
+
+    ticktext = [-1, 0, 1, "\u25C0"+str(np.round(zval, 3))]
+    if zval <= -0.95:
+        ticktext[0]= ''
+    elif abs(zval) <= 0.05:
+        ticktext[1]= ''
+    elif zval >= 0.95:
+        ticktext[2]= ''
+    
     ticktext = [ticktext[kk] for kk in idx_sort]
 
     fig.append_trace(go.Heatmap(z=zrange,
@@ -171,7 +180,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
                       height=figsize[0],
                       width=figsize[1],
                       hoverlabel=dict(font_size=14,
-                                      font_family="monospace",
+                                      font_family="courier,monospace",
                                       align='left'
                                       )
                       )
