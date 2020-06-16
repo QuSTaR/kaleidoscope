@@ -15,3 +15,4 @@
 """Qiskit specific functionality"""
 
 from .backends.mpl import *
+from .backends.interactive import system_error_map
