@@ -159,7 +159,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
         ticktext[1]= ''
     elif zval >= 0.95:
         ticktext[2]= ''
-    
+
     ticktext = [ticktext[kk] for kk in idx_sort]
 
     fig.append_trace(go.Heatmap(z=zrange,
