@@ -30,3 +30,4 @@ System visualizations
 """
 
 from .mpl.cnot_err import plot_cnot_error_density
+from .interactive.error_map import system_error_map

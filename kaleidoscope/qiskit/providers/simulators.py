@@ -17,10 +17,22 @@
 import time
 import warnings
 import threading
+import qiskit
 from qiskit import IBMQ, Aer
 from qiskit.providers import BaseBackend
 from qiskit.providers.aer.noise import NoiseModel
 from qiskit.providers.models import QasmBackendConfiguration, PulseBackendConfiguration
+
+
+def _version2int(version_string):
+    str_list = version_string.split(
+        "-dev")[0].split("rc")[0].split("a")[0].split("b")[0].split(
+            "post")[0].split('.')
+    return sum([int(d if len(d) > 0 else 0) * (100 ** (3 - n))
+                for n, d in enumerate(str_list[:3])])
+
+
+AER_VERSION = _version2int(qiskit.__qiskit_version__['qiskit-aer'])
 
 
 class _Credentials():
@@ -57,8 +69,10 @@ class DeviceSimulator(BaseBackend):
         self._configuration.simulator = True
         self._configuration.local = local
         self._configuration.backend_name = backend_name
-        self.noise_model = NoiseModel.from_backend(self)
-
+        if AER_VERSION >= 60000:
+            self.noise_model = NoiseModel.from_backend(self, warnings=False)
+        else:
+            self.noise_model = NoiseModel.from_backend(self)
         if local:
             self.sim = Aer.get_backend('qasm_simulator')
         else:
