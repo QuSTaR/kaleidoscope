@@ -55,6 +55,7 @@ def hamming_distance(str1, str2):
 VALID_SORTS = ['asc', 'desc', 'hamming']
 DIST_MEAS = {'hamming': hamming_distance}
 
+
 def counts_distribution(data, figsize=(None, None), color=None,
                         number_to_keep=None,
                         sort='asc', target_string=None,
