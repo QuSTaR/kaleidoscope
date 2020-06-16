@@ -1,6 +1,6 @@
-.. _kaleidoscope-backends:
+.. _kaleidoscope-qiskit-backends:
 
-.. automodule:: kaleidoscope.backends
+.. automodule:: kaleidoscope.qiskit.backends
    :no-members:
    :no-inherited-members:
    :no-special-members:
