@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors
 import colorcet as cc
 
-from qiskit.circuit.tools import pi_check
+from kaleidoscope.utils import pi_check
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
 from kaleidoscope.interactive.bloch.utils import bloch_components
 from kaleidoscope.colors.utils import hex_to_rgb
