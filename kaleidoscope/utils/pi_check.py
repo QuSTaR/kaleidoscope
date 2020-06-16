@@ -1,5 +1,20 @@
 # -*- coding: utf-8 -*-
 
+# This file is part of Kaleidoscope.
+#
+# (C) Copyright IBM 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+
+# -*- coding: utf-8 -*-
+
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2019.
@@ -12,6 +27,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=too-many-return-statements
+
+# Modified from Qiskit version for better performance over
+# wider range of values.
 
 """Check if number close to values of PI
 """
