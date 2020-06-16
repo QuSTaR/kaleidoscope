@@ -99,8 +99,11 @@ class QuantumCircuit(qiskit.circuit.quantumcircuit.QuantumCircuit):
         Returns:
             job: A job instance with `block_until_ready` attribute.
         """
-        if not backend:
-            backend = qiskit.Aer.get_backend('qasm_simulator')
+        if backend is None:
+            if self.target_backend:
+                backend = self.target_backend
+            else:
+                backend = qiskit.Aer.get_backend('qasm_simulator')
 
         qobj = assemble(self,
                         shots=shots,
@@ -111,9 +114,9 @@ class QuantumCircuit(qiskit.circuit.quantumcircuit.QuantumCircuit):
         job = backend.run(qobj)
 
         if isinstance(backend, IBMQBackend):
-            job.block_until_ready = MethodType(ibmq_wait, job)
+            job.result_when_done = MethodType(ibmq_wait, job)
         else:
-            job.block_until_ready = MethodType(aer_wait, job)
+            job.result_when_done = MethodType(aer_wait, job)
         return job
 
     def statevector(self, include_final_measurements=False):

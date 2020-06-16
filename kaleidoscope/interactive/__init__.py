@@ -21,12 +21,12 @@ Interactive Plots (:mod:`kaleidoscope.interactive`)
 .. autosummary::
    :toctree: ../stubs/
 
-   counts_histogram
+   counts_distribution
    bloch_disc
    bloch_sphere
    bloch_multi_disc
 """
 
-from .histogram import counts_histogram
+from .histogram import counts_distribution
 from .bloch.bloch2d import bloch_disc, bloch_multi_disc
 from .bloch.bloch3d import bloch_sphere
