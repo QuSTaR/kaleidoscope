@@ -24,7 +24,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# The Hamming distance and internal plot histogram data are part of 
+# The Hamming distance and internal plot histogram data are part of
 # Qiskit.  The latter will be modified at some point.
 
 """Interactive histogram from experiment counts"""
