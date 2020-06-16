@@ -289,11 +289,8 @@ def system_error_map(backend,
 
     qtext_color = []
     for ii in range(n_qubits):
-        if background_color == 'black':
-            if single_gate_errors[ii] > 0.8*max_1q_err:
-                qtext_color.append('black')
-            else:
-                qtext_color.append('white')
+        if single_gate_errors[ii] > 0.8*max_1q_err:
+            qtext_color.append('black')
         else:
             qtext_color.append('white')
 
@@ -369,7 +366,7 @@ def system_error_map(backend,
     for kk in range(num_left-1, -1, -1):
         fig.append_trace(go.Bar(x=[read_err[kk]], y=[kk],
                                 orientation='h',
-                                marker=dict(color='#DADAD7'),
+                                marker=dict(color='#B0B0AD'),
                                 hoverinfo="text",
                                 hoverlabel=dict(font=dict(color=meas_text_color)),
                                 hovertext=[hover_text.format(kk,
@@ -406,7 +403,7 @@ def system_error_map(backend,
             fig.append_trace(go.Bar(x=[-read_err[kk]],
                                     y=[kk],
                                     orientation='h',
-                                    marker=dict(color='#DADAD7'),
+                                    marker=dict(color='#B0B0AD'),
                                     hoverinfo="text",
                                     hoverlabel=dict(font=dict(color=meas_text_color)),
                                     hovertext=[hover_text.format(kk,
