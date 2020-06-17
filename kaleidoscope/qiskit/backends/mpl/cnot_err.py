@@ -22,7 +22,7 @@ from kaleidoscope.colors import DARK2
 from kaleidoscope.errors import KaleidoscopeError
 
 
-def cnot_error_density(backends, figsize=None, 
+def cnot_error_density(backends, figsize=None,
                        colors=None, xlim=None,
                        text_xval=None, xticks=None):
     """Plot CNOT error distribution for one or more IBMQ backends.
