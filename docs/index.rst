@@ -16,11 +16,18 @@ Kaleidoscope is released under the Apache 2 license.  Kaleidoscope is not an off
 
 .. toctree::
   :maxdepth: 1
+  :caption: Tutorials
+  :hidden:
+
+  Interactive figures<tutorials/interactive/index.rst>
+
+.. toctree::
+  :maxdepth: 1
   :caption: API
   :hidden:
 
-  Backend Routines<apidocs/backends>
-  Interactive Plots<apidocs/interactive>
+  Interactive figures<apidocs/interactive>
+  Qiskit functionality<apidocs/backends>
 
 .. Hiding - Indices and tables
    :ref:`genindex`

@@ -173,7 +173,7 @@ def bloch_sphere(vectors=None,
         if isinstance(vectors_alpha, (int, float)):
             vectors_alpha = [vectors_alpha]
 
-        if vectors_annotation:
+        if vectors_annotation == True:
             vectors_annotation = [True]*len(vectors)
         elif not vectors_annotation:
             vectors_annotation = [False]*len(vectors)

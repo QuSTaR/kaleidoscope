@@ -22,8 +22,8 @@ Interactive Plots (:mod:`kaleidoscope.interactive`)
    :toctree: ../stubs/
 
    counts_distribution
-   bloch_disc
    bloch_sphere
+   bloch_disc
    bloch_multi_disc
 """
 
