@@ -13,11 +13,11 @@
 # that they have been altered from the originals.
 
 """
-===========================================================
-IBM Quantum Backend Routines (:mod:`kaleidoscope.backends`)
-===========================================================
+==================================================================
+IBM Quantum Backend Routines (:mod:`kaleidoscope.qiskit.backends`)
+==================================================================
 
-.. currentmodule:: kaleidoscope.backends
+.. currentmodule:: kaleidoscope.qiskit.backends
 
 System visualizations
 =====================
