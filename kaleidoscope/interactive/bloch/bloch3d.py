@@ -16,14 +16,11 @@
 
 import numpy as np
 import plotly.graph_objects as go
+from kaleidoscope.colors import DARK2
 from kaleidoscope.colors.utils import hex_to_rgb
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
 from kaleidoscope.interactive.bloch.primitives import (BSPHERE, LATS, LONGS, ZAXIS, YAXIS, XAXIS,
                                                        Z0LABEL, Z1LABEL, YLABEL, XLABEL)
-
-# Default colors as dark2 from colorbrewer
-DEF_COLORS = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a",
-              "#66a61e", "#e6ab02", "#a6761d", "#666666"]
 
 
 def bloch_sphere(vectors=None,
@@ -109,14 +106,14 @@ def bloch_sphere(vectors=None,
         if points_color is None:
             # passed a single point
             if nest_depth == 1:
-                points_color = [DEF_COLORS[0]]
+                points_color = [DARK2[0]]
             elif nest_depth == 2:
-                points_color = [[DEF_COLORS[kk % 8] for kk in range(len(points[0]))]]
+                points_color = [[DARK2[kk % 8] for kk in range(len(points[0]))]]
 
             elif nest_depth == 3:
                 points_color = []
                 for kk, pnts in enumerate(points):
-                    points_color.append(DEF_COLORS[kk % 8]*len(pnts))
+                    points_color.append(DARK2[kk % 8]*len(pnts))
 
         if nest_depth == 2 and nest_level(points_color) == 1:
             points_color = [points_color]
@@ -165,7 +162,7 @@ def bloch_sphere(vectors=None,
     if vectors is not None:
 
         if vectors_color is None:
-            vectors_color = [DEF_COLORS[kk+idx % 8] for kk in range(len(vectors))]
+            vectors_color = [DARK2[kk+idx % 8] for kk in range(len(vectors))]
 
         if isinstance(vectors_color, str):
             vectors_color = [vectors_color]

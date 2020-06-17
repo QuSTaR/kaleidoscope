@@ -15,13 +15,10 @@
 """CNOT error density plot"""
 
 import numpy as np
-import colorcet as cc
 from scipy.stats import gaussian_kde
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-
-
-CMAP = cc.cm.bmy
+from kaleidoscope.colors import DARK2
 
 
 def plot_cnot_error_density(backends, figsize=None, xlim=None,
@@ -72,8 +69,7 @@ def plot_cnot_error_density(backends, figsize=None, xlim=None,
 
     text_color = 'k'
     offset = -100
-    norm = plt.Normalize(0, len(backends))
-    colors = [CMAP(norm(kk)) for kk in range(len(backends))]
+    colors = [DARK2[kk % 8] for kk in range(len(backends))]
 
     cx_errors = []
     for idx, back in enumerate(backends):
