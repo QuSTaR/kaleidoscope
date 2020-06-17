@@ -46,13 +46,13 @@ def cnot_error_density(backends, figsize=None,
         .. jupyter-execute::
 
             from qiskit import *
-            from kaleidoscope.qiskit.backends import plot_cnot_error_density
+            from kaleidoscope.qiskit.backends import cnot_error_density
             provider = IBMQ.load_account()
 
             backends = provider.backends(simulator=False,
                                          filters=lambda b: b.configuration().n_qubits == 5)
 
-            plot_cnot_error_density(backends)
+            cnot_error_density(backends)
     """
 
     if not isinstance(backends, list):
