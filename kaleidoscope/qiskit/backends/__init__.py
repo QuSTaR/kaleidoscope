@@ -13,11 +13,11 @@
 # that they have been altered from the originals.
 
 """
-===========================================================
-IBM Quantum Backend Routines (:mod:`kaleidoscope.backends`)
-===========================================================
+==================================================================
+IBM Quantum Backend Routines (:mod:`kaleidoscope.qiskit.backends`)
+==================================================================
 
-.. currentmodule:: kaleidoscope.backends
+.. currentmodule:: kaleidoscope.qiskit.backends
 
 System visualizations
 =====================
@@ -25,9 +25,9 @@ System visualizations
 .. autosummary::
    :toctree: ../stubs/
 
-   plot_cnot_error_density
+   cnot_error_density
 
 """
 
-from .mpl.cnot_err import plot_cnot_error_density
+from .mpl.cnot_err import cnot_error_density
 from .interactive.error_map import system_error_map

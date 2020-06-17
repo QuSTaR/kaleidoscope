@@ -33,6 +33,7 @@ import functools
 from collections import Counter, OrderedDict
 import numpy as np
 import plotly.graph_objects as go
+from kaleidoscope.colors import DARK2
 from .plotly_wrapper import PlotlyWidget, PlotlyFigure
 
 
@@ -56,7 +57,7 @@ VALID_SORTS = ['asc', 'desc', 'hamming']
 DIST_MEAS = {'hamming': hamming_distance}
 
 
-def counts_distribution(data, figsize=(None, None), color=None,
+def counts_distribution(data, figsize=(None, None), colors=None,
                         number_to_keep=None,
                         sort='asc', target_string=None,
                         legend=None, bar_labels=True,
@@ -68,7 +69,7 @@ def counts_distribution(data, figsize=(None, None), color=None,
         data (list or dict): This is either a list of dictionaries or a single
             dict containing the values to represent (ex {'001': 130})
         figsize (tuple): Figure size in pixels.
-        color (list or str): String or list of strings for histogram bar colors.
+        colors (list or str): String or list of strings for histogram bar colors.
         number_to_keep (int): The number of terms to plot and rest
             is made into a single bar called 'rest'.
         sort (string): Could be 'asc', 'desc', or 'hamming'.
@@ -90,6 +91,24 @@ def counts_distribution(data, figsize=(None, None), color=None,
         ValueError: When legend is provided and the length doesn't
                     match the input data.
         ImportError: When failed to load plotly.
+
+    Example:
+        .. jupyter-execute::
+
+            from kaleidoscope.qiskit.overload import QuantumCircuit
+            from kaleidoscope.qiskit.providers import simulators
+            from kaleidoscope.interactive import counts_distribution
+
+            sim = simulators.aer_vigo_simulator
+
+            qc = QuantumCircuit(3, 3) >> sim
+            qc.h(1)
+            qc.cx(1,0)
+            qc.cx(1,2)
+            qc.measure(range(3), range(3))
+
+            counts = qc.transpile().sample().result_when_done()
+            counts_distribution(counts, as_widget=True)
     """
 
     if sort not in VALID_SORTS:
@@ -129,10 +148,10 @@ def counts_distribution(data, figsize=(None, None), color=None,
                                                key=lambda pair: pair[0]))][1]
 
     # Set bar colors
-    if color is None:
-        color = ["#003f5c", "#ffa600", "#bc5090", "#58508d", "#ff6361"]
-    elif isinstance(color, str):
-        color = [color]
+    if colors is None:
+        colors = DARK2
+    elif isinstance(colors, str):
+        colors = [colors]
 
     width = 1/(len(data)+1)  # the width of the bars
 
@@ -158,7 +177,7 @@ def counts_distribution(data, figsize=(None, None), color=None,
                              width=width,
                              hoverinfo="text",
                              hovertext=hover_text,
-                             marker_color=color[item % len(color)],
+                             marker_color=colors[item % len(colors)],
                              name=legend[item] if legend else '',
                              text=np.round(yvals, 3) if bar_labels else None,
                              textposition='auto'
