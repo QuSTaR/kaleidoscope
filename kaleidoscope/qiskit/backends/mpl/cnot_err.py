@@ -19,15 +19,18 @@ from scipy.stats import gaussian_kde
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from kaleidoscope.colors import DARK2
+from kaleidoscope.errors import KaleidoscopeError
 
 
-def plot_cnot_error_density(backends, figsize=None, xlim=None,
-                            text_xval=None, xticks=None):
+def cnot_error_density(backends, figsize=None, 
+                       colors=None, xlim=None,
+                       text_xval=None, xticks=None):
     """Plot CNOT error distribution for one or more IBMQ backends.
 
     Parameters:
         backends (list or IBMQBackend): A single or list of IBMQBackend.
         figsize (tuple): Optional figure size in inches.
+        colors (list): A list of Matplotlib compatible colors to plot with.
         xlim (list or tuple): Optional lower and upper limits of cnot error values.
         text_xval (float): Optional xaxis value at which to start the backend text.
         xticks (list): Optional list of xaxis ticks to plot.
@@ -36,13 +39,14 @@ def plot_cnot_error_density(backends, figsize=None, xlim=None,
         Figure: A matplotlib Figure instance.
 
     Raises:
-        ValueError: A backend with <2 qubits was passed.
+        KaleidoscopeError: A backend with < 2 qubits was passed.
+        KaleidoscopeError: Number of colors did not match number of backends.
 
     Example:
         .. jupyter-execute::
 
             from qiskit import *
-            from kaleidoscope.backends import plot_cnot_error_density
+            from kaleidoscope.qiskit.backends import plot_cnot_error_density
             provider = IBMQ.load_account()
 
             backends = provider.backends(simulator=False,
@@ -56,7 +60,7 @@ def plot_cnot_error_density(backends, figsize=None, xlim=None,
 
     for back in backends:
         if back.configuration().n_qubits < 2:
-            raise ValueError('Number of backend qubits must be > 1')
+            raise KaleidoscopeError('Number of backend qubits must be > 1')
 
     # Attempt to autosize if figsize=None
     if figsize is None:
@@ -69,7 +73,11 @@ def plot_cnot_error_density(backends, figsize=None, xlim=None,
 
     text_color = 'k'
     offset = -100
-    colors = [DARK2[kk % 8] for kk in range(len(backends))]
+    if colors is None:
+        colors = [DARK2[kk % 8] for kk in range(len(backends))]
+    else:
+        if len(colors) != len(backends):
+            raise KaleidoscopeError('Number of colors does not match number of backends.')
 
     cx_errors = []
     for idx, back in enumerate(backends):

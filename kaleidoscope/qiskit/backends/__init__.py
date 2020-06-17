@@ -25,9 +25,9 @@ System visualizations
 .. autosummary::
    :toctree: ../stubs/
 
-   plot_cnot_error_density
+   cnot_error_density
 
 """
 
-from .mpl.cnot_err import plot_cnot_error_density
+from .mpl.cnot_err import cnot_error_density
 from .interactive.error_map import system_error_map
