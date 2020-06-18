@@ -25,7 +25,7 @@ import setuptools
 MAJOR = 0
 MINOR = 0
 MICRO = 4
-ISRELEASED = False
+ISRELEASED = True
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
 REQUIREMENTS = ['qiskit-terra>=0.14',
