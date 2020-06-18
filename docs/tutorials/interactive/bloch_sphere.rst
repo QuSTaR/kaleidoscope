@@ -18,22 +18,6 @@ Single vector
    bloch_sphere(vec, as_widget=True)
 
 
-Single vector with custom color
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(vec, vectors_color='#ff0000', as_widget=True)
-
-
-Single vector with custom color as list
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(vec, vectors_color=['#ff0000'], as_widget=True)
-
-
 Single vector with custom color and alpha
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. jupyter-execute::
@@ -41,23 +25,6 @@ Single vector with custom color and alpha
    vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
    bloch_sphere(vec, vectors_color='#ff0000', vectors_alpha=0.25,
                 as_widget=True)
-
-
-Single vector with custom color and alpha as lists
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec = [1/np.sqrt(2), 1/np.sqrt(2), 0]
-   bloch_sphere(vec, vectors_color=['#002e63'], vectors_alpha=[0.5],
-                as_widget=True)
-
-
-A single vector with annotation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec = [1/np.sqrt(2), -1/np.sqrt(2), 0]
-   bloch_sphere(vec, vectors_annotation=True, as_widget=True)
 
 
 Multiple vectors
@@ -70,20 +37,6 @@ Multiple vectors
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
    bloch_sphere([vec1, vec2, vec3, vec4], as_widget=True)
-
-
-Multiple vectors with custom colors
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec1 = [0, 0, 1]
-   vec2 = [1, 0, 0]
-   vec3 = [1/np.sqrt(2), 1/np.sqrt(2), 0]
-   vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
-
-   bloch_sphere([vec1, vec2, vec3, vec4],
-                vectors_color=['#e34234', '#6f4e37', '#00008b', '#ff1493'],
-                as_widget=True)
 
 
 Multiple vectors with custom colors and alpha
@@ -148,24 +101,6 @@ Single point with custom color
                 as_widget=True)
 
 
-Single point as a list with custom color
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(points=[vec], points_color='#ff0000',
-                as_widget=True)
-
-
-Single point and custom color as lists
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(points=[vec], points_color=['#ff0000'],
-                as_widget=True)
-
-
 Multiple points
 ~~~~~~~~~~~~~~~
 .. jupyter-execute::
@@ -204,14 +139,6 @@ Multiple points and colors as nested list
    bloch_sphere(points=[[vec1, vec2, vec3, vec4]],
                points_color=[['#e34234', '#6f4e37', '#00008b', '#8014ff']],
                as_widget=True)
-
-
-Single point with alpha
-~~~~~~~~~~~~~~~~~~~~~~~
-.. jupyter-execute::
-
-   vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(points=vec, points_alpha=0.5, as_widget=True)
 
 
 Multiple points as two groups
