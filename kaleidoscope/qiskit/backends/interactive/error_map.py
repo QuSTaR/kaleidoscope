@@ -57,6 +57,16 @@ def system_error_map(backend,
     Raises:
         KaleidoscopeError: Invalid input type.
 
+    Example:
+        .. jupyter-execute::
+
+            from qiskit import *
+            from kaleidoscope.qiskit.backends import system_error_map
+
+            pro = IBMQ.load_account()
+            backend = pro.backends.ibmq_vigo
+            system_error_map(backend)
+
     """
     if not isinstance(backend, (IBMQBackend, DeviceSimulator,
                                 FakeBackend, BackendProperties)):

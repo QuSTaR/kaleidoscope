@@ -25,6 +25,7 @@ System visualizations
 .. autosummary::
    :toctree: ../stubs/
 
+   system_error_map
    cnot_error_density
 
 """
