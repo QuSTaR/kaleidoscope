@@ -11,6 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=invalid-unary-operand-type
 
 """CNOT error density plot"""
 
@@ -26,7 +27,7 @@ from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobacke
 
 def cnot_error_density(backends,
                        figsize=None,
-                       colors=None, 
+                       colors=None,
                        offset=None,
                        xlim=None,
                        text_xval=None,
@@ -35,7 +36,7 @@ def cnot_error_density(backends,
 
     Parameters:
         backends (list or IBMQBackend or BackendProperties): A single or ist of IBMQBackend
-                                                             instances or properties. 
+                                                             instances or properties.
         figsize (tuple): Optional figure size in inches.
         colors (list): A list of Matplotlib compatible colors to plot with.
         offset (float): Positive offset for spacing out the backends.
