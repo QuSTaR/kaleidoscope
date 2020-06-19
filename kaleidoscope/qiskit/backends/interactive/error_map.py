@@ -28,6 +28,7 @@ from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.qiskit.providers.simulators import DeviceSimulator
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
 from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
+from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 from kaleidoscope.colors import BMY_PLOTLY
 
 CMAP = cc.cm.bmy
@@ -71,6 +72,9 @@ def system_error_map(backend,
     if not isinstance(backend, (IBMQBackend, DeviceSimulator,
                                 FakeBackend, BackendProperties)):
         raise KaleidoscopeError('Input is not a valid backend or properties object.')
+
+    if isinstance(backend, BackendProperties):
+        backend = properties_to_pseudobackend(backend)
 
     meas_text_color = '#000000'
     if background_color == 'white':

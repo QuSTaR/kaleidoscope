@@ -11,6 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=invalid-unary-operand-type
 
 """CNOT error density plot"""
 
@@ -18,19 +19,27 @@ import numpy as np
 from scipy.stats import gaussian_kde
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from qiskit.providers.models.backendproperties import BackendProperties
 from kaleidoscope.colors import DARK2
 from kaleidoscope.errors import KaleidoscopeError
+from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 
 
-def cnot_error_density(backends, figsize=None,
-                       colors=None, xlim=None,
-                       text_xval=None, xticks=None):
+def cnot_error_density(backends,
+                       figsize=None,
+                       colors=None,
+                       offset=None,
+                       xlim=None,
+                       text_xval=None,
+                       xticks=None):
     """Plot CNOT error distribution for one or more IBMQ backends.
 
     Parameters:
-        backends (list or IBMQBackend): A single or list of IBMQBackend.
+        backends (list or IBMQBackend or BackendProperties): A single or ist of IBMQBackend
+                                                             instances or properties.
         figsize (tuple): Optional figure size in inches.
         colors (list): A list of Matplotlib compatible colors to plot with.
+        offset (float): Positive offset for spacing out the backends.
         xlim (list or tuple): Optional lower and upper limits of cnot error values.
         text_xval (float): Optional xaxis value at which to start the backend text.
         xticks (list): Optional list of xaxis ticks to plot.
@@ -58,6 +67,10 @@ def cnot_error_density(backends, figsize=None,
     if not isinstance(backends, list):
         backends = [backends]
 
+    for idx, back in enumerate(backends):
+        if isinstance(back, BackendProperties):
+            backends[idx] = properties_to_pseudobackend(back)
+
     for back in backends:
         if back.configuration().n_qubits < 2:
             raise KaleidoscopeError('Number of backend qubits must be > 1')
@@ -72,7 +85,9 @@ def cnot_error_density(backends, figsize=None,
         fig = plt.figure(figsize=figsize)
 
     text_color = 'k'
-    offset = -100
+    if offset is None:
+        offset = 100 if len(backends) > 3 else 200
+    offset = -offset
     if colors is None:
         colors = [DARK2[kk % 8] for kk in range(len(backends))]
     else:
@@ -122,7 +137,7 @@ def cnot_error_density(backends, figsize=None,
             qv = ''
 
         bname = back.name().split('_')[-1].title()+" {}".format(qv)
-        plt.text(text_xval, offset*idx+10, bname, fontsize=20, color=colors[idx])
+        plt.text(text_xval, offset*idx+0.1*(-offset), bname, fontsize=20, color=colors[idx])
 
     fig.axes[0].get_yaxis().set_visible(False)
 
