@@ -30,6 +30,15 @@ _stage_generic_linux: &stage_generic_linux
     - pip install -U -r requirements-dev.txt
     - python setup.py install
 
+_stage_linux_38: &stage_linux_38
+  <<: *stage_generic_linux
+  name: "Python 3.8"
+  python: 3.8
+  before_script:
+    - mkdir kaleidoscope_testing
+    - cd kaleidoscope_testing
+  script:
+    - pytest -p no:warnings --pyargs kaleidoscope
     
 _stage_linux_38: &stage_linux_38_lint_style
   <<: *stage_generic_linux
@@ -50,16 +59,22 @@ _stage_linux_38: &stage_linux_38_lint_style
     - pip install -U -r requirements.txt
     - pip install -U -r requirements-dev.txt
 
-  
-_stage_linux_38: &stage_linux_38
+_stage_linux_38: &stage_linux_38_lint_style
   <<: *stage_generic_linux
-  name: "Python 3.8"
+  name: "Python 3.8 Lint"
   python: 3.8
-  before_script:
-    - mkdir kaleidoscope_testing
-    - cd kaleidoscope_testing
   script:
-    - pytest -p no:warnings --pyargs kaleidoscope
+    - pytest -p no:warnings --pyargs kaleidoscope/test/no_qiskit
+  install:
+    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda info -a
+    - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+    - source activate test-environment
+    - pip install -U -r requirements.txt
 
 _stage_osx_38: &stage_osx_38
   os: osx
@@ -94,6 +109,8 @@ jobs:
   include:
     - stage: lint
       <<: *stage_linux_38_lint_style
+    - stage: test
+      <<: *stage_linux_38_no_qiskit
     - stage: test
       <<: *stage_linux_38
     - stage: test

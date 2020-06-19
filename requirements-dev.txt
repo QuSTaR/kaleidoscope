@@ -1,3 +1,6 @@
+qiskit-terra>=0.14
+qiskit-ibmq-provider>=0.7
+qiskit-aer>=0.5
 pytest
 pylint
 pycodestyle

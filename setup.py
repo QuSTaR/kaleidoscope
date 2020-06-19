@@ -12,7 +12,8 @@
 # that they have been altered from the originals.
 """Kaleidoscope
 
-Kaleidoscope is visualization toolkit for Qiskit and the
+Kaleidoscope is a visualization toolkit for quantum computation
+It also has a Qiskit interface for plotting details about the
 IBM roster of Quantum devices.
 """
 
@@ -28,9 +29,7 @@ MICRO = 4
 ISRELEASED = False
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
-REQUIREMENTS = ['qiskit-terra>=0.14',
-                'qiskit-ibmq-provider>=0.7',
-                'numpy>=1.15',
+REQUIREMENTS = ['numpy>=1.15',
                 'scipy>=1.3',
                 'numba>=0.46',
                 'matplotlib>=3.1',
@@ -74,7 +73,7 @@ release = %(isrelease)s
     a = open(filename, 'w')
     try:
         a.write(cnt % {'version': VERSION, 'fullversion':
-                FULLVERSION, 'isrelease': str(ISRELEASED)})
+                       FULLVERSION, 'isrelease': str(ISRELEASED)})
     finally:
         a.close()
 
