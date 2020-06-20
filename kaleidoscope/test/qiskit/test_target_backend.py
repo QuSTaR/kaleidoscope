@@ -25,7 +25,7 @@ def test_target_backend_attach():
 
     qc = QuantumCircuit(5, 5) >> backend
     qc.h(0)
-    qc.cx(0, range(1,5))
+    qc.cx(0, range(1, 5))
     qc.measure(range(5), range(5))
 
     assert qc.target_backend == backend
@@ -35,7 +35,7 @@ def test_target_backend_transpile():
 
     qc = QuantumCircuit(5, 5) >> backend
     qc.h(0)
-    qc.cx(0, range(1,5))
+    qc.cx(0, range(1, 5))
     qc.measure(range(5), range(5))
 
     new_qc = qc.transpile()
