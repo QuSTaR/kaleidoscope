@@ -64,7 +64,7 @@ _stage_linux_38: &stage_linux_38_no_qiskit
   name: "Python 3.8 No Qiskit"
   python: 3.8
   script:
-    - pytest -p no:warnings --pyargs kaleidoscope/test/no_qiskit
+    - pytest -p no:warnings --pyargs kaleidoscope
   install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
@@ -75,7 +75,6 @@ _stage_linux_38: &stage_linux_38_no_qiskit
     - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
     - source activate test-environment
     - pip install -U -r requirements.txt
-    - pip install -U -r requirements-dev.txt
     - python setup.py install
 
 _stage_osx_38: &stage_osx_38
