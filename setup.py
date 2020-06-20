@@ -32,10 +32,10 @@ VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 REQUIREMENTS = ['numpy>=1.15',
                 'scipy>=1.3',
                 'numba>=0.46',
+                'plotly>=4.6',
                 'matplotlib>=3.1',
                 'seaborn>=0.9.0',
                 'jupyter',
-                'plotly>=4.6',
                 'colorcet',
                ]
 
