@@ -30,3 +30,9 @@ def test_bloch_components():
     state = np.array([0, 1], dtype=complex)
     comp = bloch_components(state)[0]
     assert np.allclose(comp, [0, 0, -1])
+
+    # (|00> + |11>)/sqrt(2)
+    state = np.array([1/np.sqrt(2), 0, 0, 1/np.sqrt(2)], dtype=complex)
+    comp = bloch_components(state)
+    assert np.allclose(comp[0], [0.0, 0.0, 0.0])
+    assert np.allclose(comp[1], [0.0, 0.0, 0.0])
