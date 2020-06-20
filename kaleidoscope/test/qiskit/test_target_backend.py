@@ -20,6 +20,7 @@ from kaleidoscope.qiskit.overload import QuantumCircuit
 PROVIDER = IBMQ.load_account()
 backend = PROVIDER.backends.ibmq_vigo
 
+
 def test_target_backend_attach():
     """Tests the Bloch components function"""
 
@@ -29,6 +30,7 @@ def test_target_backend_attach():
     qc.measure(range(5), range(5))
 
     assert qc.target_backend == backend
+
 
 def test_target_backend_transpile():
     """Tests the Bloch components function"""
