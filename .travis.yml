@@ -75,6 +75,7 @@ _stage_linux_38: &stage_linux_38_no_qiskit
     - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
     - source activate test-environment
     - pip install -U -r requirements.txt
+    - pip install -U -r requirements-dev.txt
     - python setup.py install
 
 _stage_osx_38: &stage_osx_38
