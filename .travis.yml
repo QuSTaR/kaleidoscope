@@ -59,7 +59,7 @@ _stage_linux_38: &stage_linux_38_lint_style
     - pip install -U -r requirements.txt
     - pip install -U -r requirements-dev.txt
 
-_stage_linux_38: &stage_linux_38_lint_style
+_stage_linux_38: &stage_linux_38_no_qiskit
   <<: *stage_generic_linux
   name: "Python 3.8 Lint"
   python: 3.8
