@@ -22,7 +22,7 @@ backend = PROVIDER.backends.ibmq_vigo
 
 
 def test_target_backend_attach():
-    """Tests the Bloch components function"""
+    """Tests attaching target backend"""
 
     qc = QuantumCircuit(5, 5) >> backend
     qc.h(0)
@@ -33,7 +33,7 @@ def test_target_backend_attach():
 
 
 def test_target_backend_transpile():
-    """Tests the Bloch components function"""
+    """Tests target backend attached to transpiled circuit"""
 
     qc = QuantumCircuit(5, 5) >> backend
     qc.h(0)
