@@ -61,7 +61,7 @@ _stage_linux_38: &stage_linux_38_lint_style
 
 _stage_linux_38: &stage_linux_38_no_qiskit
   <<: *stage_generic_linux
-  name: "Python 3.8 Lint"
+  name: "Python 3.8 No Qiskit"
   python: 3.8
   script:
     - pytest -p no:warnings --pyargs kaleidoscope/test/no_qiskit
@@ -75,6 +75,7 @@ _stage_linux_38: &stage_linux_38_no_qiskit
     - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
     - source activate test-environment
     - pip install -U -r requirements.txt
+    - python setup.py install
 
 _stage_osx_38: &stage_osx_38
   os: osx
