@@ -19,9 +19,7 @@ from kaleidoscope.errors import KaleidoscopeError
 try:
     from qiskit import QuantumCircuit, Aer, IBMQ
 except ImportError:
-    HAS_QISKIT = False
-else:
-    KaleidoscopeError('Must have Qiskit Terra, Aer, and IBMQ account installed.')
+    raise KaleidoscopeError('Must install qiskit-terra, qiskit-aer, and qiskit-ibmq-provider.')
 
 from .backends.mpl import *
 from .backends.interactive import system_error_map
