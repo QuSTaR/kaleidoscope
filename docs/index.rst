@@ -2,10 +2,12 @@
 Kaleidoscope (|version|)
 ########################
 
-Kaleidoscope is a visualization package for the `Qiskit <https://qiskit.org/>`_ quantum computing framework
-that focuses on interactivity.
+Kaleidoscope is a visualization package for quantum computation that focuses on interactivity.
+In addition, there is a range of functionality for the `Qiskit <https://qiskit.org/>`_ quantum computing
+framework for visualizing quantum systems and their associated properties.
 
-Kaleidoscope is released under the Apache 2 license.  Kaleidoscope is not an official IBM product.
+Kaleidoscope is released under the Apache 2 license.  Kaleidoscope is copyright IBM as I work there,
+however it is not an official or unofficial IBM product.
 
 
 .. toctree::
