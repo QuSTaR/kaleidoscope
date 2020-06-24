@@ -46,7 +46,7 @@ def system_gate_map(
         font_size=None,
         qubit_colors="#2f4b7c",
         qubit_labels=None,
-        line_colors= "#2f4b7c",
+        line_colors="#2f4b7c",
         font_color="white",
         background_color='white',
         as_widget=False):
