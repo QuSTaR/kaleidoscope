@@ -133,7 +133,7 @@ html_logo = 'images/logo.png'
 html_last_updated_fmt = '%Y/%m/%d'
 
 html_theme_options = {
-    'logo_only': True,
+    'logo_only': False,
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': True,
