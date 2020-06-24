@@ -22,6 +22,7 @@ however it is not an official or unofficial IBM product.
   :hidden:
 
   Interactive figures<tutorials/interactive/index.rst>
+  Backend figures<tutorials/backends/index.rst>
 
 .. toctree::
   :maxdepth: 1

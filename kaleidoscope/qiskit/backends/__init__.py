@@ -26,9 +26,10 @@ System visualizations
    :toctree: ../stubs/
 
    system_error_map
+   system_gate_map
    cnot_error_density
 
 """
 
 from .mpl.cnot_err import cnot_error_density
-from .interactive.error_map import system_error_map
+from .interactive import system_error_map, system_gate_map

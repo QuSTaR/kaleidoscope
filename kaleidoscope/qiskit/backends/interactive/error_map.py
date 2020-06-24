@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
 
+# This file is part of Kaleidoscope.
+#
+# (C) Copyright IBM 2020.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2019.
@@ -12,6 +24,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=invalid-name
+
+# Modified to also take backend parameters object, as well as the
+# simulators objects from the Kaleidoscope providers.
 
 """Interactive error map for IBM Quantum Experience devices."""
 
@@ -380,7 +395,7 @@ def system_error_map(backend,
     for kk in range(num_left-1, -1, -1):
         fig.append_trace(go.Bar(x=[read_err[kk]], y=[kk],
                                 orientation='h',
-                                marker=dict(color='#B0B0AD'),
+                                marker=dict(color='#c7c7c5'),
                                 hoverinfo="text",
                                 hoverlabel=dict(font=dict(color=meas_text_color)),
                                 hovertext=[hover_text.format(kk,
@@ -417,7 +432,7 @@ def system_error_map(backend,
             fig.append_trace(go.Bar(x=[-read_err[kk]],
                                     y=[kk],
                                     orientation='h',
-                                    marker=dict(color='#B0B0AD'),
+                                    marker=dict(color='#c7c7c5'),
                                     hoverinfo="text",
                                     hoverlabel=dict(font=dict(color=meas_text_color)),
                                     hovertext=[hover_text.format(kk,
