@@ -12,7 +12,7 @@
 # that they have been altered from the originals.
 """Kaleidoscope
 
-Kaleidoscope is a visualization toolkit for quantum computation
+Kaleidoscope is a visualization toolkit for quantum computation.
 It also has a Qiskit interface for plotting details about the
 IBM roster of Quantum devices.
 """
@@ -25,7 +25,7 @@ import setuptools
 
 MAJOR = 0
 MINOR = 0
-MICRO = 5
+MICRO = 6
 ISRELEASED = False
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
