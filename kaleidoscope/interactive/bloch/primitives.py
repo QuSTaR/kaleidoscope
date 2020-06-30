@@ -41,9 +41,9 @@ def BSPHERE(color="#F1EBEA", opacity=0.15):
                          colorscale=[[0, color],
                                      [1, color]],
                          contours=dict(
-                             x=dict(show=False),
-                             y=dict(show=False),
-                             z=dict(show=False))
+                             x=dict(highlight=False),
+                             y=dict(highlight=False),
+                             z=dict(highlight=False))
                          )
     return surface
 
