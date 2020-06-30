@@ -20,8 +20,9 @@ class PlotlyFigure():
     Allows the figures to be more or less drop in replacements
     for Matplotlib Figures, e.g. savefig is a method here.
     """
-    def __init__(self, fig):
+    def __init__(self, fig, modebar=False):
         self._fig = fig
+        self._modebar = modebar
 
     def __repr__(self):
         return self._fig.__repr__()
@@ -30,7 +31,7 @@ class PlotlyFigure():
         import plotly.io as pio
 
         if pio.renderers.render_on_display and pio.renderers.default:
-            pio.show(self._fig, config={'displayModeBar': False,
+            pio.show(self._fig, config={'displayModeBar': self._modebar,
                                         'editable': False})
         else:
             print(repr(self))
@@ -42,7 +43,7 @@ class PlotlyFigure():
 
         config = {}
         if 'config' not in kwargs.keys():
-            config = {'displayModeBar': False,
+            config = {'displayModeBar': self._modebar,
                       'editable': False}
 
         return pio.show(self._fig, *args, config=config, **kwargs)
