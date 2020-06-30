@@ -264,17 +264,18 @@ def bloch_sphere(vectors=None,
                       showlegend=False,
                       scene_aspectmode='cube',
                       margin=dict(r=0, b=0, l=0, t=0),
-                      scene=dict(xaxis_showspikes=False,
-                                 annotations=fig_annotations,
-                                 yaxis_showspikes=False,
+                      scene=dict(annotations=fig_annotations,
                                  xaxis=dict(showbackground=False,
                                             range=[-1.2, 1.2],
+                                            showspikes=False,
                                             visible=False),
                                  yaxis=dict(showbackground=False,
                                             range=[-1.2, 1.2],
+                                            showspikes=False,
                                             visible=False),
                                  zaxis=dict(showbackground=False,
                                             range=[-1.2, 1.2],
+                                            showspikes=False,
                                             visible=False)),
                       scene_camera=dict(eye=dict(x=1.5,
                                                  y=0.4,
@@ -284,7 +285,7 @@ def bloch_sphere(vectors=None,
     if as_widget:
         return PlotlyWidget(fig)
 
-    return PlotlyFigure(fig)
+    return PlotlyFigure(fig, modebar=True)
 
 
 def nest_level(lst):
