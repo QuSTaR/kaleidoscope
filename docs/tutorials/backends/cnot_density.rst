@@ -53,6 +53,14 @@ Shift position of backend labels
    cnot_error_density(backends, text_xval=3)
 
 
+Change offset between distributions
+-----------------------------------
+
+.. jupyter-execute::
+
+   cnot_error_density(backends, offset=300)
+
+
 Change gaussian widths
 ----------------------
 
