@@ -23,6 +23,14 @@ Simple multi-system comparison
    cnot_error_density(backends)
 
 
+Linear error scaling
+--------------------
+
+.. jupyter-execute::
+
+   cnot_error_density(backends, scale='linear')
+
+
 Historical data with custom colors
 ----------------------------------
 
@@ -33,3 +41,29 @@ Historical data with custom colors
    cnot_error_density(props, offset=200,
                       colors=['#d6d6d6', '#bebebe', '#a6a6a6', '#8e8e8e', '#ff007f'])
 
+
+Shift position of backend labels
+--------------------------------
+
+.. jupyter-execute::
+
+   backends = provider.backends(simulator=False,
+                                filters=lambda b: b.configuration().n_qubits==5)
+
+   cnot_error_density(backends, text_xval=3)
+
+
+Change gaussian widths
+----------------------
+
+.. jupyter-execute::
+
+   cnot_error_density(backends, covariance_factor=0.5)
+
+
+Custom x-limits
+---------------
+
+.. jupyter-execute::
+
+   cnot_error_density(backends, xlim=[0.1,5])

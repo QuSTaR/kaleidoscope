@@ -125,7 +125,7 @@ def cnot_error_density(backends,
 
     if xlim is None:
         if scale == 'linear':
-            xlim = [0, max_cx_err+2]
+            xlim = [0, 1.5*max_cx_err]
         else:
             xlim = [10**np.floor(np.log10(min_cx_err)),
                     10**np.ceil(np.log10(max_cx_err))]
