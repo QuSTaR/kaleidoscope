@@ -14,6 +14,9 @@
 
 """Qiskit specific functionality"""
 
+import sys
+from IPython import get_ipython
+from IPython.core.magic import line_magic, register_line_magic
 from kaleidoscope.errors import KaleidoscopeError
 
 try:
@@ -23,3 +26,11 @@ except ImportError:
 
 from .backends.mpl import *
 from .backends.interactive import system_error_map
+
+if get_ipython():
+    @register_line_magic
+    def kaleidoscope_qiskit(_):
+        """Imports the Kaleidoscope Qiskit addons
+        """
+        # pylint: disable=unused-import
+        import kaleidoscope.qiskit.overload

@@ -14,11 +14,11 @@
 
 """Overloading of the QuantumCircuit class in Qiskit"""
 
-import copy
 from types import MethodType
-import qiskit
+from qiskit import Aer
+from qiskit.circuit.quantumcircuit import QuantumCircuit
 from qiskit.compiler.assemble import assemble
-from qiskit.compiler import transpile
+from qiskit.compiler import transpile as trans
 from qiskit.quantum_info import Statevector, Operator
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.providers.basebackend import BaseBackend
@@ -26,148 +26,102 @@ from qiskit.tools.monitor import job_monitor as aer_monitor
 from qiskit.providers.ibmq.job import job_monitor as ibmq_monitor
 
 
-class QuantumCircuit(qiskit.circuit.quantumcircuit.QuantumCircuit):
-    """A QuantumCircuit class that contains additional functionality.
+def __rshift__(self, target):
+    """Add a target backend to circuit.
 
-    Attributes:
-        target_backend (BaseBackend): A backend to target.
-        is_kal (bool): Is this an overloaded Kaleidoscope circuit.
+    Parameters:
+        target (BaseBackend): The target backend
+
+    Returns:
+        QuantumCircuit: QuantumCircuit with attached target_backend.
+
+    Raises:
+        TypeError: Input is not a valid backend instance.
     """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.target_backend = None
-        self.is_kal = True
+    if not isinstance(target, BaseBackend):
+        raise TypeError('Target is not a valid backend instance.')
+    self.target_backend = target  # pylint: disable=attribute-defined-outside-init
+    return self
 
-    def __rshift__(self, target):
-        """Add a target backend to circuit.
+def sample(self, backend=None, shots=1024, seed_simulator=None, memory=False):
+    """Sample a the output distribution from a quantum circuit.
 
-        Parameters:
-            target (BaseBackend): The target backend
+    Parameters:
+        backend (BaseBackend): Backend to use.  Default is Aer QASM simulator.
+        shots (imt): Number of times to sample.  Default is 1024.
+        seed_simulator (int):  Seed to use for simulator (if backend is a simulator).
+        memory (bool): Return individual measurement results.
 
-        Returns:
-            QuantumCircuit: QuantumCircuit with attached target_backend.
-
-        Raises:
-            TypeError: Input is not a valid backend instance.
-        """
-        if not isinstance(target, BaseBackend):
-            raise TypeError('Target is not a valid backend instance.')
-        self.target_backend = target  # pylint: disable=attribute-defined-outside-init
-        return self
-
-    def _wrap_circuit(self, circ, inplace=False):
-        """Make an overloaded circuit from a standard Qiskit one.
-
-        Parameters:
-            circ (QuantumCircuit): Input QuantumCircuit.
-            inplace (bool): Return a copy of the circuit data.
-
-        Returns:
-            QuantumCircuit: Returns overloaded QuantumCircuit.
-
-        Raises:
-            TypeError: Input is not a QuantumCircuit instance.
-        """
-        if not isinstance(circ, qiskit.circuit.quantumcircuit.QuantumCircuit):
-            raise TypeError('Input should be a QuantumCircuit')
-        out_qc = QuantumCircuit()
-        if inplace:
-            out_qc.name = copy.copy(circ.name)
-            out_qc.qregs = copy.copy(circ.qregs)
-            out_qc.cregs = copy.copy(circ.cregs)
-            out_qc._data = copy.deepcopy(circ._data)
-            out_qc._parameter_table = copy.deepcopy(circ._parameter_table)
-            out_qc._layout = copy.copy(circ._layout)
+    Returns:
+        job: A job instance with `block_until_ready` attribute.
+    """
+    if backend is None:
+        if self.target_backend:
+            backend = self.target_backend
         else:
-            out_qc.name = circ.name
-            out_qc.qregs = circ.qregs
-            out_qc.cregs = circ.cregs
-            out_qc._data = circ._data
-            out_qc._parameter_table = circ._parameter_table
-            out_qc._layout = circ._layout
-        return out_qc
+            backend = Aer.get_backend('qasm_simulator')
 
-    def sample(self, backend=None, shots=1024, seed_simulator=None, memory=False):
-        """Sample a the output distribution from a quantum circuit.
+    qobj = assemble(self,
+                    shots=shots,
+                    memory=memory,
+                    seed_simulator=seed_simulator,
+                    backend=backend)
 
-        Parameters:
-            backend (BaseBackend): Backend to use.  Default is Aer QASM simulator.
-            shots (imt): Number of times to sample.  Default is 1024.
-            seed_simulator (int):  Seed to use for simulator (if backend is a simulator).
-            memory (bool): Return individual measurement results.
+    job = backend.run(qobj)
 
-        Returns:
-            job: A job instance with `block_until_ready` attribute.
-        """
-        if backend is None:
-            if self.target_backend:
-                backend = self.target_backend
-            else:
-                backend = qiskit.Aer.get_backend('qasm_simulator')
+    if isinstance(backend, IBMQBackend):
+        job.result_when_done = MethodType(ibmq_wait, job)
+    else:
+        job.result_when_done = MethodType(aer_wait, job)
+    return job
 
-        qobj = assemble(self,
-                        shots=shots,
-                        memory=memory,
-                        seed_simulator=seed_simulator,
-                        backend=backend)
+def statevector(self, include_final_measurements=False):
+    """Return output statevector for the circuit.
 
-        job = backend.run(qobj)
+    Parameters:
+        include_final_measurements (bool): Include final measurements
+                                            in the circuit.
 
-        if isinstance(backend, IBMQBackend):
-            job.result_when_done = MethodType(ibmq_wait, job)
-        else:
-            job.result_when_done = MethodType(aer_wait, job)
-        return job
-
-    def statevector(self, include_final_measurements=False):
-        """Return output statevector for the circuit.
-
-        Parameters:
-            include_final_measurements (bool): Include final measurements
-                                               in the circuit.
-
-        Returns:
-            StateVector: Output statevector object.
-        """
-        new_circ = self
-        if not include_final_measurements:
-            new_circ = self.remove_final_measurements(inplace=False)
-        return Statevector.from_instruction(new_circ)
-
-    def unitary(self):
-        """Return the unitary for the circuit (if any).
-
-        Returns:
-            Operator: Unitary for the circuit.
-        """
+    Returns:
+        StateVector: Output statevector object.
+    """
+    new_circ = self
+    if not include_final_measurements:
         new_circ = self.remove_final_measurements(inplace=False)
-        return Operator(new_circ)
+    return Statevector.from_instruction(new_circ)
 
-    def transpile(self, backend=None, **kwargs):
-        """Transpile the circuit.
+def unitary(self):
+    """Return the unitary for the circuit (if any).
 
-        If the circuit has a `target_backend` assigned
-        and `backend=None` then the target backend is
-        used for transpilation.  All other `transpile`
-        functionality remains unchanged.
+    Returns:
+        Operator: Unitary for the circuit.
+    """
+    new_circ = self.remove_final_measurements(inplace=False)
+    return Operator(new_circ)
 
-        Parameters:
-            backend (BaseBackend): Backend to transpile for.
-            kwargs: any other transpiler kwargs.
+def transpile(self, backend=None, **kwargs):
+    """Transpile the circuit.
 
-        Returns:
-            QuantumCircuit: Transpiled quantum circuit.
+    If the circuit has a `target_backend` assigned
+    and `backend=None` then the target backend is
+    used for transpilation.  All other `transpile`
+    functionality remains unchanged.
 
-        Returns:
+    Parameters:
+        backend (BaseBackend): Backend to transpile for.
+        kwargs: any other transpiler kwargs.
 
-        """
-        if backend is None:
-            if self.target_backend:
-                backend = self.target_backend
-        new_qc = transpile(self, backend=backend, **kwargs)
-        out = self._wrap_circuit(new_qc, inplace=True)
-        out.target_backend = self.target_backend
-        return out
+    Returns:
+        QuantumCircuit: Transpiled quantum circuit.
+
+    Returns:
+
+    """
+    if backend is None:
+        if self.target_backend:
+            backend = self.target_backend
+    new_qc = trans(self, backend=backend, **kwargs)
+    return new_qc
 
 
 def aer_wait(self, monitor=False):
@@ -196,3 +150,12 @@ def ibmq_wait(self, monitor=False):
     if monitor:
         ibmq_monitor(self)
     return self.result().get_counts()
+
+
+# Add attributes to QuantumCircuit class:
+QuantumCircuit.target_backend = None
+# Add methods to QuantumCircuit class:
+QuantumCircuit.sample = sample
+QuantumCircuit.statevector = statevector
+QuantumCircuit.transpile = transpile
+QuantumCircuit.unitary = unitary
