@@ -22,3 +22,15 @@ except ImportError:
     __version__ = '0.0.0'
 
 from kaleidoscope.interactive import *
+
+try:
+    from qiskit import QuantumCircuit, Aer, IBMQ
+except ImportError:
+    HAS_QISKIT = False
+else:
+    HAS_QISKIT = True
+
+
+def load_ipython_extension(ip):
+    """Load the extension in IPython."""
+    import kaleidoscope.qiskit.overload

@@ -26,7 +26,7 @@ from qiskit.tools.monitor import job_monitor as aer_monitor
 from qiskit.providers.ibmq.job import job_monitor as ibmq_monitor
 
 
-def __rshift__(self, target):
+def rshift(self, target):
     """Add a target backend to circuit.
 
     Parameters:
@@ -155,6 +155,7 @@ def ibmq_wait(self, monitor=False):
 # Add attributes to QuantumCircuit class:
 QuantumCircuit.target_backend = None
 # Add methods to QuantumCircuit class:
+QuantumCircuit.__rshift__ = rshift
 QuantumCircuit.sample = sample
 QuantumCircuit.statevector = statevector
 QuantumCircuit.transpile = transpile

@@ -17,11 +17,10 @@
 import sys
 from IPython import get_ipython
 from IPython.core.magic import line_magic, register_line_magic
+from kaleidoscope import HAS_QISKIT
 from kaleidoscope.errors import KaleidoscopeError
 
-try:
-    from qiskit import QuantumCircuit, Aer, IBMQ
-except ImportError:
+if not HAS_QISKIT:
     raise KaleidoscopeError('Must install qiskit-terra, qiskit-aer, and qiskit-ibmq-provider.')
 
 from .backends.mpl import *
