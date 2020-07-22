@@ -16,4 +16,4 @@
 
 from .simulators import KaleidoscopeSimulatorService
 
-simulators = KaleidoscopeSimulatorService()
+Simulators = KaleidoscopeSimulatorService()

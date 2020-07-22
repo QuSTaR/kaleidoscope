@@ -43,6 +43,7 @@ def rshift(self, target):
     self.target_backend = target  # pylint: disable=attribute-defined-outside-init
     return self
 
+
 def sample(self, backend=None, shots=1024, seed_simulator=None, memory=False):
     """Sample a the output distribution from a quantum circuit.
 
@@ -75,6 +76,7 @@ def sample(self, backend=None, shots=1024, seed_simulator=None, memory=False):
         job.result_when_done = MethodType(aer_wait, job)
     return job
 
+
 def statevector(self, include_final_measurements=False):
     """Return output statevector for the circuit.
 
@@ -90,6 +92,7 @@ def statevector(self, include_final_measurements=False):
         new_circ = self.remove_final_measurements(inplace=False)
     return Statevector.from_instruction(new_circ)
 
+
 def unitary(self):
     """Return the unitary for the circuit (if any).
 
@@ -98,6 +101,7 @@ def unitary(self):
     """
     new_circ = self.remove_final_measurements(inplace=False)
     return Operator(new_circ)
+
 
 def transpile(self, backend=None, **kwargs):
     """Transpile the circuit.

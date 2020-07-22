@@ -23,5 +23,6 @@ def bloch_components(self):
     """
     return bcomp(self.data)
 
+
 # Add methods to Statevector class
 Statevector.bloch_components = bloch_components

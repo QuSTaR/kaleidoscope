@@ -11,11 +11,12 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=unused-import
 
 """Tests for Bloch routines"""
 
-from qiskit import IBMQ
-from kaleidoscope.qiskit.overload import QuantumCircuit
+from qiskit import IBMQ, QuantumCircuit
+import kaleidoscope.qiskit.overload
 
 PROVIDER = IBMQ.load_account()
 backend = PROVIDER.backends.ibmq_vigo
