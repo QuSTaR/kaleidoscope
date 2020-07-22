@@ -17,8 +17,12 @@ Simple multi-system comparison
    IBMQ.load_account()
    provider = IBMQ.get_provider(group='open')
 
-   backends = provider.backends(simulator=False,
-                                filters=lambda b: b.configuration().n_qubits==5)
+   backends = []
+   backends.append(provider.backends.ibmq_vigo)
+   backends.append(provider.backends.ibmq_ourense)
+   backends.append(provider.backends.ibmq_london)
+   backends.append(provider.backends.ibmq_burlington)
+   backends.append(provider.backends.ibmq_essex)
 
    cnot_error_density(backends)
 

@@ -95,11 +95,12 @@ def counts_distribution(data, figsize=(None, None), colors=None,
     Example:
         .. jupyter-execute::
 
-            from kaleidoscope.qiskit.overload import QuantumCircuit
-            from kaleidoscope.qiskit.providers import simulators
+            from qiskit import *
+            from kaleidoscope.qiskit.providers import Simulators
             from kaleidoscope.interactive import counts_distribution
+            %load_ext kaleidoscope
 
-            sim = simulators.aer_vigo_simulator
+            sim = Simulators.aer_vigo_simulator
 
             qc = QuantumCircuit(3, 3) >> sim
             qc.h(1)
