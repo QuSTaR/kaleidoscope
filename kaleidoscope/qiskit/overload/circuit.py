@@ -125,6 +125,7 @@ def transpile(self, backend=None, **kwargs):
         if self.target_backend:
             backend = self.target_backend
     new_qc = trans(self, backend=backend, **kwargs)
+    new_qc.target_backend = backend
     return new_qc
 
 
