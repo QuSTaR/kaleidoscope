@@ -25,15 +25,6 @@ Or if your adventurous you can install from `source code on Github <https://gith
 Optional dependencies
 ---------------------
 
-Saving figures
-~~~~~~~~~~~~~~
-In order to save interactive figures as, for example, ``png`` or ``pdf`` images, the ``orca`` package
-must be installed via ``conda``:
-
-.. code-block:: bash
-
-   conda install -c plotly plotly-orca
-
 
 Qiskit functionality
 ~~~~~~~~~~~~~~~~~~~~

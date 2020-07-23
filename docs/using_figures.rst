@@ -47,11 +47,6 @@ notebook menu do:``Widgets -> Save Notebook Widget State``.
 Saving figures and widgets
 ===========================
 
-.. note::
-
-    Saving figures requires an `optional installation <optional-saving>`_.
-
-
 The wrappers provide an interface for saving to images that is similar to Matplotlib:
 
 .. jupyter-execute::
