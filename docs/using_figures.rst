@@ -24,7 +24,8 @@ second renders in this documentation:
 
 .. jupyter-execute::
 
-    from kaleidoscope.qiskit.overload import QuantumCircuit
+    from qiskit import QuantumCircuit
+    import kaleidoscope.qiskit
     from kaleidoscope.interactive import bloch_disc
     
     qc = QuantumCircuit(1)

@@ -26,11 +26,4 @@ if not HAS_QISKIT:
 
 from .backends.mpl import *
 from .backends.interactive import system_error_map
-
-if get_ipython():
-    @register_line_magic
-    def kaleidoscope_qiskit(_):
-        """Imports the Kaleidoscope Qiskit addons
-        """
-        # pylint: disable=unused-import
-        import kaleidoscope.qiskit.overload
+import kaleidoscope.qiskit.overload

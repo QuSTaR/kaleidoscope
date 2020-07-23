@@ -29,8 +29,3 @@ except ImportError:
     HAS_QISKIT = False
 else:
     HAS_QISKIT = True
-
-
-def load_ipython_extension(ip):
-    """Load the extension in IPython."""
-    import kaleidoscope.qiskit.overload

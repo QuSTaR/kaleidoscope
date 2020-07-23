@@ -96,9 +96,9 @@ def counts_distribution(data, figsize=(None, None), colors=None,
         .. jupyter-execute::
 
             from qiskit import *
+            import kaleidoscope.qiskit
             from kaleidoscope.qiskit.providers import Simulators
             from kaleidoscope.interactive import counts_distribution
-            %load_ext kaleidoscope
 
             sim = Simulators.aer_vigo_simulator
 

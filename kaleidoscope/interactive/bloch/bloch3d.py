@@ -169,8 +169,7 @@ def bloch_sphere(vectors=None,
             vectors = bloch_components(vectors.data)
 
         elif not isinstance(vectors[0], (list, np.ndarray)):
-            if vectors.__class__.__name__ not in ['Statevector'] \
-                    and 'qiskit' in vectors.__class__.__module__:
+            if vectors[0].__class__.__name__ not in ['Statevector']:
                 vectors = [[vectors[0], vectors[1], vectors[2]]]
 
         new_vecs = []
