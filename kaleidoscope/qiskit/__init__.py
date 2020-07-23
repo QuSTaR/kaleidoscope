@@ -24,6 +24,6 @@ from kaleidoscope.errors import KaleidoscopeError
 if not HAS_QISKIT:
     raise KaleidoscopeError('Must install qiskit-terra, qiskit-aer, and qiskit-ibmq-provider.')
 
+import kaleidoscope.qiskit.overload
 from .backends.mpl import *
 from .backends.interactive import system_error_map
-import kaleidoscope.qiskit.overload
