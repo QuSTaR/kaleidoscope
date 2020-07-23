@@ -5,6 +5,8 @@ Bloch sphere
 .. jupyter-execute::
 
    import numpy as np
+   from qiskit import QuantumCircuit
+   import kaleidoscope.qiskit
    from kaleidoscope import bloch_sphere
 
 Vectors on the Bloch sphere
@@ -27,6 +29,18 @@ Single vector with custom color and alpha
                 as_widget=True)
 
 
+Single vector from a Qiskit statevector
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. jupyter-execute::
+
+   qc = QuantumCircuit(1)
+   qc.h(0)
+   qc.t(0)
+
+   bloch_sphere(qc.statevector(), as_widget=True)
+
+
 Multiple vectors
 ~~~~~~~~~~~~~~~~
 .. jupyter-execute::
@@ -37,6 +51,22 @@ Multiple vectors
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
    bloch_sphere([vec1, vec2, vec3, vec4], as_widget=True)
+
+
+Multiple vectors from Qiskit statevectors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. jupyter-execute::
+
+   qc = QuantumCircuit(1)
+   qc.h(0)
+   qc.t(0)
+
+   qc2 = QuantumCircuit(1)
+   qc2.ry(np.pi/4, 0)
+   qc2.s(0)
+
+   bloch_sphere([qc.statevector(), qc2.statevector()], as_widget=True)
 
 
 Multiple vectors with custom colors and alpha
