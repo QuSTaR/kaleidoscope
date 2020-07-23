@@ -25,6 +25,10 @@ Or if your adventurous you can install from `source code on Github <https://gith
 Optional dependencies
 ---------------------
 
+
+Qiskit functionality
+~~~~~~~~~~~~~~~~~~~~
+
 Although not necessary for many of the interactive visualizations, functionality that makes use
 of Qiskit and the IBM Quantum devices requires the following installations:
 
