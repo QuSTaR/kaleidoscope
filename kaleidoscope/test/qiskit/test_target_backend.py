@@ -16,7 +16,7 @@
 """Tests for Bloch routines"""
 
 from qiskit import IBMQ, QuantumCircuit
-import kaleidoscope.qiskit.overload
+import kaleidoscope.qiskit
 
 PROVIDER = IBMQ.load_account()
 backend = PROVIDER.backends.ibmq_vigo
