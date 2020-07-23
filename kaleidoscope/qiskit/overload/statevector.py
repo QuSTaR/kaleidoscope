@@ -12,7 +12,17 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Overlaoding of various Qiskit functionality"""
+"""Overloading of the Statevector class in Qiskit"""
 
-import kaleidoscope.qiskit.overload.circuit
-import kaleidoscope.qiskit.overload.statevector
+from qiskit.quantum_info.states.statevector import Statevector
+from kaleidoscope.interactive.bloch.utils import bloch_components as bcomp
+
+
+def bloch_components(self):
+    """Returns the Bloch components of the statevector.
+    """
+    return bcomp(self.data)
+
+
+# Add methods to Statevector class
+Statevector.bloch_components = bloch_components

@@ -18,6 +18,13 @@ however it is not an official or unofficial IBM product.
 
 .. toctree::
   :maxdepth: 1
+  :caption: Getting started
+  :hidden:
+
+  using_figures
+
+.. toctree::
+  :maxdepth: 1
   :caption: Tutorials
   :hidden:
 
@@ -26,7 +33,7 @@ however it is not an official or unofficial IBM product.
 
 .. toctree::
   :maxdepth: 1
-  :caption: API
+  :caption: API and Guide
   :hidden:
 
   Interactive figures<apidocs/interactive>

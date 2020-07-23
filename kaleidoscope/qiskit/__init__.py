@@ -11,15 +11,19 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=wrong-import-position
 
 """Qiskit specific functionality"""
 
+import sys
+from IPython import get_ipython
+from IPython.core.magic import line_magic, register_line_magic
+from kaleidoscope import HAS_QISKIT
 from kaleidoscope.errors import KaleidoscopeError
 
-try:
-    from qiskit import QuantumCircuit, Aer, IBMQ
-except ImportError:
+if not HAS_QISKIT:
     raise KaleidoscopeError('Must install qiskit-terra, qiskit-aer, and qiskit-ibmq-provider.')
 
+import kaleidoscope.qiskit.overload
 from .backends.mpl import *
 from .backends.interactive import system_error_map

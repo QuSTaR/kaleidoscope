@@ -21,6 +21,8 @@ from kaleidoscope.colors.utils import hex_to_rgb
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
 from kaleidoscope.interactive.bloch.primitives import (BSPHERE, LATS, LONGS, ZAXIS, YAXIS, XAXIS,
                                                        Z0LABEL, Z1LABEL, YLABEL, XLABEL)
+from kaleidoscope.interactive.bloch.utils import bloch_components
+from kaleidoscope.errors import KaleidoscopeError
 
 
 def bloch_sphere(vectors=None,
@@ -56,6 +58,7 @@ def bloch_sphere(vectors=None,
 
     Raises:
         ValueError: Input lengths do not match.
+        KaleidoscopeError: Invalid vector input.
 
     Example:
         .. jupyter-execute::
@@ -161,29 +164,48 @@ def bloch_sphere(vectors=None,
 
     if vectors is not None:
 
+        if vectors.__class__.__name__ in ['Statevector'] \
+                and 'qiskit' in vectors.__class__.__module__:
+            vectors = bloch_components(vectors.data)
+
+        elif not isinstance(vectors[0], (list, np.ndarray)):
+            if vectors[0].__class__.__name__ not in ['Statevector']:
+                vectors = [[vectors[0], vectors[1], vectors[2]]]
+
+        new_vecs = []
+        for vec in vectors:
+            if vec.__class__.__name__ in ['Statevector'] and 'qiskit' in vec.__class__.__module__:
+                # pylint: disable=no-member
+                new_vecs.append(bloch_components(vec.data)[0])
+            else:
+                nst_lvl = nest_level(vec)
+                if nst_lvl == 1:
+                    new_vecs.append(vec)
+                elif nst_lvl == 2:
+                    new_vecs.append(vec[0])
+                else:
+                    raise KaleidoscopeError("Invalid vector input.")
+
         if vectors_color is None:
-            vectors_color = [DARK2[kk+idx % 8] for kk in range(len(vectors))]
+            vectors_color = [DARK2[kk+idx % 8] for kk in range(len(new_vecs))]
 
         if isinstance(vectors_color, str):
             vectors_color = [vectors_color]
 
         if vectors_alpha is None:
-            vectors_alpha = [1.0]*len(vectors)
+            vectors_alpha = [1.0]*len(new_vecs)
 
         if isinstance(vectors_alpha, (int, float)):
             vectors_alpha = [vectors_alpha]
 
         if vectors_annotation is True:
-            vectors_annotation = [True]*len(vectors)
+            vectors_annotation = [True]*len(new_vecs)
         elif not vectors_annotation:
-            vectors_annotation = [False]*len(vectors)
+            vectors_annotation = [False]*len(new_vecs)
 
         eps = 1e-12
 
-        if not isinstance(vectors[0], (list, np.ndarray)):
-            vectors = [[vectors[0], vectors[1], vectors[2]]]
-
-        for idx, vec in enumerate(vectors):
+        for idx, vec in enumerate(new_vecs):
             vec = np.asarray(vec)
             if np.linalg.norm(vec) > 1.0 + eps:
                 raise ValueError('Vector norm must be <= 1.')

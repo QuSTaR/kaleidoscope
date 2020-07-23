@@ -7,7 +7,7 @@
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
 # of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
-# pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-position, unused-argument, unused-import
 
 """Kaleidoscope"""
 
@@ -22,3 +22,10 @@ except ImportError:
     __version__ = '0.0.0'
 
 from kaleidoscope.interactive import *
+
+try:
+    from qiskit import QuantumCircuit, Aer, IBMQ
+except ImportError:
+    HAS_QISKIT = False
+else:
+    HAS_QISKIT = True
