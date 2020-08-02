@@ -16,7 +16,7 @@ Error map from backend instance
 
    pro = IBMQ.get_provider(group='open')
    backend = pro.backends.ibmq_vigo
-   system_error_map(backend, as_widget=True)
+   system_error_map(backend)
 
 
 Error map from backend properties
@@ -27,4 +27,4 @@ Error map from backend properties
    import datetime
    # Grab ibmq_vigo properties on Jan. 1, 2020.
    old_props = backend.properties(datetime=datetime.datetime(2020, 1, 1))
-   system_error_map(old_props, as_widget=True)
+   system_error_map(old_props)

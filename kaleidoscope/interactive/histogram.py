@@ -109,7 +109,7 @@ def counts_distribution(data, figsize=(None, None), colors=None,
             qc.measure(range(3), range(3))
 
             counts = qc.transpile().sample().result_when_done()
-            counts_distribution(counts, as_widget=True)
+            counts_distribution(counts)
     """
 
     if sort not in VALID_SORTS:

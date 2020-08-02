@@ -115,7 +115,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
             qc.rz(np.pi*np.random.random(), 0)
 
             state = Statevector.from_instruction(qc)
-            bloch_disc(state, as_widget=True)
+            bloch_disc(state)
 
     """
     # A hack so I do not have to import the actual instances from Qiskit.
@@ -225,7 +225,7 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
                 qc.rz(2*np.pi*np.random.random(), kk)
 
             state = Statevector.from_instruction(qc)
-            bloch_multi_disc(state, as_widget=True)
+            bloch_multi_disc(state)
     """
     # A hack so I do not have to import the actual instances from Qiskit.
     if rho.__class__.__name__ in ['Statevector', 'DensityMatrix'] \

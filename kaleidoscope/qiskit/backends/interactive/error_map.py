@@ -81,7 +81,7 @@ def system_error_map(backend,
 
             pro = IBMQ.load_account()
             backend = pro.backends.ibmq_vigo
-            system_error_map(backend, as_widget=True)
+            system_error_map(backend)
 
     """
     if not isinstance(backend, (IBMQBackend, DeviceSimulator,
