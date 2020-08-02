@@ -11,25 +11,12 @@ however it is not an official or unofficial IBM product.
 
 
 .. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  install
-
-.. toctree::
   :maxdepth: 1
-  :caption: Getting started
   :hidden:
 
-  using_figures
-
-.. toctree::
-  :maxdepth: 1
-  :caption: Tutorials
-  :hidden:
-
-  Interactive figures<tutorials/interactive/index.rst>
-  Backend figures<tutorials/backends/index.rst>
+  Installation <install.rst>
+  Getting started <using_figures.rst>
+  Tutorials <tutorials/index.rst>
 
 .. toctree::
   :maxdepth: 1

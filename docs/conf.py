@@ -69,7 +69,7 @@ extensions = [
 ]
 html_static_path = ['_static']
 templates_path = ['_templates']
-html_css_files = ['theme.css', 'style.css', 'custom.css', 'gallery.css']
+html_css_files = ['gallery.css']
 
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
@@ -126,18 +126,8 @@ modindex_common_prefix = ['kaleidoscope.']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'  # use the theme in subdir 'theme'
+html_theme = "pydata_sphinx_theme"
 
-html_logo = 'images/logo.png'
+html_logo = 'images/kal_logo.png'
 #html_sidebars = {'**': ['globaltoc.html']}
 html_last_updated_fmt = '%Y/%m/%d'
-
-html_theme_options = {
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': True,
-    'style_nav_header_background': '#e3e5e4',
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-}
