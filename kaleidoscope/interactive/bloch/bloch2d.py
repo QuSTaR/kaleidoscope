@@ -67,8 +67,8 @@ def bloch_sunburst(vec):
     wedge_str = "\u2329X\u232A= {x}<br>"
     wedge_str += "\u2329Y\u232A= {y}<br>"
     wedge_str += "\u2329Z\u232A= {z}<br>"
-    wedge_str += "  \u03B8 = {th}<br>"
-    wedge_str += "tr(\u03C1<sup>2</sup>)={pur}"
+    wedge_str += " \u03B8  = {th}<br>"
+    wedge_str += "|\u03C8| = {pur}"
 
     th_str = pi_check(th, ndigits=3)
     th_str = th_str.replace('pi', '\u03C0')
@@ -77,7 +77,7 @@ def bloch_sunburst(vec):
                                    y=round(vec[1], 3),
                                    z=round(vec[2], 3),
                                    th=th_str,
-                                   pur=np.round(0.5*(1+vec_norm), 3))] + [None]
+                                   pur=np.round(vec_norm, 3))] + [None]
 
     bloch = go.Sunburst(labels=[" ", "  "],
                         parents=["", " "],
@@ -88,14 +88,14 @@ def bloch_sunburst(vec):
     return bloch
 
 
-def bloch_disc(rho, figsize=None, title=False, as_widget=False):
+def bloch_disc(rho, figsize=None, title=None, as_widget=False):
     """Plot a Bloch disc for a single qubit.
 
     Parameters:
         rho (list or ndarray or Statevector or DensityMatrix): Input statevector, density matrix,
                                                                or Bloch components.
         figsize (tuple): Figure size in pixels, default=(200,275).
-        title (bool): Display title.
+        title (str): Plot title.
         as_widget (bool): Return plot as a widget.
 
     Returns:
@@ -115,7 +115,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
             qc.rz(np.pi*np.random.random(), 0)
 
             state = Statevector.from_instruction(qc)
-            bloch_disc(state, as_widget=True)
+            bloch_disc(state)
 
     """
     # A hack so I do not have to import the actual instances from Qiskit.
@@ -129,7 +129,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
         comp = [rho]
 
     if title:
-        title = ["Qubit 0"] + ["\u2329Z\u232A"]
+        title = [title] + ["\u2329Z\u232A"]
     else:
         title = [""] + ["\u2329Z\u232A"]
 
@@ -179,7 +179,7 @@ def bloch_disc(rho, figsize=None, title=False, as_widget=False):
     fig.update_layout(margin=dict(t=30, l=10, r=0, b=0),
                       height=figsize[0],
                       width=figsize[1],
-                      hoverlabel=dict(font_size=14,
+                      hoverlabel=dict(font_size=16,
                                       font_family="courier,monospace",
                                       align='left'
                                       )
@@ -225,7 +225,7 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
                 qc.rz(2*np.pi*np.random.random(), kk)
 
             state = Statevector.from_instruction(qc)
-            bloch_multi_disc(state, as_widget=True)
+            bloch_multi_disc(state)
     """
     # A hack so I do not have to import the actual instances from Qiskit.
     if rho.__class__.__name__ in ['Statevector', 'DensityMatrix'] \
@@ -279,7 +279,7 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
                       )
     # Makes the subplot titles smaller than the 16pt default
     for ann in fig['layout']['annotations']:
-        ann['font'] = dict(size=14)
+        ann['font'] = dict(size=16)
 
     if as_widget:
         return PlotlyWidget(fig)

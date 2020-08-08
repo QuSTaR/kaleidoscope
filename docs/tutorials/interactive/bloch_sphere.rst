@@ -17,7 +17,7 @@ Single vector
 .. jupyter-execute::
 
    vec = [0, 1/np.sqrt(2) , 1/np.sqrt(2)]
-   bloch_sphere(vec, as_widget=True)
+   bloch_sphere(vec)
 
 
 Single vector with custom color and alpha
@@ -25,8 +25,7 @@ Single vector with custom color and alpha
 .. jupyter-execute::
 
    vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(vec, vectors_color='#ff0000', vectors_alpha=0.25,
-                as_widget=True)
+   bloch_sphere(vec, vectors_color='#ff0000', vectors_alpha=0.25)
 
 
 Single vector from a Qiskit statevector
@@ -38,7 +37,7 @@ Single vector from a Qiskit statevector
    qc.h(0)
    qc.t(0)
 
-   bloch_sphere(qc.statevector(), as_widget=True)
+   bloch_sphere(qc.statevector())
 
 
 Multiple vectors
@@ -50,7 +49,7 @@ Multiple vectors
    vec3 = [1/np.sqrt(2), 1/np.sqrt(2), 0]
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
-   bloch_sphere([vec1, vec2, vec3, vec4], as_widget=True)
+   bloch_sphere([vec1, vec2, vec3, vec4])
 
 
 Multiple vectors from Qiskit statevectors
@@ -66,7 +65,7 @@ Multiple vectors from Qiskit statevectors
    qc2.ry(np.pi/4, 0)
    qc2.s(0)
 
-   bloch_sphere([qc.statevector(), qc2.statevector()], as_widget=True)
+   bloch_sphere([qc.statevector(), qc2.statevector()])
 
 
 Multiple vectors with custom colors and alpha
@@ -80,8 +79,7 @@ Multiple vectors with custom colors and alpha
 
    bloch_sphere([vec1, vec2, vec3, vec4],
                 vectors_color=['#e34234', '#6f4e37', '#00008b', '#ff1493'],
-                vectors_alpha=[1.0,0.35, 0.1, 0.95],
-                as_widget=True)
+                vectors_alpha=[1.0,0.35, 0.1, 0.95])
 
 
 Multiple vectors with annotations
@@ -93,8 +91,7 @@ Multiple vectors with annotations
    vec3 = [1/np.sqrt(2), 1/np.sqrt(2), 0]
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
-   bloch_sphere([vec1, vec2, vec3, vec4], vectors_annotation=True,
-                as_widget=True)
+   bloch_sphere([vec1, vec2, vec3, vec4], vectors_annotation=True)
 
 
 Multiple vectors with annotations specified by list
@@ -107,8 +104,7 @@ Multiple vectors with annotations specified by list
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
    bloch_sphere([vec1, vec2, vec3, vec4],
-                vectors_annotation=[False, True, False, True],
-                as_widget=True)
+                vectors_annotation=[False, True, False, True])
 
 
 Points on the Bloch sphere
@@ -119,7 +115,7 @@ Single point
 .. jupyter-execute::
 
    vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(points=vec, as_widget=True)
+   bloch_sphere(points=vec)
 
 
 Single point with custom color
@@ -127,8 +123,7 @@ Single point with custom color
 .. jupyter-execute::
 
    vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
-   bloch_sphere(points=vec, points_color='#ff0000',
-                as_widget=True)
+   bloch_sphere(points=vec, points_color='#ff0000')
 
 
 Multiple points
@@ -140,7 +135,7 @@ Multiple points
    vec3 = [1/np.sqrt(2), 1/np.sqrt(2), 0]
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
-   bloch_sphere(points=[vec1, vec2, vec3, vec4], as_widget=True)
+   bloch_sphere(points=[vec1, vec2, vec3, vec4])
 
 
 Multiple points with colors
@@ -153,8 +148,7 @@ Multiple points with colors
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
    bloch_sphere(points=[vec1, vec2, vec3, vec4],
-               points_color=['#e34234', '#6f4e37', '#00008b', '#8014ff'],
-               as_widget=True)
+               points_color=['#e34234', '#6f4e37', '#00008b', '#8014ff'])
 
 
 Multiple points and colors as nested list
@@ -167,8 +161,7 @@ Multiple points and colors as nested list
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
    bloch_sphere(points=[[vec1, vec2, vec3, vec4]],
-               points_color=[['#e34234', '#6f4e37', '#00008b', '#8014ff']],
-               as_widget=True)
+               points_color=[['#e34234', '#6f4e37', '#00008b', '#8014ff']])
 
 
 Multiple points as two groups
@@ -180,7 +173,7 @@ Multiple points as two groups
    vec3 = [1/np.sqrt(2), 1/np.sqrt(2), 0]
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
-   bloch_sphere(points=[[vec1, vec2], [vec3, vec4]], as_widget=True)
+   bloch_sphere(points=[[vec1, vec2], [vec3, vec4]])
 
 
 Multiple points in two groups colors by group
@@ -193,8 +186,7 @@ Multiple points in two groups colors by group
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
    bloch_sphere(points=[[vec1, vec2], [vec3, vec4]],
-               points_color=['#e34234', '#8014ff'],
-               as_widget=True)
+               points_color=['#e34234', '#8014ff'])
 
 
 Multiple points in two groups with point by point colors
@@ -207,8 +199,7 @@ Multiple points in two groups with point by point colors
    vec4 = [0, 1/np.sqrt(2), 1/np.sqrt(2)]
 
    bloch_sphere(points=[[vec1, vec2], [vec3, vec4]],
-               points_color=[['#e34234', '#ff8014'], ['#8014ff', '#93ff14']],
-               as_widget=True)
+               points_color=[['#e34234', '#ff8014'], ['#8014ff', '#93ff14']])
 
 
 Multiple points as single group with colors and alpha
@@ -222,7 +213,7 @@ Multiple points as single group with colors and alpha
 
    bloch_sphere(points=[vec1, vec2, vec3, vec4],
                points_color=['#e34234', '#6f4e37', '#00008b', '#8014ff'],
-               points_alpha=[1.0, 0.5, 1.0, 0.6], as_widget=True)
+               points_alpha=[1.0, 0.5, 1.0, 0.6])
 
 
 Pulling it all together
@@ -244,5 +235,4 @@ Pulling it all together
                vectors=[[0,0,1], [1/np.sqrt(2),1/np.sqrt(2),0]],
                vectors_color=vectors_color,
                points_alpha=points_alpha,
-               points_color=points_color,
-               as_widget=True)
+               points_color=points_color)

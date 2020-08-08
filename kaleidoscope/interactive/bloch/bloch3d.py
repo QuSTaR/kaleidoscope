@@ -84,8 +84,7 @@ def bloch_sphere(vectors=None,
                          vectors=[[0, 0, 1], [1/np.sqrt(2), 1/np.sqrt(2), 0]],
                          vectors_color=vectors_color,
                          points_alpha=points_alpha,
-                         points_color=points_color,
-                         as_widget=True)
+                         points_color=points_color)
     """
 
     # Output figure instance

@@ -25,8 +25,19 @@ Interactive Plots (:mod:`kaleidoscope.interactive`)
    bloch_sphere
    bloch_disc
    bloch_multi_disc
+
+
+Plotly wrappers
+===============
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   PlotlyFigure
+   PlotlyWidget
 """
 
 from .histogram import counts_distribution
 from .bloch.bloch2d import bloch_disc, bloch_multi_disc
 from .bloch.bloch3d import bloch_sphere
+from .plotly_wrapper import PlotlyFigure, PlotlyWidget

@@ -132,3 +132,5 @@ dmypy.json
 /docs/stubs/
 kaleidoscope/version.py
 /doc/*.png
+docs/bloch_disc.html
+docs/bloch_disc.png

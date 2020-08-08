@@ -15,9 +15,6 @@
 
 """Qiskit specific functionality"""
 
-import sys
-from IPython import get_ipython
-from IPython.core.magic import line_magic, register_line_magic
 from kaleidoscope import HAS_QISKIT
 from kaleidoscope.errors import KaleidoscopeError
 

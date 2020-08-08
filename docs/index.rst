@@ -14,30 +14,10 @@ however it is not an official or unofficial IBM product.
   :maxdepth: 2
   :hidden:
 
-  install
-
-.. toctree::
-  :maxdepth: 1
-  :caption: Getting started
-  :hidden:
-
-  using_figures
-
-.. toctree::
-  :maxdepth: 1
-  :caption: Tutorials
-  :hidden:
-
-  Interactive figures<tutorials/interactive/index.rst>
-  Backend figures<tutorials/backends/index.rst>
-
-.. toctree::
-  :maxdepth: 1
-  :caption: API and Guide
-  :hidden:
-
-  Interactive figures<apidocs/interactive>
-  Qiskit functionality<apidocs/backends>
+  Installation <install.rst>
+  Getting started <using_figures.rst>
+  Tutorials <tutorials/index.rst>
+  API and Guide <api.rst>
 
 .. Hiding - Indices and tables
    :ref:`genindex`

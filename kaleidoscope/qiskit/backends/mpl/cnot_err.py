@@ -141,7 +141,7 @@ def cnot_error_density(backends,
             text_xval = 0.6*xlim[1]
     for idx, back in enumerate(backends):
         cx_density = gaussian_kde(cx_errors[idx])
-        xs = np.linspace(xlim[0], xlim[1], 5000)
+        xs = np.linspace(xlim[0], xlim[1], 2500)
         cx_density.covariance_factor = lambda: covariance_factor
         cx_density._compute_covariance()
 
