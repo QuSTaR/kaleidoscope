@@ -22,10 +22,6 @@ Installation is simple:
 Or if your adventurous you can install from `source code on Github <https://github.com/nonhermitian/kaleidoscope>`_.
 
 
-Optional dependencies
----------------------
-
-
 Qiskit functionality
 ~~~~~~~~~~~~~~~~~~~~
 

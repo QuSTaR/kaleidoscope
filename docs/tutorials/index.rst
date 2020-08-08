@@ -19,6 +19,32 @@ Interactive figures
     </div>
   </div>
 
+  <div class="sphx-glr-thumbcontainer">
+    <div class="figure align-center">
+      <img alt="thumbnail" src="../../../_static/thumbs/bloch_disc.png" />
+      <p class="caption">
+        <span class="caption-text">
+          <a class="reference internal" href="interactive/bloch_disc.html">
+            <span class="std std-ref">Bloch disc</span>
+          </a>
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="sphx-glr-thumbcontainer">
+    <div class="figure align-center">
+      <img alt="thumbnail" src="../../../_static/thumbs/multi_disc.png" />
+      <p class="caption">
+        <span class="caption-text">
+          <a class="reference internal" href="interactive/bloch_multi_disc.html">
+            <span class="std std-ref">Bloch multi-disc</span>
+          </a>
+        </span>
+      </p>
+    </div>
+  </div>
+
 .. toctree::
   :maxdepth: 2
   :hidden:
