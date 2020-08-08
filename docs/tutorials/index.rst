@@ -50,6 +50,8 @@ Interactive figures
   :hidden:
 
   Bloch sphere <interactive/bloch_sphere>
+  Bloch disc <interactive/bloch_disc>
+  Bloch multi-disc <interactive/bloch_multi_disc>
   
   
 IBM Quantum Backend figures

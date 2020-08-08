@@ -5,6 +5,6 @@ pytest
 pylint
 pycodestyle
 Sphinx>=3.0
-sphinx-rtd-theme>=0.4.0
+pydata_sphinx_theme
 jupyter-sphinx
 nbsphinx
