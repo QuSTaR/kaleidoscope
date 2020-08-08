@@ -17,39 +17,26 @@ after converting the notebook to a different format, e.g. Sphinx documentation, 
 automatically instantiate when a notebook is reloaded.  To do this, each interactive
 figure has a `as_widget` keyword argument that returns a :class:`PlotlyWidget` that
 can be rendered inside of documentation or persist when a notebook is saved and reloaded.
+To embed the widget inside a notebook so that it reloads in the future, from the
+notebook menu do: ``Widgets -> Save Notebook Widget State``.
 
-For example, the following two figures both work in a Jupyter notebook, but only the
-second renders in this documentation:
 
+Saving figures
+==============
+
+The wrappers provide an interface for saving to images that is similar to Matplotlib:
 
 .. jupyter-execute::
 
     from qiskit import QuantumCircuit
     import kaleidoscope.qiskit
     from kaleidoscope.interactive import bloch_disc
-    
+
     qc = QuantumCircuit(1)
     qc.h(0)
     qc.tdg(0)
 
     state = qc.statevector()
-    bloch_disc(state)
-
-
-.. jupyter-execute::
-
-    bloch_disc(state, as_widget=True)
-
-To embed the widget inside a notebook so that it reloads in the future, from the
-notebook menu do:``Widgets -> Save Notebook Widget State``.
-
-
-Saving figures and widgets
-===========================
-
-The wrappers provide an interface for saving to images that is similar to Matplotlib:
-
-.. jupyter-execute::
 
     fig = bloch_disc(state)
     fig.savefig('bloch_disc.png')
@@ -66,6 +53,11 @@ resolution.
 
 Exporting as other formats
 ==========================
-Because :class:`PlotlyFigure` and :class:`PlotlyWidget` are simple wrappers over their
-Plotly counterparts, all of the original functionality still exists.  For example,
-to export a figure as HTML.
+Because :class:`PlotlyFigure` and :class:`PlotlyWidget` are wrappers over their
+Plotly counterparts, all of the original functionality still exists.  The
+wrappers have the original figure instance as the attribute `PlotlyFigure._fig`,
+which can be used to do things like write an image to HTML:
+
+.. jupyter-execute::
+
+    fig._fig.write_html('bloch_disc.html')

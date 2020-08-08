@@ -26,8 +26,8 @@ Interactive figures
   Bloch sphere <interactive/bloch_sphere>
   
   
-Backend figures
----------------
+IBM Quantum Backend figures
+---------------------------
   
 .. raw:: html
   
