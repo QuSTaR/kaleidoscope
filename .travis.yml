@@ -47,17 +47,6 @@ _stage_linux_38: &stage_linux_38_lint_style
   script:
     - pylint -rn kaleidoscope
     - pycodestyle --max-line-length=100 kaleidoscope
-  install:
-    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-    - bash miniconda.sh -b -p $HOME/miniconda
-    - export PATH="$HOME/miniconda/bin:$PATH"
-    - hash -r
-    - conda config --set always_yes yes --set changeps1 no
-    - conda info -a
-    - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
-    - source activate test-environment
-    - pip install -U -r requirements.txt
-    - pip install -U -r requirements-dev.txt
 
 _stage_linux_38: &stage_linux_38_no_qiskit
   <<: *stage_generic_linux
@@ -65,18 +54,16 @@ _stage_linux_38: &stage_linux_38_no_qiskit
   python: 3.8
   script:
     - pytest -p no:warnings --pyargs kaleidoscope/test/no_qiskit
-  install:
-    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-    - bash miniconda.sh -b -p $HOME/miniconda
-    - export PATH="$HOME/miniconda/bin:$PATH"
-    - hash -r
-    - conda config --set always_yes yes --set changeps1 no
-    - conda info -a
-    - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
-    - source activate test-environment
-    - pip install -U -r requirements.txt
-    - pip install -U pytest
-    - python setup.py install
+
+
+_stage_linux_38: &stage_linux_38_docs
+  <<: *stage_generic_linux
+  name: "Python 3.8 DOCS"
+  python: 3.8
+  before_script:
+    - cd docs
+  script:
+    - sphinx-build . _build -j auto
 
 _stage_osx_38: &stage_osx_38
   os: osx
@@ -106,6 +93,7 @@ _stage_osx_38: &stage_osx_38
 stages:
   - lint
   - test
+  - docs
 
 jobs:
   include:
@@ -117,3 +105,5 @@ jobs:
       <<: *stage_linux_38
     - stage: test
       <<: *stage_osx_38
+    - stage: docs
+      <<: *stage_linux_38_docs
