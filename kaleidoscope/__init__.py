@@ -24,7 +24,9 @@ except ImportError:
 from kaleidoscope.interactive import *
 
 try:
-    from qiskit import QuantumCircuit, Aer, IBMQ
+    from qiskit import QuantumCircuit
+    from qiskit.providers.aer import Aer
+    from qiskit.providers.ibmq import IBMQ
 except ImportError:
     HAS_QISKIT = False
 else:

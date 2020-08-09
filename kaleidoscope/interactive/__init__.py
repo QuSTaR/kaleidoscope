@@ -25,6 +25,7 @@ Interactive Plots (:mod:`kaleidoscope.interactive`)
    bloch_sphere
    bloch_disc
    bloch_multi_disc
+   qsphere
 
 
 Plotly wrappers
@@ -40,4 +41,5 @@ Plotly wrappers
 from .histogram import counts_distribution
 from .bloch.bloch2d import bloch_disc, bloch_multi_disc
 from .bloch.bloch3d import bloch_sphere
+from .qsphere import qsphere
 from .plotly_wrapper import PlotlyFigure, PlotlyWidget
