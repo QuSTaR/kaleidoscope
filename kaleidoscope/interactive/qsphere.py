@@ -25,7 +25,6 @@ from .plotly_wrapper import PlotlyWidget, PlotlyFigure
 from .bloch.primitives import BSPHERE
 
 
-
 def qsphere(state, state_labels=True, as_widget=False):
     """Plots a statevector of qubits using the qsphere
     representation.
@@ -104,20 +103,22 @@ def qsphere(state, state_labels=True, as_widget=False):
             zvals.append(zvalue)
 
             phase = np.arctan2(state[idx].imag, state[idx].real)
-            phase = phase if phase >=0 else phase+2*np.pi
+            phase = phase if phase >= 0 else phase+2*np.pi
             colors.append(mpl.colors.rgb2hex(cmap(norm(phase))))
             marker_sizes.append(np.sqrt(prob) * 40)
 
-
     # Output figure instance
-    fig = make_subplots(
-        rows=5, cols=5,
-        specs=[[{"type": "scene", "rowspan": 5, "colspan": 5}, None, None, None, None],
-               [None, None, None, None, None],
-               [None, None, None, None, None],
-               [None, None, None, None, None],
-               [None, None, None, None, {"rowspan": 1, "colspan": 1, "type": "domain"}]
-              ])
+    fig = make_subplots(rows=5, cols=5,
+                        specs=[[{"type": "scene", "rowspan": 5, "colspan": 5},
+                                None, None, None, None],
+                               [None, None, None, None, None],
+                               [None, None, None, None, None],
+                               [None, None, None, None, None],
+                               [None, None, None, None,
+                                {"rowspan": 1, "colspan": 1, "type": "domain"}
+                                ]
+                               ]
+                        )
 
     figsize = (350, 350)
 
@@ -129,7 +130,6 @@ def qsphere(state, state_labels=True, as_widget=False):
     # latitudes
     for kk in _qsphere_latitudes(zvals):
         fig.add_trace(kk, row=1, col=1)
-
 
     fig.add_trace(go.Scatter3d(x=[0], y=[0], z=[0],
                                mode='markers',
@@ -145,8 +145,9 @@ def qsphere(state, state_labels=True, as_widget=False):
                                    hoverinfo=None,
                                    opacity=0.5,
                                    line=dict(color=colors[kk], width=3)
-                                  ),
-                      row=1, col=1)
+                                   ),
+                      row=1, col=1
+                      )
 
         if state_labels:
             xanc = 'center'
@@ -155,7 +156,6 @@ def qsphere(state, state_labels=True, as_widget=False):
                     xanc = 'right'
                 else:
                     pass
-                    #xanc = 'left'
 
             yanc = 'middle'
             if zvals[kk] != 0:
@@ -177,8 +177,8 @@ def qsphere(state, state_labels=True, as_widget=False):
                                         bgcolor="#ffffff",
                                         font=dict(size=10,
                                                   color="#000000",
-                                                 ),
-                                       )
+                                                  ),
+                                        )
                                    )
 
     fig.add_trace(go.Scatter3d(x=xvals, y=yvals, z=zvals,
@@ -186,7 +186,7 @@ def qsphere(state, state_labels=True, as_widget=False):
                                opacity=1,
                                marker=dict(size=marker_sizes,
                                            color=colors),
-                              ),
+                               ),
                   row=1, col=1)
 
     slices = 128
