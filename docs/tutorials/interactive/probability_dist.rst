@@ -76,7 +76,7 @@ Multiple distributions
    qc.measure(range(3), range(3))
 
    counts = qc.transpile().sample().result_when_done()
-   counts2 = qc.transpile(backend=Simulators.aer_rome_simulator).sample().result_when_done()
+   counts2 = qc.transpile(backend=Simulators.aer_valencia_simulator).sample().result_when_done()
 
    probability_distribution([counts, counts2], legend=['Vigo sim', 'Rome sim'])
 

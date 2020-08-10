@@ -42,7 +42,7 @@ Transpiling for different backend
 
 .. jupyter-execute::
 
-   new_sim = Simulators.aer_rome_simulator
+   new_sim = Simulators.aer_valencia_simulator
 
    new_qc = qc.transpile(backend=new_sim)
 
