@@ -133,10 +133,40 @@ IBM Quantum Backend figures
   </div>
 
 
+Qiskit Addons
+-------------
+
+.. raw:: html
+  
+  <div class="sphx-glr-thumbcontainer">
+    <div class="figure align-center">
+      <img alt="thumbnail" src="../../../_static/thumbs/qiskit.png" />
+      <p class="caption">
+        <span class="caption-text">
+          <a class="reference internal" href="backends/quantum_circuit.html">
+            <span class="std std-ref">QuantumCircuit</span>
+          </a>
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="sphx-glr-thumbcontainer">
+    <div class="figure align-center">
+      <img alt="thumbnail" src="../../../_static/thumbs/qiskit.png" />
+      <p class="caption">
+        <span class="caption-text">
+          <a class="reference internal" href="backends/statevector.html">
+            <span class="std std-ref">Statevector</span>
+          </a>
+        </span>
+      </p>
+    </div>
+  </div>
+
 .. toctree::
   :maxdepth: 2
   :hidden:
 
-  Error map <backends/error_map>
-  Gate map <backends/gate_map>
-  CNOT density <backends/cnot_density>
+  QuantumCircuit <qiskit/quantum_circuit>
+  Statevector <qiskit/statevector>

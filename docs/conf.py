@@ -68,7 +68,7 @@ extensions = [
     'jupyter_sphinx'
 ]
 html_static_path = ['_static']
-templates_path = ['_templates']
+#templates_path = ['_templates']
 html_css_files = ['gallery.css']
 
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
