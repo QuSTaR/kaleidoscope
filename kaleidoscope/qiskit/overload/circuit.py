@@ -24,6 +24,7 @@ from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.providers.basebackend import BaseBackend
 from qiskit.tools.monitor import job_monitor as aer_monitor
 from qiskit.providers.ibmq.job import job_monitor as ibmq_monitor
+from kaleidoscope.errors import KaleidoscopeError
 
 
 def rshift(self, target):
@@ -36,10 +37,13 @@ def rshift(self, target):
         QuantumCircuit: QuantumCircuit with attached target_backend.
 
     Raises:
-        TypeError: Input is not a valid backend instance.
+        KaleidoscopeError: Input is not a valid backend instance.
+        KaleidoscopeError: Number of qubits larger than target backend.
     """
     if not isinstance(target, BaseBackend):
-        raise TypeError('Target is not a valid backend instance.')
+        raise KaleidoscopeError('Target is not a valid backend instance.')
+    if self.num_qubits > target.configuration().num_qubits:
+        raise KaleidoscopeError('Number of qubits larger than target backend.')
     self.target_backend = target  # pylint: disable=attribute-defined-outside-init
     return self
 

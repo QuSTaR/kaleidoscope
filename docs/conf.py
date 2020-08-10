@@ -129,5 +129,17 @@ modindex_common_prefix = ['kaleidoscope.']
 html_theme = "pydata_sphinx_theme"
 
 html_logo = 'images/kal_logo.png'
+
+html_theme_options = {
+    "github_url": "https://github.com/nonhermitian/kaleidoscope",
+    "use_edit_page_button": True,
+}
+
+html_context = {
+    "github_user": "nonhermitian",
+    "github_repo": "kaleidoscope",
+    "github_version": "master",
+    "doc_path": "docs",
+}
 #html_sidebars = {'**': ['globaltoc.html']}
 html_last_updated_fmt = '%Y/%m/%d'

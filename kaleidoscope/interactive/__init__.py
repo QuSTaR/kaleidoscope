@@ -18,10 +18,19 @@ Interactive Plots (:mod:`kaleidoscope.interactive`)
 
 .. currentmodule:: kaleidoscope.interactive
 
+Distributions
+=============
 .. autosummary::
    :toctree: ../stubs/
 
-   counts_distribution
+   probability_distribution
+
+
+Statevectors
+============
+.. autosummary::
+   :toctree: ../stubs/
+
    bloch_sphere
    bloch_disc
    bloch_multi_disc
@@ -38,7 +47,7 @@ Plotly wrappers
    PlotlyWidget
 """
 
-from .histogram import counts_distribution
+from .histogram import probability_distribution
 from .bloch.bloch2d import bloch_disc, bloch_multi_disc
 from .bloch.bloch3d import bloch_sphere
 from .qsphere import qsphere

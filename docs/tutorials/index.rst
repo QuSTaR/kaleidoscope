@@ -2,9 +2,28 @@
 Tutorials
 =============
 
+.. important::
+
+  Viewing these pages on mobile platforms may be problematic due to their large sizes.
+
+
 Interactive figures
 -------------------
+
 .. raw:: html
+
+  <div class="sphx-glr-thumbcontainer">
+      <div class="figure align-center">
+        <img alt="thumbnail" src="../../../_static/thumbs/dist.png" />
+        <p class="caption">
+          <span class="caption-text">
+            <a class="reference internal" href="interactive/probability_dist.html">
+              <span class="std std-ref">Probability distribution</span>
+            </a>
+          </span>
+        </p>
+      </div>
+    </div>
   
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
@@ -45,13 +64,28 @@ Interactive figures
     </div>
   </div>
 
+  <div class="sphx-glr-thumbcontainer">
+    <div class="figure align-center">
+      <img alt="thumbnail" src="../../../_static/thumbs/qsphere.png" />
+      <p class="caption">
+        <span class="caption-text">
+          <a class="reference internal" href="interactive/qsphere.html">
+            <span class="std std-ref">Qsphere</span>
+          </a>
+        </span>
+      </p>
+    </div>
+  </div>
+
 .. toctree::
   :maxdepth: 2
   :hidden:
 
+  Probability distribution <interactive/probability_dist>
   Bloch sphere <interactive/bloch_sphere>
   Bloch disc <interactive/bloch_disc>
   Bloch multi-disc <interactive/bloch_multi_disc>
+  Qsphere <interactive/qsphere>
   
   
 IBM Quantum Backend figures

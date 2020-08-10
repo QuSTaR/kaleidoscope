@@ -2,8 +2,8 @@
 Installation
 =============
 
-Requirements
-------------
+Overview
+--------
 
 Kaleidoscope requires Python 3.6 or later and a Jupyter notebook environment.  Much of the
 functionality also requires having Qiskit a
@@ -21,9 +21,17 @@ Installation is simple:
 
 Or if your adventurous you can install from `source code on Github <https://github.com/nonhermitian/kaleidoscope>`_.
 
+Running in Jupyter Lab
+~~~~~~~~~~~~~~~~~~~~~~
+
+Running Kaleidoscope, and Plotly in general, in the Jupyter Lab environment requires
+some `additional extensions to be installed <https://plotly.com/python/getting-started/>`_.
+
+
+
 
 Qiskit functionality
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 Although not necessary for many of the interactive visualizations, functionality that makes use
 of Qiskit and the IBM Quantum devices requires the following installations:

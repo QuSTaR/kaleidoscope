@@ -1,6 +1,6 @@
-*************************
-Using interactive figures
-*************************
+*************
+General usage
+*************
 
 Interactive figures are the core of Kaleidoscope.  All interactive figures
 use `Plotly <https://plotly.com/python/>`_ as the rendering engine.  However,
