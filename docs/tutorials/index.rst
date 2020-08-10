@@ -16,7 +16,7 @@ Interactive figures
 
   <div class="sphx-glr-thumbcontainer">
       <div class="figure align-center">
-        <img alt="thumbnail" src="../../../_static/thumbs/dist.png" />
+        <img alt="thumbnail" src="../_static/thumbs/dist.png" />
         <p class="caption">
           <span class="caption-text">
             <a class="reference internal" href="interactive/probability_dist.html">
@@ -29,7 +29,7 @@ Interactive figures
   
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/bloch_sphere.png" />
+      <img alt="thumbnail" src="../_static/thumbs/bloch_sphere.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="interactive/bloch_sphere.html">
@@ -42,7 +42,7 @@ Interactive figures
 
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/bloch_disc.png" />
+      <img alt="thumbnail" src="../_static/thumbs/bloch_disc.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="interactive/bloch_disc.html">
@@ -55,7 +55,7 @@ Interactive figures
 
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/multi_disc.png" />
+      <img alt="thumbnail" src="../_static/thumbs/multi_disc.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="interactive/bloch_multi_disc.html">
@@ -68,7 +68,7 @@ Interactive figures
 
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/qsphere.png" />
+      <img alt="thumbnail" src="../_static/thumbs/qsphere.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="interactive/qsphere.html">
@@ -97,7 +97,7 @@ IBM Quantum Backend figures
   
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/error_map.png" />
+      <img alt="thumbnail" src="../_static/thumbs/error_map.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="backends/error_map.html">
@@ -110,7 +110,7 @@ IBM Quantum Backend figures
   
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/gate_map.png" />
+      <img alt="thumbnail" src="../_static/thumbs/gate_map.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="backends/gate_map.html">
@@ -123,7 +123,7 @@ IBM Quantum Backend figures
 
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/cnot_density.png" />
+      <img alt="thumbnail" src="../_static/thumbs/cnot_density.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="backends/cnot_density.html">
@@ -142,7 +142,7 @@ Qiskit Addons
   
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/qiskit.png" />
+      <img alt="thumbnail" src="../_static/thumbs/qiskit.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="qiskit/quantum_circuit.html">
@@ -155,7 +155,7 @@ Qiskit Addons
 
   <div class="sphx-glr-thumbcontainer">
     <div class="figure align-center">
-      <img alt="thumbnail" src="../../../_static/thumbs/qiskit.png" />
+      <img alt="thumbnail" src="../_static/thumbs/qiskit.png" />
       <p class="caption">
         <span class="caption-text">
           <a class="reference internal" href="qiskit/statevector.html">
