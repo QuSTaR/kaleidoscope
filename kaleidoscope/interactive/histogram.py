@@ -57,13 +57,13 @@ VALID_SORTS = ['asc', 'desc', 'hamming']
 DIST_MEAS = {'hamming': hamming_distance}
 
 
-def counts_distribution(data, figsize=(None, None), colors=None,
-                        number_to_keep=None,
-                        sort='asc', target_string=None,
-                        legend=None, bar_labels=True,
-                        title=None, background_color='white',
-                        as_widget=False):
-    """Interactive histogram plot of counts data.
+def probability_distribution(data, figsize=(None, None), colors=None,
+                             number_to_keep=None,
+                             sort='asc', target_string=None,
+                             legend=None, bar_labels=True,
+                             title=None, background_color='white',
+                             as_widget=False):
+    """Interactive histogram plot of probability distributions.
 
     Parameters:
         data (list or dict): This is either a list of dictionaries or a single
@@ -98,7 +98,7 @@ def counts_distribution(data, figsize=(None, None), colors=None,
             from qiskit import *
             import kaleidoscope.qiskit
             from kaleidoscope.qiskit.providers import Simulators
-            from kaleidoscope.interactive import counts_distribution
+            from kaleidoscope.interactive import probability_distribution
 
             sim = Simulators.aer_vigo_simulator
 
@@ -109,7 +109,7 @@ def counts_distribution(data, figsize=(None, None), colors=None,
             qc.measure(range(3), range(3))
 
             counts = qc.transpile().sample().result_when_done()
-            counts_distribution(counts)
+            probability_distribution(counts)
     """
 
     if sort not in VALID_SORTS:

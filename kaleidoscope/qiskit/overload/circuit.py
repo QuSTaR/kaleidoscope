@@ -24,6 +24,7 @@ from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.providers.basebackend import BaseBackend
 from qiskit.tools.monitor import job_monitor as aer_monitor
 from qiskit.providers.ibmq.job import job_monitor as ibmq_monitor
+from kaleidoscope.errors import KaleidoscopeError
 
 
 def rshift(self, target):
@@ -36,10 +37,24 @@ def rshift(self, target):
         QuantumCircuit: QuantumCircuit with attached target_backend.
 
     Raises:
-        TypeError: Input is not a valid backend instance.
+        KaleidoscopeError: Input is not a valid backend instance.
+        KaleidoscopeError: Number of qubits larger than target backend.
+
+    Example:
+
+        .. jupyter-execute::
+
+            from qiskit import QuantumCircuit
+            import kaleidoscope.qiskit
+            from kaleidoscope.qiskit.providers import Simulators
+
+            qc = QuantumCircuit(5, 5) >> Simulators.aer_vigo_simulator
+            print(qc.target_backend)
     """
     if not isinstance(target, BaseBackend):
-        raise TypeError('Target is not a valid backend instance.')
+        raise KaleidoscopeError('Target is not a valid backend instance.')
+    if self.num_qubits > target.configuration().num_qubits:
+        raise KaleidoscopeError('Number of qubits larger than target backend.')
     self.target_backend = target  # pylint: disable=attribute-defined-outside-init
     return self
 
@@ -54,7 +69,7 @@ def sample(self, backend=None, shots=1024, seed_simulator=None, memory=False):
         memory (bool): Return individual measurement results.
 
     Returns:
-        job: A job instance with `block_until_ready` attribute.
+        job: A job instance with `result_when_done` attribute.
     """
     if backend is None:
         if self.target_backend:
@@ -86,6 +101,19 @@ def statevector(self, include_final_measurements=False):
 
     Returns:
         StateVector: Output statevector object.
+
+    Example:
+
+        .. jupyter-execute::
+
+            from qiskit import QuantumCircuit
+            import kaleidoscope.qiskit
+
+            qc = QuantumCircuit(3)
+            qc.h(0)
+            qc.cx(0, range(1,2))
+
+            qc.statevector()
     """
     new_circ = self
     if not include_final_measurements:
@@ -98,6 +126,19 @@ def unitary(self):
 
     Returns:
         Operator: Unitary for the circuit.
+
+    Example:
+
+        .. jupyter-execute::
+
+            from qiskit import QuantumCircuit
+            import kaleidoscope.qiskit
+
+            qc = QuantumCircuit(3)
+            qc.h(0)
+            qc.cx(0, range(1,2))
+
+            qc.unitary()
     """
     new_circ = self.remove_final_measurements(inplace=False)
     return Operator(new_circ)
@@ -118,8 +159,20 @@ def transpile(self, backend=None, **kwargs):
     Returns:
         QuantumCircuit: Transpiled quantum circuit.
 
-    Returns:
+    Example:
 
+        .. jupyter-execute::
+
+            from qiskit import QuantumCircuit
+            import kaleidoscope.qiskit
+            from kaleidoscope.qiskit.providers import Simulators
+
+            qc = QuantumCircuit(5) >> Simulators.aer_vigo_simulator
+            qc.h(0)
+            qc.cx(0, range(1,5))
+
+            new_qc = qc.transpile()
+            new_qc.draw('mpl')
     """
     if backend is None:
         if self.target_backend:

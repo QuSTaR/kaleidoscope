@@ -15,9 +15,9 @@ however it is not an official or unofficial IBM product.
   :hidden:
 
   Installation <install.rst>
-  Getting started <using_figures.rst>
+  Guide <guide/index.rst>
   Tutorials <tutorials/index.rst>
-  API and Guide <api.rst>
+  API reference <api.rst>
 
 .. Hiding - Indices and tables
    :ref:`genindex`
