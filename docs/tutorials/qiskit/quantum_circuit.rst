@@ -7,6 +7,7 @@ QuantumCircuit addons
    import numpy as np
    from qiskit import QuantumCircuit
    import kaleidoscope.qiskit
+   from kaleidoscope import probability_distribution
    from kaleidoscope.qiskit.providers import Simulators
 
 
@@ -55,7 +56,7 @@ Sampling from a target backend
 .. jupyter-execute::
 
    counts = new_qc.sample(shots=2048).result_when_done()
-   print(counts)
+   probability_distribution(counts)
 
 
 Getting a statevector

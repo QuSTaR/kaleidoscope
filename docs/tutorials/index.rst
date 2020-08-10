@@ -1,3 +1,5 @@
+.. _tutorials:
+
 =============
 Tutorials
 =============
@@ -143,7 +145,7 @@ Qiskit Addons
       <img alt="thumbnail" src="../../../_static/thumbs/qiskit.png" />
       <p class="caption">
         <span class="caption-text">
-          <a class="reference internal" href="backends/quantum_circuit.html">
+          <a class="reference internal" href="qiskit/quantum_circuit.html">
             <span class="std std-ref">QuantumCircuit</span>
           </a>
         </span>
@@ -156,7 +158,7 @@ Qiskit Addons
       <img alt="thumbnail" src="../../../_static/thumbs/qiskit.png" />
       <p class="caption">
         <span class="caption-text">
-          <a class="reference internal" href="backends/statevector.html">
+          <a class="reference internal" href="qiskit/statevector.html">
             <span class="std std-ref">Statevector</span>
           </a>
         </span>

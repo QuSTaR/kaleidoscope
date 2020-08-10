@@ -2,8 +2,11 @@
 Kaleidoscope guide
 ==================
 
+This guide is currently a bit sparse.  Check out the :ref:`tutorials`
+for a good introduction.
+
 .. toctree::
   :maxdepth: 2
   :hidden:
 
-  General usage <general.rst>
+  Saving figures <saving.rst>
