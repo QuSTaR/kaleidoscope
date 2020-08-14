@@ -89,7 +89,6 @@ def _system_loader(service):
         for name, back_list in systems.items():
             reference = back_list[0]
             num_qubits = reference._configuration.num_qubits
-            #name = name.split('_')[-1]
             system_name = "{}𖼯{}Q𖼞".format(name, num_qubits)
             dispatcher = KaleidoscopeSystemDispatcher()
             for backend in back_list:
