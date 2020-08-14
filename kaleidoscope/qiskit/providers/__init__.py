@@ -14,6 +14,8 @@
 
 """Qiskit providers"""
 
+from .systems import KaleidoscopeSystemService
 from .simulators import KaleidoscopeSimulatorService
 
+Systems = KaleidoscopeSystemService()
 Simulators = KaleidoscopeSimulatorService()
