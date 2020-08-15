@@ -45,6 +45,7 @@ class KaleidoscopeSystemService():
 
     def __init__(self):
         self._added_attr = None
+        self.all = KaleidoscopeSystemDispatcher()
         _system_loader(self)
 
     def __call__(self):
@@ -102,7 +103,7 @@ def _system_loader(service):
                                                      hub, group, project)
                 pro_str = pro_str.replace('-', 'ー')
                 setattr(dispatcher, pro_str, backend)
-            setattr(service, system_name, dispatcher)
+            setattr(service.all, system_name, dispatcher)
             added_attr.append(system_name)
     service._added_attr = added_attr
 
