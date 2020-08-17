@@ -16,7 +16,7 @@
 
 from .systems import KaleidoscopeSystemService
 from .simulators import KaleidoscopeSimulatorService
-from .config import set_default_provider
+from .config import set_default_provider, get_default_provider
 
 Systems = KaleidoscopeSystemService()
 Simulators = KaleidoscopeSimulatorService()

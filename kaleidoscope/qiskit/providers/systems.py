@@ -30,6 +30,7 @@
 
 import warnings
 from qiskit import IBMQ
+from.config import get_default_provider
 
 
 class KaleidoscopeSystemService():
@@ -44,22 +45,32 @@ class KaleidoscopeSystemService():
     """
 
     def __init__(self):
-        self._added_attr = None
+        self._all_added_attr = None
+        self._default_added_attr = None
         self.all = KaleidoscopeSystemDispatcher()
+        self.default = KaleidoscopeSystemDispatcher()
+        self._default_provider = get_default_provider()
         _system_loader(self)
 
     def __call__(self):
         return list(vars(self).keys())
 
-    def refresh(self):
+    def _refresh(self):
         """Refresh the service in place.
         """
-        for key in self._added_attr:
+        for key in self._all_added_attr:
             try:
-                del self.__dict__[key]
+                del self.all.__dict__['get_'+key]
             except AttributeError:
                 pass
-        self._added_attr = []
+        for key in self._default_added_attr:
+            try:
+                del self.default.__dict__[key]
+            except AttributeError:
+                pass
+        self._all_added_attr = []
+        self._default_added_attr = []
+        self._default_provider = get_default_provider()
         _system_loader(self)
 
 
@@ -84,14 +95,16 @@ def _system_loader(service):
         except Exception:  # pylint: disable=broad-except
             pass
     systems = _get_ibmq_systems()
-    added_attr = []
+    all_added_attr = []
+    default_added_attr = []
+    default_provider = service._default_provider.split('//') if service._default_provider else []
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         for name, back_list in systems.items():
             reference = back_list[0]
             num_qubits = reference._configuration.num_qubits
             system_name = "{}𖼯{}Q𖼞".format(name, num_qubits)
-            dispatcher = KaleidoscopeSystemDispatcher()
+            all_dispatcher = KaleidoscopeSystemDispatcher()
             for backend in back_list:
                 hub = backend.hub
                 group = backend.group
@@ -102,10 +115,17 @@ def _system_loader(service):
                 pro_str = "𖼯{}_{}{}𖼞{}_{}_{}".format(max_circuits, max_shots, pulse,
                                                      hub, group, project)
                 pro_str = pro_str.replace('-', 'ー')
-                setattr(dispatcher, pro_str, backend)
-            setattr(service.all, system_name, dispatcher)
-            added_attr.append(system_name)
-    service._added_attr = added_attr
+                setattr(all_dispatcher, pro_str, backend)
+                # is backend in default provider
+                if [hub, group, project] == default_provider:
+                    setattr(service.default, system_name, backend)
+                    default_added_attr.append(system_name)
+
+            setattr(service.all, 'get_'+system_name, all_dispatcher)
+            all_added_attr.append(system_name)
+
+    service._all_added_attr = all_added_attr
+    service._default_added_attr = default_added_attr
 
 
 def _get_ibmq_systems():

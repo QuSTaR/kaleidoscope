@@ -13,6 +13,7 @@
 import os
 import warnings
 import configparser
+from kaleidoscope.errors import KaleidoscopeError
 
 
 def has_kal_rc():
@@ -22,8 +23,8 @@ def has_kal_rc():
     """
     kal_conf_dir = os.path.join(os.path.expanduser("~"), '.kaleidoscope')
     if os.path.exists(kal_conf_dir):
-        kal_rc_file = os.path.join(kal_conf_dir,'kalrc')
-        rc_exists = os.path.isfile(kal_rc_file) 
+        kal_rc_file = os.path.join(kal_conf_dir, 'kalrc')
+        rc_exists = os.path.isfile(kal_rc_file)
         if rc_exists:
             return True, kal_rc_file
         else:
@@ -49,10 +50,10 @@ def generate_kal_rc():
     kal_rc_file = os.path.join(kal_conf_dir, 'kalrc')
     rc_exists = os.path.isfile(kal_rc_file)
     if rc_exists:
-        #Do not overwrite
+        # Do not overwrite
         return False
     else:
-        #Write a basic file with qutip section
+        # Write a basic file with qutip section
         cfgfile = open(kal_rc_file, 'w')
         config = configparser.ConfigParser()
         config.add_section('kaleidoscope')
@@ -103,3 +104,28 @@ def write_rc_key(rc_file, key, value):
     config.set('kaleidoscope', key, value)
     config.write(cfgfile)
     cfgfile.close()
+
+
+def get_rc_key(rc_file, key):
+    """Get the desired key from an kal rc_file
+
+    Parameters:
+        rc_file (str): String specifying file location.
+        key (str): The key name to be written.
+
+    Returns:
+        str: The key value.
+
+    Raises:
+        NoSectionError: rc_file missing kaleidoscope section.
+        KaleidoscopeError: Key not found.
+    """
+    config = configparser.ConfigParser()
+    config.read(rc_file)
+    if not config.has_section('kaleidoscope'):
+        raise configparser.NoSectionError('kaleidoscope')
+
+    opts = config.options('kaleidoscope')
+    if key not in opts:
+        raise KaleidoscopeError('Key not found.')
+    return config.get('kaleidoscope', key)
