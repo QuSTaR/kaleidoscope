@@ -48,7 +48,7 @@ def set_default_provider(provider, overwrite=False):
     write_rc_key(rc_file, 'default_provider', provider_str)
 
     # Trigger a refresh of the Systems provider
-    from kaleidoscope.qiskit.providers import Systems
+    from kaleidoscope.qiskit.providers import Systems  # pylint: disable=cyclic-import
     Systems._refresh()
 
 
