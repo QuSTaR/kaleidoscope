@@ -14,9 +14,9 @@
 
 """Qiskit providers"""
 
-from .systems import KaleidoscopeSystemService
-from .simulators import KaleidoscopeSimulatorService
-from .config import set_default_provider, get_default_provider
+from ._systems import KaleidoscopeSystemService as _KALSysService
+from ._simulators import KaleidoscopeSimulatorService as _KALSimService
+from ._config import set_default_provider, get_default_provider
 
-Systems = KaleidoscopeSystemService()
-Simulators = KaleidoscopeSimulatorService()
+Systems = _KALSysService()
+Simulators = _KALSimService()

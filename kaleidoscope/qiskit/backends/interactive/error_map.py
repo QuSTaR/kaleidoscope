@@ -40,7 +40,7 @@ from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.test.mock.fake_backend import FakeBackend
 import colorcet as cc
 from kaleidoscope.errors import KaleidoscopeError
-from kaleidoscope.qiskit.providers.simulators import DeviceSimulator
+from kaleidoscope.qiskit.providers._simulators import DeviceSimulator
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
 from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend

@@ -30,7 +30,7 @@
 
 import warnings
 from qiskit import IBMQ
-from.config import get_default_provider
+from._config import get_default_provider
 
 
 class KaleidoscopeSystemService():
