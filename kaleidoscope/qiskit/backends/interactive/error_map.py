@@ -295,7 +295,7 @@ def system_error_map(backend,
                     x_mid = (x_end - x_start) / 2 + x_start
                     y_mid = (y_end - y_start) / 2 + y_start
 
-            cx_str = 'cnot<sub>err</sub> = {err}'
+            cx_str = 'cnot<sub>err</sub> = {err} %'
             cx_str += '<br>&#120591;<sub>cx</sub>     = {tau} ns'
             fig.append_trace(
                 go.Scatter(x=[x_start, x_mid, x_end],
@@ -324,7 +324,7 @@ def system_error_map(backend,
                                            freq=np.round(freqs[kk], 5),
                                            t1=np.round(t1s[kk], 2),
                                            t2=np.round(t2s[kk], 2),
-                                           anh=np.round(alphas[kk], 3),
+                                           anh=np.round(alphas[kk], 3) if alphas[kk] else 'NA',
                                            err=np.round(single_gate_errors[kk], 3),
                                            tau=np.round(single_gate_times[kk],2)))
 
