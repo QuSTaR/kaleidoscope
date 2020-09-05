@@ -151,8 +151,7 @@ def system_error_map(backend,
                 if gpar.name == 'gate_error':
                     single_gate_errors[_qubit] = gpar.value
                 elif gpar.name == 'gate_length':
-                    single_gate_times[_qubit] = gpar.value
-                    
+                    single_gate_times[_qubit] = gpar.value       
 
     # Convert to percent
     single_gate_errors = 100 * np.asarray(single_gate_errors)
@@ -199,16 +198,23 @@ def system_error_map(backend,
                     line_colors.append("#ff0000")
 
     # Measurement errors
-    read_err = []
-
+    read_err = [0] * n_qubits
+    p01_err = [0] * n_qubits
+    p10_err = [0] * n_qubits
     for qubit in range(n_qubits):
         for item in props.qubits[qubit]:
             if item.name == 'readout_error':
-                read_err.append(item.value)
+                read_err[qubit] = item.value
+            elif item.name == 'prob_meas0_prep1':
+                p01_err[qubit] = item.value
+            elif item.name == 'prob_meas1_prep0':
+                p10_err[qubit] = item.value
 
     read_err = 100 * np.asarray(read_err)
     avg_read_err = np.mean(read_err)
     max_read_err = np.max(read_err)
+    p01_err = 100 * np.asarray(p01_err)
+    p10_err = 100 * np.asarray(p10_err)
 
     if n_qubits < 10:
         num_left = n_qubits
@@ -410,7 +416,10 @@ def system_error_map(backend,
                                    np.round((max_cx_idx_err-min_cx_idx_err)/2+min_cx_idx_err, 3),
                                    np.round(max_cx_idx_err, 3)])
 
-    hover_text = "<b>Qubit {}</b><br>M<sub>err</sub> = {} %"
+    hover_text = "<b>Qubit {idx}</b>"
+    hover_text += "<br>M<sub>err</sub> = {err} %"
+    hover_text += "<br>P<sub>0|1</sub> = {p01} %"
+    hover_text += "<br>P<sub>1|0</sub> = {p10} %"
     # Add the left side meas errors
     for kk in range(num_left-1, -1, -1):
         fig.append_trace(go.Bar(x=[read_err[kk]], y=[kk],
@@ -418,8 +427,10 @@ def system_error_map(backend,
                                 marker=dict(color='#c7c7c5'),
                                 hoverinfo="text",
                                 hoverlabel=dict(font=dict(color=meas_text_color)),
-                                hovertext=[hover_text.format(kk,
-                                                             np.round(read_err[kk], 3)
+                                hovertext=[hover_text.format(idx=kk,
+                                                             err=np.round(read_err[kk], 3),
+                                                             p01=np.round(p01_err[kk], 3),
+                                                             p10=np.round(p10_err[kk], 3)
                                                              )]
                                 ),
                          row=1, col=1)
