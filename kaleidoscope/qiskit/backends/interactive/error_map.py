@@ -466,8 +466,11 @@ def system_error_map(backend,
                                     marker=dict(color='#c7c7c5'),
                                     hoverinfo="text",
                                     hoverlabel=dict(font=dict(color=meas_text_color)),
-                                    hovertext=[hover_text.format(kk,
-                                                                 np.round(read_err[kk], 3))]
+                                    hovertext=[hover_text.format(idx=kk,
+                                                             err=np.round(read_err[kk], 3),
+                                                             p01=np.round(p01_err[kk], 3),
+                                                             p10=np.round(p10_err[kk], 3)
+                                                             )]
                                     ),
                              row=1, col=9)
 
