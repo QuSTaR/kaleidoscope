@@ -237,12 +237,12 @@ def system_error_map(backend,
             offset = 1
 
     if n_qubits > 5:
-        right_meas_title = "Readout Error (%)"
+        right_meas_title = "Readout error (%)"
     else:
         right_meas_title = None
 
     if cmap:
-        cx_title = "CNOT Error Rate [Avg. {}%]".format(np.round(avg_cx_err, 3))
+        cx_title = "CNOT error rate [Avg. {}%]".format(np.round(avg_cx_err, 3))
     else:
         cx_title = None
     fig = make_subplots(rows=2, cols=11, row_heights=[0.95, 0.05],
@@ -255,8 +255,8 @@ def system_error_map(backend,
                                 None, None, None,
                                 {"colspan": 4}, None, None,
                                 None, None]],
-                        subplot_titles=("Readout Error (%)", None, right_meas_title,
-                                        "Hadamard Error Rate [Avg. {}%]".format(
+                        subplot_titles=("Readout error (%)", None, right_meas_title,
+                                        "Sqrt-X error rate [Avg. {}%]".format(
                                             np.round(avg_1q_err, 3)),
                                         cx_title)
                         )
@@ -506,7 +506,7 @@ def system_error_map(backend,
     for ann in fig['layout']['annotations']:
         ann['font'] = dict(size=13)
 
-    title_text = "{} Error Map".format(backend.name()) if show_title else ''
+    title_text = "{} error map".format(backend.name()) if show_title else ''
     fig.update_layout(showlegend=False,
                       plot_bgcolor=background_color,
                       paper_bgcolor=background_color,
