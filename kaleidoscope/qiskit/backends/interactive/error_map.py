@@ -151,7 +151,7 @@ def system_error_map(backend,
                 if gpar.name == 'gate_error':
                     single_gate_errors[_qubit] = gpar.value
                 elif gpar.name == 'gate_length':
-                    single_gate_times[_qubit] = gpar.value       
+                    single_gate_times[_qubit] = gpar.value
 
     # Convert to percent
     single_gate_errors = 100 * np.asarray(single_gate_errors)
@@ -332,7 +332,7 @@ def system_error_map(backend,
                                            t2=np.round(t2s[kk], 2),
                                            anh=np.round(alphas[kk], 3) if alphas[kk] else 'NA',
                                            err=np.round(single_gate_errors[kk], 3),
-                                           tau=np.round(single_gate_times[kk],2)))
+                                           tau=np.round(single_gate_times[kk], 2)))
 
     if n_qubits > 20:
         qubit_size = 23
@@ -467,10 +467,11 @@ def system_error_map(backend,
                                     hoverinfo="text",
                                     hoverlabel=dict(font=dict(color=meas_text_color)),
                                     hovertext=[hover_text.format(idx=kk,
-                                                             err=np.round(read_err[kk], 3),
-                                                             p01=np.round(p01_err[kk], 3),
-                                                             p10=np.round(p10_err[kk], 3)
-                                                             )]
+                                                                 err=np.round(read_err[kk], 3),
+                                                                 p01=np.round(p01_err[kk], 3),
+                                                                 p10=np.round(p10_err[kk], 3)
+                                                                 )
+                                               ]
                                     ),
                              row=1, col=9)
 
