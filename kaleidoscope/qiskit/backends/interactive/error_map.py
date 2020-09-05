@@ -126,20 +126,20 @@ def system_error_map(backend,
 
     props = backend.properties()
 
-    freqs = []
-    t1s = []
-    t2s = []
-    alphas = []
-    for qubit_props in props.qubits:
+    freqs = [0] * n_qubits
+    t1s = [0] * n_qubits
+    t2s = [0] * n_qubits
+    alphas = [0] * n_qubits
+    for idx, qubit_props in enumerate(props.qubits):
         for item in qubit_props:
             if item.name == 'frequency':
-                freqs.append(item.value)
+                freqs[idx] = item.value
             elif item.name == 'T1':
-                t1s.append(item.value)
+                t1s[idx] = item.value
             elif item.name == 'T2':
-                t2s.append(item.value)
+                t2s[idx] = item.value
             elif item.name == 'anharmonicity':
-                alphas.append(item.value)
+                alphas[idx] = item.value
 
     # U2 error rates
     single_gate_errors = [0]*n_qubits
