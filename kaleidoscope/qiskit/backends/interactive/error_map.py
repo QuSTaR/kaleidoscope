@@ -124,28 +124,32 @@ def system_error_map(backend,
         out = PlotlyWidget(fig)
         return out
 
-    props = backend.properties().to_dict()
+    props = backend.properties()
 
     t1s = []
     t2s = []
-    for qubit_props in props['qubits']:
+    for qubit_props in props.qubits:
         count = 0
         for item in qubit_props:
-            if item['name'] == 'T1':
-                t1s.append(item['value'])
+            if item.name == 'T1':
+                t1s.append(item.value)
                 count += 1
-            elif item['name'] == 'T2':
-                t2s.append(item['value'])
+            elif item.name == 'T2':
+                t2s.append(item.value)
                 count += 1
             if count == 2:
                 break
 
     # U2 error rates
     single_gate_errors = [0]*n_qubits
-    for gate in props['gates']:
-        if gate['gate'] == 'u2':
-            _qubit = gate['qubits'][0]
-            single_gate_errors[_qubit] = gate['parameters'][0]['value']
+    single_gate_times = [0]*n_qubits
+    for gate in props.gates:
+        if gate.gate == 'u2':
+            _qubit = gate.qubits[0]
+            for gpar in gate.parameters:
+                if gpar.name == 'gate_error':
+                    single_gate_errors[_qubit] = gpar.value
+                    break
 
     # Convert to percent
     single_gate_errors = 100 * np.asarray(single_gate_errors)
@@ -161,13 +165,15 @@ def system_error_map(backend,
         line_colors = []
         if cmap:
             cx_errors = []
+            cx_times = []
             for line in cmap:
-                for item in props['gates']:
-                    if item['qubits'] == line:
-                        cx_errors.append(item['parameters'][0]['value'])
-                        break
-                else:
-                    continue
+                for gate in props.gates:
+                    if gate.qubits == line:
+                        for gpar in gate.parameters:
+                            if gpar.name == 'gate_error':
+                                cx_errors.append(gpar.value)
+                            elif gpar.name == 'gate_length':
+                                cx_times.append(gpar.value)
 
             # Convert to percent
             cx_errors = 100 * np.asarray(cx_errors)
@@ -193,9 +199,9 @@ def system_error_map(backend,
     read_err = []
 
     for qubit in range(n_qubits):
-        for item in props['qubits'][qubit]:
-            if item['name'] == 'readout_error':
-                read_err.append(item['value'])
+        for item in props.qubits[qubit]:
+            if item.name == 'readout_error':
+                read_err.append(item.value)
 
     read_err = 100 * np.asarray(read_err)
     avg_read_err = np.mean(read_err)
@@ -286,6 +292,8 @@ def system_error_map(backend,
                     x_mid = (x_end - x_start) / 2 + x_start
                     y_mid = (y_end - y_start) / 2 + y_start
 
+            
+            cx_str = 'CX<sub>err</sub>{B}_{A} = {err}<br>&#120591;<sub>cx</sub> = {tau} ns'
             fig.append_trace(
                 go.Scatter(x=[x_start, x_mid, x_end],
                            y=[-y_start, -y_mid, -y_end],
@@ -293,8 +301,10 @@ def system_error_map(backend,
                            line=dict(width=6,
                                      color=line_colors[ind]),
                            hoverinfo='text',
-                           hovertext='CX<sub>err</sub>{B}_{A} = {err} %'.format(
-                               A=edge[0], B=edge[1], err=np.round(cx_errors[ind], 3))
+                           hovertext=cx_str.format(
+                               A=edge[0], B=edge[1],
+                               err=np.round(cx_errors[ind], 3),
+                               tau=np.round(cx_times[ind], 2))
                            ),
                 row=1, col=3)
 
