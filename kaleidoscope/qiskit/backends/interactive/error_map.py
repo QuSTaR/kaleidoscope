@@ -124,28 +124,34 @@ def system_error_map(backend,
         out = PlotlyWidget(fig)
         return out
 
-    props = backend.properties().to_dict()
+    props = backend.properties()
 
-    t1s = []
-    t2s = []
-    for qubit_props in props['qubits']:
-        count = 0
+    freqs = [0] * n_qubits
+    t1s = [0] * n_qubits
+    t2s = [0] * n_qubits
+    alphas = [0] * n_qubits
+    for idx, qubit_props in enumerate(props.qubits):
         for item in qubit_props:
-            if item['name'] == 'T1':
-                t1s.append(item['value'])
-                count += 1
-            elif item['name'] == 'T2':
-                t2s.append(item['value'])
-                count += 1
-            if count == 2:
-                break
+            if item.name == 'frequency':
+                freqs[idx] = item.value
+            elif item.name == 'T1':
+                t1s[idx] = item.value
+            elif item.name == 'T2':
+                t2s[idx] = item.value
+            elif item.name == 'anharmonicity':
+                alphas[idx] = item.value
 
     # U2 error rates
     single_gate_errors = [0]*n_qubits
-    for gate in props['gates']:
-        if gate['gate'] == 'u2':
-            _qubit = gate['qubits'][0]
-            single_gate_errors[_qubit] = gate['parameters'][0]['value']
+    single_gate_times = [0]*n_qubits
+    for gate in props.gates:
+        if gate.gate == 'u2':
+            _qubit = gate.qubits[0]
+            for gpar in gate.parameters:
+                if gpar.name == 'gate_error':
+                    single_gate_errors[_qubit] = gpar.value
+                elif gpar.name == 'gate_length':
+                    single_gate_times[_qubit] = gpar.value
 
     # Convert to percent
     single_gate_errors = 100 * np.asarray(single_gate_errors)
@@ -161,13 +167,15 @@ def system_error_map(backend,
         line_colors = []
         if cmap:
             cx_errors = []
+            cx_times = []
             for line in cmap:
-                for item in props['gates']:
-                    if item['qubits'] == line:
-                        cx_errors.append(item['parameters'][0]['value'])
-                        break
-                else:
-                    continue
+                for gate in props.gates:
+                    if gate.qubits == line:
+                        for gpar in gate.parameters:
+                            if gpar.name == 'gate_error':
+                                cx_errors.append(gpar.value)
+                            elif gpar.name == 'gate_length':
+                                cx_times.append(gpar.value)
 
             # Convert to percent
             cx_errors = 100 * np.asarray(cx_errors)
@@ -190,16 +198,23 @@ def system_error_map(backend,
                     line_colors.append("#ff0000")
 
     # Measurement errors
-    read_err = []
-
+    read_err = [0] * n_qubits
+    p01_err = [0] * n_qubits
+    p10_err = [0] * n_qubits
     for qubit in range(n_qubits):
-        for item in props['qubits'][qubit]:
-            if item['name'] == 'readout_error':
-                read_err.append(item['value'])
+        for item in props.qubits[qubit]:
+            if item.name == 'readout_error':
+                read_err[qubit] = item.value
+            elif item.name == 'prob_meas0_prep1':
+                p01_err[qubit] = item.value
+            elif item.name == 'prob_meas1_prep0':
+                p10_err[qubit] = item.value
 
     read_err = 100 * np.asarray(read_err)
     avg_read_err = np.mean(read_err)
     max_read_err = np.max(read_err)
+    p01_err = 100 * np.asarray(p01_err)
+    p10_err = 100 * np.asarray(p10_err)
 
     if n_qubits < 10:
         num_left = n_qubits
@@ -222,12 +237,12 @@ def system_error_map(backend,
             offset = 1
 
     if n_qubits > 5:
-        right_meas_title = "Readout Error (%)"
+        right_meas_title = "Readout error (%)"
     else:
         right_meas_title = None
 
     if cmap:
-        cx_title = "CNOT Error Rate [Avg. {}%]".format(np.round(avg_cx_err, 3))
+        cx_title = "CNOT error rate [Avg. {}%]".format(np.round(avg_cx_err, 3))
     else:
         cx_title = None
     fig = make_subplots(rows=2, cols=11, row_heights=[0.95, 0.05],
@@ -240,8 +255,8 @@ def system_error_map(backend,
                                 None, None, None,
                                 {"colspan": 4}, None, None,
                                 None, None]],
-                        subplot_titles=("Readout Error (%)", None, right_meas_title,
-                                        "Hadamard Error Rate [Avg. {}%]".format(
+                        subplot_titles=("Readout error (%)", None, right_meas_title,
+                                        "Sqrt-X error rate [Avg. {}%]".format(
                                             np.round(avg_1q_err, 3)),
                                         cx_title)
                         )
@@ -286,6 +301,8 @@ def system_error_map(backend,
                     x_mid = (x_end - x_start) / 2 + x_start
                     y_mid = (y_end - y_start) / 2 + y_start
 
+            cx_str = 'cnot<sub>err</sub> = {err} %'
+            cx_str += '<br>&#120591;<sub>cx</sub>     = {tau} ns'
             fig.append_trace(
                 go.Scatter(x=[x_start, x_mid, x_end],
                            y=[-y_start, -y_mid, -y_end],
@@ -293,20 +310,29 @@ def system_error_map(backend,
                            line=dict(width=6,
                                      color=line_colors[ind]),
                            hoverinfo='text',
-                           hovertext='CX<sub>err</sub>{B}_{A} = {err} %'.format(
-                               A=edge[0], B=edge[1], err=np.round(cx_errors[ind], 3))
+                           hovertext=cx_str.format(
+                               err=np.round(cx_errors[ind], 3),
+                               tau=np.round(cx_times[ind], 2))
                            ),
                 row=1, col=3)
 
     # Add the qubits themselves
     qubit_text = []
-    qubit_str = "<b>Qubit {}</b><br>H<sub>err</sub> = {} %"
-    qubit_str += "<br>T1 = {} \u03BCs<br>T2 = {} \u03BCs"
+    qubit_str = "<b>Qubit {idx}</b>"
+    qubit_str += "<br>freq = {freq} GHz"
+    qubit_str += "<br>T<sub>1</sub>   = {t1} \u03BCs"
+    qubit_str += "<br>T<sub>2</sub>   = {t2} \u03BCs"
+    qubit_str += "<br>&#945;    = {anh} GHz"
+    qubit_str += "<br>sx<sub>err</sub> = {err} %"
+    qubit_str += "<br>&#120591;<sub>sx</sub>   = {tau} ns"
     for kk in range(n_qubits):
-        qubit_text.append(qubit_str.format(kk,
-                                           np.round(single_gate_errors[kk], 3),
-                                           np.round(t1s[kk], 2),
-                                           np.round(t2s[kk], 2)))
+        qubit_text.append(qubit_str.format(idx=kk,
+                                           freq=np.round(freqs[kk], 5),
+                                           t1=np.round(t1s[kk], 2),
+                                           t2=np.round(t2s[kk], 2),
+                                           anh=np.round(alphas[kk], 3) if alphas[kk] else 'NA',
+                                           err=np.round(single_gate_errors[kk], 3),
+                                           tau=np.round(single_gate_times[kk], 2)))
 
     if n_qubits > 20:
         qubit_size = 23
@@ -390,7 +416,10 @@ def system_error_map(backend,
                                    np.round((max_cx_idx_err-min_cx_idx_err)/2+min_cx_idx_err, 3),
                                    np.round(max_cx_idx_err, 3)])
 
-    hover_text = "<b>Qubit {}</b><br>M<sub>err</sub> = {} %"
+    hover_text = "<b>Qubit {idx}</b>"
+    hover_text += "<br>M<sub>err</sub> = {err} %"
+    hover_text += "<br>P<sub>0|1</sub> = {p01} %"
+    hover_text += "<br>P<sub>1|0</sub> = {p10} %"
     # Add the left side meas errors
     for kk in range(num_left-1, -1, -1):
         fig.append_trace(go.Bar(x=[read_err[kk]], y=[kk],
@@ -398,8 +427,10 @@ def system_error_map(backend,
                                 marker=dict(color='#c7c7c5'),
                                 hoverinfo="text",
                                 hoverlabel=dict(font=dict(color=meas_text_color)),
-                                hovertext=[hover_text.format(kk,
-                                                             np.round(read_err[kk], 3)
+                                hovertext=[hover_text.format(idx=kk,
+                                                             err=np.round(read_err[kk], 3),
+                                                             p01=np.round(p01_err[kk], 3),
+                                                             p10=np.round(p10_err[kk], 3)
                                                              )]
                                 ),
                          row=1, col=1)
@@ -435,8 +466,12 @@ def system_error_map(backend,
                                     marker=dict(color='#c7c7c5'),
                                     hoverinfo="text",
                                     hoverlabel=dict(font=dict(color=meas_text_color)),
-                                    hovertext=[hover_text.format(kk,
-                                                                 np.round(read_err[kk], 3))]
+                                    hovertext=[hover_text.format(idx=kk,
+                                                                 err=np.round(read_err[kk], 3),
+                                                                 p01=np.round(p01_err[kk], 3),
+                                                                 p10=np.round(p10_err[kk], 3)
+                                                                 )
+                                               ]
                                     ),
                              row=1, col=9)
 
@@ -471,7 +506,7 @@ def system_error_map(backend,
     for ann in fig['layout']['annotations']:
         ann['font'] = dict(size=13)
 
-    title_text = "{} Error Map".format(backend.name()) if show_title else ''
+    title_text = "{} error map".format(backend.name()) if show_title else ''
     fig.update_layout(showlegend=False,
                       plot_bgcolor=background_color,
                       paper_bgcolor=background_color,
@@ -479,7 +514,11 @@ def system_error_map(backend,
                       title=dict(text=title_text, x=0.452),
                       title_font_size=20,
                       font=dict(color=text_color),
-                      margin=dict(t=60, l=0, r=40, b=0)
+                      margin=dict(t=60, l=0, r=40, b=0),
+                      hoverlabel=dict(font_size=14,
+                                      font_family="courier,monospace",
+                                      align='left'
+                                      )
                       )
     if as_widget:
         return PlotlyWidget(fig)
