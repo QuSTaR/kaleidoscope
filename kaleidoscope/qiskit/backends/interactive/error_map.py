@@ -126,19 +126,20 @@ def system_error_map(backend,
 
     props = backend.properties()
 
+    freqs = []
     t1s = []
     t2s = []
+    alphas = []
     for qubit_props in props.qubits:
-        count = 0
         for item in qubit_props:
-            if item.name == 'T1':
+            if item.name == 'frequency':
+                freqs.append(item.value)
+            elif item.name == 'T1':
                 t1s.append(item.value)
-                count += 1
             elif item.name == 'T2':
                 t2s.append(item.value)
-                count += 1
-            if count == 2:
-                break
+            elif item.name == 'anharmonicity':
+                alphas.append(item.value)
 
     # U2 error rates
     single_gate_errors = [0]*n_qubits
@@ -149,7 +150,9 @@ def system_error_map(backend,
             for gpar in gate.parameters:
                 if gpar.name == 'gate_error':
                     single_gate_errors[_qubit] = gpar.value
-                    break
+                elif gpar.name == 'gate_length':
+                    single_gate_times[_qubit] = gpar.value
+                    
 
     # Convert to percent
     single_gate_errors = 100 * np.asarray(single_gate_errors)
@@ -292,8 +295,8 @@ def system_error_map(backend,
                     x_mid = (x_end - x_start) / 2 + x_start
                     y_mid = (y_end - y_start) / 2 + y_start
 
-            
-            cx_str = 'CX<sub>err</sub>{B}_{A} = {err}<br>&#120591;<sub>cx</sub> = {tau} ns'
+            cx_str = 'cnot<sub>err</sub> = {err}'
+            cx_str += '<br>&#120591;<sub>cx</sub>     = {tau} ns'
             fig.append_trace(
                 go.Scatter(x=[x_start, x_mid, x_end],
                            y=[-y_start, -y_mid, -y_end],
@@ -302,7 +305,6 @@ def system_error_map(backend,
                                      color=line_colors[ind]),
                            hoverinfo='text',
                            hovertext=cx_str.format(
-                               A=edge[0], B=edge[1],
                                err=np.round(cx_errors[ind], 3),
                                tau=np.round(cx_times[ind], 2))
                            ),
@@ -310,13 +312,21 @@ def system_error_map(backend,
 
     # Add the qubits themselves
     qubit_text = []
-    qubit_str = "<b>Qubit {}</b><br>H<sub>err</sub> = {} %"
-    qubit_str += "<br>T1 = {} \u03BCs<br>T2 = {} \u03BCs"
+    qubit_str = "<b>Qubit {idx}</b>"
+    qubit_str += "<br>freq = {freq} GHz"
+    qubit_str += "<br>T<sub>1</sub>   = {t1} \u03BCs"
+    qubit_str += "<br>T<sub>2</sub>   = {t2} \u03BCs"
+    qubit_str += "<br>&#945;    = {anh} GHz"
+    qubit_str += "<br>sx<sub>err</sub> = {err} %"
+    qubit_str += "<br>&#120591;<sub>sx</sub>   = {tau} ns"
     for kk in range(n_qubits):
-        qubit_text.append(qubit_str.format(kk,
-                                           np.round(single_gate_errors[kk], 3),
-                                           np.round(t1s[kk], 2),
-                                           np.round(t2s[kk], 2)))
+        qubit_text.append(qubit_str.format(idx=kk,
+                                           freq=np.round(freqs[kk], 5),
+                                           t1=np.round(t1s[kk], 2),
+                                           t2=np.round(t2s[kk], 2),
+                                           anh=np.round(alphas[kk], 3),
+                                           err=np.round(single_gate_errors[kk], 3),
+                                           tau=np.round(single_gate_times[kk],2)))
 
     if n_qubits > 20:
         qubit_size = 23
@@ -489,7 +499,11 @@ def system_error_map(backend,
                       title=dict(text=title_text, x=0.452),
                       title_font_size=20,
                       font=dict(color=text_color),
-                      margin=dict(t=60, l=0, r=40, b=0)
+                      margin=dict(t=60, l=0, r=40, b=0),
+                      hoverlabel=dict(font_size=14,
+                                      font_family="courier,monospace",
+                                      align='left'
+                                      )
                       )
     if as_widget:
         return PlotlyWidget(fig)
