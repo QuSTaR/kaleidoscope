@@ -26,10 +26,12 @@ from kaleidoscope.utils import pi_check
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
 from kaleidoscope.interactive.bloch.utils import bloch_components
 from kaleidoscope.colors.utils import hex_to_rgb
-from kaleidoscope.colors import BMY_PLOTLY
+from kaleidoscope.colors import BMW
+from kaleidoscope.colors.cmap import cmap_to_plotly
 
 NORM = plt.Normalize(-1, 1)
-CMAP = cc.cm.bmy
+CMAP = BMW
+PLOTLY_CMAP = cmap_to_plotly(CMAP)
 
 
 def bloch_sunburst(vec):
@@ -163,7 +165,7 @@ def bloch_disc(rho, figsize=None, title=None, as_widget=False):
     ticktext = [ticktext[kk] for kk in idx_sort]
 
     fig.append_trace(go.Heatmap(z=zrange,
-                                colorscale=BMY_PLOTLY,
+                                colorscale=PLOTLY_CMAP,
                                 showscale=False,
                                 hoverinfo='none',
                                 ),
@@ -258,7 +260,7 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
 
     zrange = [k*np.ones(1) for k in np.linspace(-1, 1, 100)]
     fig.append_trace(go.Heatmap(z=zrange,
-                                colorscale=BMY_PLOTLY,
+                                colorscale=PLOTLY_CMAP,
                                 showscale=False,
                                 hoverinfo='none',
                                 ),

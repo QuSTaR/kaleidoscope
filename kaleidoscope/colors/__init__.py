@@ -14,10 +14,11 @@
 
 """Tools for colors"""
 import colorcet as cc
-from kaleidoscope.colors.cmap import cmap_to_plotly
 
-# The Blue->Magenta->Yellow sequential color map from ColorCet for plotly
-BMY_PLOTLY = cmap_to_plotly(cc.cm.bmy)
+# The Blue->Magenta->White sequential color map
+BMW = cc.cm.bmw
+# The Black->Blue->Cyan sequential color map
+KBC = cc.cm.kbc
 
 # Dark2 from colorbrewer
 DARK2 = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a",
