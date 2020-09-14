@@ -20,7 +20,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import matplotlib.pyplot as plt
 import matplotlib.colors
-import colorcet as cc
 
 from kaleidoscope.utils import pi_check
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
