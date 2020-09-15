@@ -195,10 +195,10 @@ def system_error_map(backend,
                 cx_idx = np.arange(len(cx_errors))
 
             avg_cx_err = np.mean(cx_errors[cx_idx])
+            min_cx_err = _round_log10_exp(np.min(cx_errors[cx_idx]), rnd='down', decimals=1)
+            max_cx_err = _round_log10_exp(np.max(cx_errors[cx_idx]), rnd='up', decimals=1)
 
-            cx_norm = mpl.colors.Normalize(
-                vmin=min(cx_errors[cx_idx]),
-                vmax=max(cx_errors[cx_idx]))
+            cx_norm = mpl.colors.Normalize(vmin=min_cx_err, vmax=max_cx_err)
 
             for err in cx_errors:
                 if err != 0.0 or not remove_badcal_edges:
@@ -251,7 +251,8 @@ def system_error_map(backend,
         right_meas_title = None
 
     if cmap:
-        cx_title = "CNOT error rate [Avg. {}]".format('%.2e' % 10**avg_cx_err)
+        cx_title = "CNOT error rate [Avg. {}]".format('{:.2}\u22C510<sup>{}</sup>'.format(
+            *_pow10_coeffs(avg_cx_err)))
     else:
         cx_title = None
     fig = make_subplots(rows=2, cols=11, row_heights=[0.95, 0.05],
@@ -400,9 +401,10 @@ def system_error_map(backend,
 
         fig.update_xaxes(row=2,
                          col=1,
+                         tickfont=dict(size=13),
                          tickvals=[0, 49, 99],
                          ticktext= ['{:.2}\u22C510<sup>{}</sup>'.format(
-                                        *_pow10_coeffs(min_1q_err)),
+                             *_pow10_coeffs(min_1q_err)),
                                     '{:.2}\u22C510<sup>{}</sup>'.format(
                                         *_pow10_coeffs(mid_1q_err)),
                                     '{:.2}\u22C510<sup>{}</sup>'.format(
@@ -411,8 +413,6 @@ def system_error_map(backend,
 
     # CX error rate colorbar
     if cmap and n_qubits > 1:
-        min_cx_err = np.floor(min(cx_errors))
-        max_cx_err = np.ceil(max(cx_errors))
         fig.append_trace(go.Heatmap(z=[np.linspace(min_cx_err,
                                                    max_cx_err, 100),
                                        np.linspace(min_cx_err,
@@ -423,13 +423,16 @@ def system_error_map(backend,
 
         fig.update_yaxes(row=2, col=7, visible=False)
 
-        min_cx_idx_err = np.min(cx_errors[cx_idx])
-        max_cx_idx_err = np.max(cx_errors[cx_idx])
+        mid_cx_err = (max_cx_err-min_cx_err)/2 + min_cx_err
         fig.update_xaxes(row=2, col=7,
+                         tickfont=dict(size=13),
                          tickvals=[0, 49, 99],
-                         ticktext=['%.2e' % 10**min_cx_idx_err,
-                                   '%.2e' % 10**((max_cx_idx_err-min_cx_idx_err)/2+min_cx_idx_err),
-                                   '%.2e' % 10**max_cx_idx_err])
+                         ticktext=['{:.2}\u22C510<sup>{}</sup>'.format(
+                             *_pow10_coeffs(min_cx_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(mid_cx_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(max_cx_err))])
 
     hover_text = "<b>Qubit {idx}</b>"
     hover_text += "<br>M<sub>err</sub> = {err}"
@@ -519,7 +522,7 @@ def system_error_map(backend,
 
     # Makes the subplot titles smaller than the 16pt default
     for ann in fig['layout']['annotations']:
-        ann['font'] = dict(size=13)
+        ann['font'] = dict(size=14)
 
     title_text = "{} error map".format(backend.name()) if show_title else ''
     fig.update_layout(showlegend=False,
@@ -561,7 +564,7 @@ def _pow10_coeffs(x):
     """
     z = abs(x) + (1 if x < 0 else 0)
     y = (-1*np.sign(x)*np.floor(z))
-    return (10**x)*10**y, -y
+    return (10**x)*10**y, int(-y)
 
 def _round_log10_exp(x, rnd='up', decimals=1):
     """Rounds a log10 number to the nearest value
