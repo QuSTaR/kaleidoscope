@@ -405,12 +405,12 @@ def system_error_map(backend,
                          col=1,
                          tickfont=dict(size=13),
                          tickvals=[0, 49, 99],
-                         ticktext= ['{:.2}\u22C510<sup>{}</sup>'.format(
+                         ticktext=['{:.2}\u22C510<sup>{}</sup>'.format(
                              *_pow10_coeffs(min_1q_err)),
-                                    '{:.2}\u22C510<sup>{}</sup>'.format(
-                                        *_pow10_coeffs(mid_1q_err)),
-                                    '{:.2}\u22C510<sup>{}</sup>'.format(
-                                        *_pow10_coeffs(max_1q_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(mid_1q_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(max_1q_err)),
                                    ])
 
     # CX error rate colorbar
@@ -544,8 +544,7 @@ def system_error_map(backend,
         return PlotlyWidget(fig)
     return PlotlyFigure(fig)
 
-
-def _round_up(n, decimals=0): 
+def _round_up(n, decimals=0):
     multiplier = 10**decimals
     return np.ceil(n*multiplier) / multiplier
 
@@ -582,7 +581,7 @@ def _round_log10_exp(x, rnd='up', decimals=1):
     """
     normed_value, y = _pow10_coeffs(x)
     if rnd == 'up':
-        normed_value = _round_up(normed_value, decimals=decimals) 
+        normed_value = _round_up(normed_value, decimals=decimals)
     elif rnd == 'down':
-        normed_value = _round_down(normed_value, decimals=decimals) 
+        normed_value = _round_down(normed_value, decimals=decimals)
     return np.log10(normed_value)+y
