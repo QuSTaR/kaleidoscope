@@ -544,13 +544,16 @@ def system_error_map(backend,
         return PlotlyWidget(fig)
     return PlotlyFigure(fig)
 
+
 def _round_up(n, decimals=0):
     multiplier = 10**decimals
     return np.ceil(n*multiplier) / multiplier
 
+
 def _round_down(n, decimals=0):
     multiplier = 10**decimals
     return np.floor(n*multiplier) / multiplier
+
 
 def _pow10_coeffs(x):
     """Returns the coefficient A of a number A*10**y
@@ -566,6 +569,7 @@ def _pow10_coeffs(x):
     z = abs(x) + (1 if x < 0 else 0)
     y = (-1*np.sign(x)*np.floor(z))
     return (10**x)*10**y, int(-y)
+
 
 def _round_log10_exp(x, rnd='up', decimals=1):
     """Rounds a log10 number to the nearest value
