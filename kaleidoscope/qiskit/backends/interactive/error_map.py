@@ -160,14 +160,14 @@ def system_error_map(backend,
                 elif gpar.name == 'gate_length':
                     single_gate_times[_qubit] = gpar.value
 
-    # Convert to percent
+    # Convert to log10
     single_gate_errors = np.log10(np.asarray(single_gate_errors))
 
     avg_1q_err = np.mean(single_gate_errors)
-    max_1q_err = max(single_gate_errors)
+    max_1q_err = _round_log10_exp(np.max(single_gate_errors), rnd='up', decimals=1)
+    min_1q_err = _round_log10_exp(np.min(single_gate_errors), rnd='down', decimals=1)
 
-    single_norm = mpl.colors.Normalize(
-        vmin=min(single_gate_errors), vmax=max_1q_err)
+    single_norm = mpl.colors.Normalize(vmin=min_1q_err, vmax=max_1q_err)
 
     q_colors = [mpl.colors.rgb2hex(color_map(single_norm(err))) for err in single_gate_errors]
 
@@ -266,7 +266,8 @@ def system_error_map(backend,
                                 None, None]],
                         subplot_titles=("Readout error", None, right_meas_title,
                                         "SX error rate [Avg. {}]".format(
-                                            '%.2e' % 10**avg_1q_err),
+                                            '{:.2}\u22C510<sup>{}</sup>'.format(
+                                                *_pow10_coeffs(avg_1q_err))),
                                         cx_title)
                         )
 
@@ -381,8 +382,6 @@ def system_error_map(backend,
                      range=_range)
 
     # H error rate colorbar
-    min_1q_err = np.min(single_gate_errors)
-    max_1q_err = np.max(single_gate_errors)
     if n_qubits > 1:
         fig.append_trace(go.Heatmap(z=[np.linspace(min_1q_err,
                                                    max_1q_err, 100),
@@ -396,12 +395,19 @@ def system_error_map(backend,
                          col=1,
                          visible=False)
 
+        mid_1q_err = _round_log10_exp((max_1q_err-min_1q_err)/2+min_1q_err,
+                                      rnd='up', decimals=1)
+
         fig.update_xaxes(row=2,
                          col=1,
                          tickvals=[0, 49, 99],
-                         ticktext=['%.2e' % 10**min_1q_err,
-                                   '%.2e' % 10**((max_1q_err-min_1q_err)/2+min_1q_err),
-                                   '%.2e' % 10**max_1q_err])
+                         ticktext= ['{:.2}\u22C510<sup>{}</sup>'.format(
+                                        *_pow10_coeffs(min_1q_err)),
+                                    '{:.2}\u22C510<sup>{}</sup>'.format(
+                                        *_pow10_coeffs(mid_1q_err)),
+                                    '{:.2}\u22C510<sup>{}</sup>'.format(
+                                        *_pow10_coeffs(max_1q_err)),
+                                   ])
 
     # CX error rate colorbar
     if cmap and n_qubits > 1:
@@ -532,3 +538,46 @@ def system_error_map(backend,
     if as_widget:
         return PlotlyWidget(fig)
     return PlotlyFigure(fig)
+
+
+def _round_up(n, decimals=0): 
+    multiplier = 10**decimals
+    return np.ceil(n*multiplier) / multiplier
+
+def _round_down(n, decimals=0):
+    multiplier = 10**decimals
+    return np.floor(n*multiplier) / multiplier
+
+def _pow10_coeffs(x):
+    """Returns the coefficient A of a number A*10**y
+    as well as the exponent y.
+
+    Parameters:
+        x (float): Input number in log10.
+
+    Returns:
+        float: Normed value
+        int: The exponent.
+    """
+    z = abs(x) + (1 if x < 0 else 0)
+    y = (-1*np.sign(x)*np.floor(z))
+    return (10**x)*10**y, -y
+
+def _round_log10_exp(x, rnd='up', decimals=1):
+    """Rounds a log10 number to the nearest value
+    such that it can be cleanly written as A*10**y
+
+    Parameters:
+        x (float): Input number in log10.
+        rnd (str): Round 'up' or 'down'.
+        decimals (int): Number of decimals to round to.
+
+    Returns:
+        float: The adjusted value log10.
+    """
+    normed_value, y = _pow10_coeffs(x)
+    if rnd == 'up':
+        normed_value = _round_up(normed_value, decimals=decimals) 
+    elif rnd == 'down':
+        normed_value = _round_down(normed_value, decimals=decimals) 
+    return np.log10(normed_value)+y
