@@ -48,7 +48,7 @@ from kaleidoscope.colors.cmap import cmap_to_plotly
 
 
 def system_error_map(backend,
-                     figsize=(800, 500),
+                     figsize=(900, 600),
                      colormap=None,
                      background_color='white',
                      show_title=True,
@@ -322,7 +322,8 @@ def system_error_map(backend,
                                      color=line_colors[ind]),
                            hoverinfo='text',
                            hovertext=cx_str.format(
-                               err='%.2e' % 10**cx_errors[ind],
+                               err='{:.3}\u22C510<sup>{}</sup>'.format(
+                                   *_pow10_coeffs(cx_errors[ind])),
                                tau=np.round(cx_times[ind], 2))
                            ),
                 row=1, col=3)
@@ -342,7 +343,8 @@ def system_error_map(backend,
                                            t1=np.round(t1s[kk], 2),
                                            t2=np.round(t2s[kk], 2),
                                            anh=np.round(alphas[kk], 3) if alphas[kk] else 'NA',
-                                           err='%.2e' % 10**single_gate_errors[kk],
+                                           err='{:.3}\u22C510<sup>{}</sup>'.format(
+                                               *_pow10_coeffs(single_gate_errors[kk])),
                                            tau=np.round(single_gate_times[kk], 2)))
 
     if n_qubits > 20:
