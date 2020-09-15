@@ -355,10 +355,10 @@ def system_error_map(backend,
 
     qtext_color = []
     for ii in range(n_qubits):
-        if single_gate_errors[ii] > 0.8*max_1q_err:
-            qtext_color.append('black')
+        if abs((max_1q_err - single_gate_errors[ii])/max_1q_err) < 0.05:
+            qtext_color.append('#000000')
         else:
-            qtext_color.append('white')
+            qtext_color.append('#ffffff')
 
     fig.append_trace(go.Scatter(
         x=[d[1] for d in grid_data],
@@ -522,7 +522,7 @@ def system_error_map(backend,
 
     # Makes the subplot titles smaller than the 16pt default
     for ann in fig['layout']['annotations']:
-        ann['font'] = dict(size=14)
+        ann['font'] = dict(size=13)
 
     title_text = "{} error map".format(backend.name()) if show_title else ''
     fig.update_layout(showlegend=False,
