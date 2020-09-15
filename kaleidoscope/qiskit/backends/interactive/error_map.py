@@ -48,7 +48,7 @@ from kaleidoscope.colors.cmap import cmap_to_plotly
 
 
 def system_error_map(backend,
-                     figsize=(900, 600),
+                     figsize=(None, None),
                      colormap=None,
                      background_color='white',
                      show_title=True,
