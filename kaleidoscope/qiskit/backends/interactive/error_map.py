@@ -534,7 +534,7 @@ def system_error_map(backend,
                       title=dict(text=title_text, x=0.452),
                       title_font_size=20,
                       font=dict(color=text_color),
-                      margin=dict(t=60, l=0, r=40, b=0),
+                      margin=dict(t=60, l=0, r=0, b=0),
                       hoverlabel=dict(font_size=14,
                                       font_family="courier,monospace",
                                       align='left'
