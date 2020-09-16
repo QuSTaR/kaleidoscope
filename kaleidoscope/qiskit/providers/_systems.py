@@ -29,8 +29,7 @@
 """Module for easily getting IBMQ systems"""
 
 import warnings
-from qiskit import IBMQ
-from._config import get_default_provider
+from kaleidoscope.qiskit.providers import Account
 
 
 class KaleidoscopeSystemService():
@@ -47,9 +46,8 @@ class KaleidoscopeSystemService():
     def __init__(self):
         self._all_added_attr = None
         self._default_added_attr = None
-        self.all = KaleidoscopeSystemDispatcher()
-        self.default = KaleidoscopeSystemDispatcher()
-        self._default_provider = get_default_provider()
+        self.OTHER = KaleidoscopeSystemDispatcher()
+        self._default_provider = Account.get_default_provider()
         _system_loader(self)
 
     def __call__(self):
@@ -89,9 +87,9 @@ class KaleidoscopeSystemDispatcher():
 def _system_loader(service):
     """Attaches system dispatchers to the service
     """
-    if not any(IBMQ.providers()):
+    if not any(Account.providers()):
         try:
-            IBMQ.load_account()
+            Account.load_account()
         except Exception:  # pylint: disable=broad-except
             pass
     systems = _get_ibmq_systems()
@@ -118,10 +116,10 @@ def _system_loader(service):
                 setattr(all_dispatcher, pro_str, backend)
                 # is backend in default provider
                 if [hub, group, project] == default_provider:
-                    setattr(service.default, system_name, backend)
+                    setattr(service, system_name, backend)
                     default_added_attr.append(system_name)
 
-            setattr(service.all, 'get_'+system_name, all_dispatcher)
+            setattr(service.OTHER, 'get_'+system_name, all_dispatcher)
             all_added_attr.append(system_name)
 
     service._all_added_attr = all_added_attr
@@ -135,7 +133,7 @@ def _get_ibmq_systems():
         dict: A dict of all IBMQ systems that a user has access to.
     """
     ibmq_backends = {}
-    for pro in IBMQ.providers():
+    for pro in Account.providers():
         for back in pro.backends():
             if not back.configuration().simulator:
                 if ('alt' not in back.name()) \

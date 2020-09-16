@@ -7,6 +7,7 @@
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
 # of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+# pylint: disable=unused-argument
 
 """Configrc file functionality"""
 
@@ -16,7 +17,7 @@ from kaleidoscope.configrc import has_kal_rc, has_rc_key, write_rc_key, get_rc_k
 from kaleidoscope.errors import KaleidoscopeError
 
 
-def set_default_provider(provider, overwrite=False):
+def set_default_provider(self, provider, overwrite=False):
     """Set the default provider for IBM Q systems.
 
     Parameters:
@@ -52,7 +53,7 @@ def set_default_provider(provider, overwrite=False):
     Systems._refresh()
 
 
-def get_default_provider():
+def get_default_provider(self):
     """Return the default provider, if any.
 
     Returns:
