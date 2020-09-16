@@ -543,8 +543,8 @@ def system_error_map(backend,
 
 
 def find_text_color(hex_str):
-    """Determine if text color should be black or white
-    based on background color.
+    """Return correct text color, black or white,
+    based on the background color.
 
     Parameters:
         hex_str (str): Hex color
