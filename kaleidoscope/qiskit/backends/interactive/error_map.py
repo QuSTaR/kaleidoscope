@@ -357,10 +357,7 @@ def system_error_map(backend,
 
     qtext_color = []
     for ii in range(n_qubits):
-        if abs((max_1q_err - single_gate_errors[ii])/max_1q_err) < 0.05:
-            qtext_color.append('#000000')
-        else:
-            qtext_color.append('#ffffff')
+        qtext_color.append(find_text_color(q_colors[ii]))
 
     fig.append_trace(go.Scatter(
         x=[d[1] for d in grid_data],
@@ -543,6 +540,23 @@ def system_error_map(backend,
     if as_widget:
         return PlotlyWidget(fig)
     return PlotlyFigure(fig)
+
+
+def find_text_color(hex_str):
+    """Determine if text color should be black or white
+    based on background color.
+
+    Parameters:
+        hex_str (str): Hex color
+
+    Returns:
+        str: Output hex color for text
+    """
+    (r, g, b) = (hex_str[1:3], hex_str[3:5], hex_str[5:])
+    color = "#ffffff"
+    if 1 - (int(r, 16) * 0.299 + int(g, 16) * 0.587 + int(b, 16) * 0.114) / 255 < 0.5:
+        color = '#000000'
+    return color
 
 
 def _round_up(n, decimals=0):
