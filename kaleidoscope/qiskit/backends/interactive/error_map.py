@@ -38,22 +38,21 @@ from plotly.subplots import make_subplots
 from qiskit.providers.models.backendproperties import BackendProperties
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.test.mock.fake_backend import FakeBackend
-import colorcet as cc
 from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.qiskit.providers._simulators import DeviceSimulator
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
 from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
-from kaleidoscope.colors import BMY_PLOTLY
-
-CMAP = cc.cm.bmy
+from kaleidoscope.colors import BMW
+from kaleidoscope.colors.cmap import cmap_to_plotly
 
 
 def system_error_map(backend,
-                     figsize=(800, 500),
+                     figsize=(None, None),
+                     colormap=None,
+                     background_color='white',
                      show_title=True,
                      remove_badcal_edges=True,
-                     background_color='white',
                      as_widget=False):
     """Plot the error map of a device.
 
@@ -61,9 +60,10 @@ def system_error_map(backend,
         backend (IBMQBackend or FakeBackend or DeviceSimulator or Properties): Plot the error map
                                                                                for a backend.
         figsize (tuple, optional): Figure size in pixels.
+        colormap (Colormap): A matplotlib colormap.
+        background_color (str, optional): Background color, either 'white' or 'black'.
         show_title (bool, optional): Whether to show figure title.
         remove_badcal_edges (bool, optional): Whether to remove bad CX gate calibration data.
-        background_color (str, optional): Background color, either 'white' or 'black'.
         as_widget (bool, optional): ``True`` if the figure is to be returned as a ``PlotlyWidget``.
             Otherwise the figure is to be returned as a ``PlotlyFigure``.
 
@@ -91,15 +91,22 @@ def system_error_map(backend,
     if isinstance(backend, BackendProperties):
         backend = properties_to_pseudobackend(backend)
 
+    CMAP = BMW
+    PLOTLY_CMAP = cmap_to_plotly(CMAP)
+
+    if colormap is not None:
+        CMAP = colormap
+        PLOTLY_CMAP = cmap_to_plotly(CMAP)
+
     meas_text_color = '#000000'
     if background_color == 'white':
         color_map = CMAP
         text_color = '#000000'
-        plotly_cmap = BMY_PLOTLY
+        plotly_cmap = PLOTLY_CMAP
     elif background_color == 'black':
         color_map = CMAP
         text_color = '#FFFFFF'
-        plotly_cmap = BMY_PLOTLY
+        plotly_cmap = PLOTLY_CMAP
     else:
         raise KaleidoscopeError(
             '"{}" is not a valid background_color selection.'.format(background_color))
@@ -124,36 +131,43 @@ def system_error_map(backend,
         out = PlotlyWidget(fig)
         return out
 
-    props = backend.properties().to_dict()
+    props = backend.properties()
 
-    t1s = []
-    t2s = []
-    for qubit_props in props['qubits']:
-        count = 0
+    freqs = [0] * n_qubits
+    t1s = [0] * n_qubits
+    t2s = [0] * n_qubits
+    alphas = [0] * n_qubits
+    for idx, qubit_props in enumerate(props.qubits):
         for item in qubit_props:
-            if item['name'] == 'T1':
-                t1s.append(item['value'])
-                count += 1
-            elif item['name'] == 'T2':
-                t2s.append(item['value'])
-                count += 1
-            if count == 2:
-                break
+            if item.name == 'frequency':
+                freqs[idx] = item.value
+            elif item.name == 'T1':
+                t1s[idx] = item.value
+            elif item.name == 'T2':
+                t2s[idx] = item.value
+            elif item.name == 'anharmonicity':
+                alphas[idx] = item.value
 
     # U2 error rates
     single_gate_errors = [0]*n_qubits
-    for gate in props['gates']:
-        if gate['gate'] == 'u2':
-            _qubit = gate['qubits'][0]
-            single_gate_errors[_qubit] = gate['parameters'][0]['value']
+    single_gate_times = [0]*n_qubits
+    for gate in props.gates:
+        if gate.gate == 'u2':
+            _qubit = gate.qubits[0]
+            for gpar in gate.parameters:
+                if gpar.name == 'gate_error':
+                    single_gate_errors[_qubit] = gpar.value
+                elif gpar.name == 'gate_length':
+                    single_gate_times[_qubit] = gpar.value
 
-    # Convert to percent
-    single_gate_errors = 100 * np.asarray(single_gate_errors)
+    # Convert to log10
+    single_gate_errors = np.log10(np.asarray(single_gate_errors))
+
     avg_1q_err = np.mean(single_gate_errors)
-    max_1q_err = max(single_gate_errors)
+    max_1q_err = _round_log10_exp(np.max(single_gate_errors), rnd='up', decimals=1)
+    min_1q_err = _round_log10_exp(np.min(single_gate_errors), rnd='down', decimals=1)
 
-    single_norm = mpl.colors.Normalize(
-        vmin=min(single_gate_errors), vmax=max_1q_err)
+    single_norm = mpl.colors.Normalize(vmin=min_1q_err, vmax=max_1q_err)
 
     q_colors = [mpl.colors.rgb2hex(color_map(single_norm(err))) for err in single_gate_errors]
 
@@ -161,45 +175,55 @@ def system_error_map(backend,
         line_colors = []
         if cmap:
             cx_errors = []
+            cx_times = []
             for line in cmap:
-                for item in props['gates']:
-                    if item['qubits'] == line:
-                        cx_errors.append(item['parameters'][0]['value'])
-                        break
-                else:
-                    continue
+                for gate in props.gates:
+                    if gate.qubits == line:
+                        for gpar in gate.parameters:
+                            if gpar.name == 'gate_error':
+                                cx_errors.append(gpar.value)
+                            elif gpar.name == 'gate_length':
+                                cx_times.append(gpar.value)
 
-            # Convert to percent
-            cx_errors = 100 * np.asarray(cx_errors)
+            # Convert to array
+            cx_errors = np.log10(np.asarray(cx_errors))
 
             # remove bad cx edges
             if remove_badcal_edges:
-                cx_idx = np.where(cx_errors != 100.0)[0]
+                cx_idx = np.where(cx_errors != 0.0)[0]
             else:
                 cx_idx = np.arange(len(cx_errors))
 
             avg_cx_err = np.mean(cx_errors[cx_idx])
+            min_cx_err = _round_log10_exp(np.min(cx_errors[cx_idx]), rnd='down', decimals=1)
+            max_cx_err = _round_log10_exp(np.max(cx_errors[cx_idx]), rnd='up', decimals=1)
 
-            cx_norm = mpl.colors.Normalize(
-                vmin=min(cx_errors[cx_idx]), vmax=max(cx_errors[cx_idx]))
+            cx_norm = mpl.colors.Normalize(vmin=min_cx_err, vmax=max_cx_err)
 
             for err in cx_errors:
-                if err != 100.0 or not remove_badcal_edges:
+                if err != 0.0 or not remove_badcal_edges:
                     line_colors.append(mpl.colors.rgb2hex(color_map(cx_norm(err))))
                 else:
                     line_colors.append("#ff0000")
 
     # Measurement errors
-    read_err = []
-
+    read_err = [0] * n_qubits
+    p01_err = [0] * n_qubits
+    p10_err = [0] * n_qubits
     for qubit in range(n_qubits):
-        for item in props['qubits'][qubit]:
-            if item['name'] == 'readout_error':
-                read_err.append(item['value'])
+        for item in props.qubits[qubit]:
+            if item.name == 'readout_error':
+                read_err[qubit] = item.value
+            elif item.name == 'prob_meas0_prep1':
+                p01_err[qubit] = item.value
+            elif item.name == 'prob_meas1_prep0':
+                p10_err[qubit] = item.value
 
-    read_err = 100 * np.asarray(read_err)
+    read_err = np.asarray(read_err)
     avg_read_err = np.mean(read_err)
     max_read_err = np.max(read_err)
+    p01_err = np.asarray(p01_err)
+    p10_err = np.asarray(p10_err)
 
     if n_qubits < 10:
         num_left = n_qubits
@@ -222,12 +246,13 @@ def system_error_map(backend,
             offset = 1
 
     if n_qubits > 5:
-        right_meas_title = "Readout Error (%)"
+        right_meas_title = "Readout error"
     else:
         right_meas_title = None
 
     if cmap:
-        cx_title = "CNOT Error Rate [Avg. {}%]".format(np.round(avg_cx_err, 3))
+        cx_title = "CNOT error rate [Avg. {}]".format('{:.2}\u22C510<sup>{}</sup>'.format(
+            *_pow10_coeffs(avg_cx_err)))
     else:
         cx_title = None
     fig = make_subplots(rows=2, cols=11, row_heights=[0.95, 0.05],
@@ -240,9 +265,10 @@ def system_error_map(backend,
                                 None, None, None,
                                 {"colspan": 4}, None, None,
                                 None, None]],
-                        subplot_titles=("Readout Error (%)", None, right_meas_title,
-                                        "Hadamard Error Rate [Avg. {}%]".format(
-                                            np.round(avg_1q_err, 3)),
+                        subplot_titles=("Readout error", None, right_meas_title,
+                                        "SX error rate [Avg. {}]".format(
+                                            '{:.2}\u22C510<sup>{}</sup>'.format(
+                                                *_pow10_coeffs(avg_1q_err))),
                                         cx_title)
                         )
 
@@ -286,6 +312,8 @@ def system_error_map(backend,
                     x_mid = (x_end - x_start) / 2 + x_start
                     y_mid = (y_end - y_start) / 2 + y_start
 
+            cx_str = 'cnot<sub>err</sub> = {err}'
+            cx_str += '<br>&#120591;<sub>cx</sub>     = {tau} ns'
             fig.append_trace(
                 go.Scatter(x=[x_start, x_mid, x_end],
                            y=[-y_start, -y_mid, -y_end],
@@ -293,20 +321,31 @@ def system_error_map(backend,
                            line=dict(width=6,
                                      color=line_colors[ind]),
                            hoverinfo='text',
-                           hovertext='CX<sub>err</sub>{B}_{A} = {err} %'.format(
-                               A=edge[0], B=edge[1], err=np.round(cx_errors[ind], 3))
+                           hovertext=cx_str.format(
+                               err='{:.3}\u22C510<sup>{}</sup>'.format(
+                                   *_pow10_coeffs(cx_errors[ind])),
+                               tau=np.round(cx_times[ind], 2))
                            ),
                 row=1, col=3)
 
     # Add the qubits themselves
     qubit_text = []
-    qubit_str = "<b>Qubit {}</b><br>H<sub>err</sub> = {} %"
-    qubit_str += "<br>T1 = {} \u03BCs<br>T2 = {} \u03BCs"
+    qubit_str = "<b>Qubit {idx}</b>"
+    qubit_str += "<br>freq = {freq} GHz"
+    qubit_str += "<br>T<sub>1</sub>   = {t1} \u03BCs"
+    qubit_str += "<br>T<sub>2</sub>   = {t2} \u03BCs"
+    qubit_str += "<br>&#945;    = {anh} GHz"
+    qubit_str += "<br>sx<sub>err</sub> = {err}"
+    qubit_str += "<br>&#120591;<sub>sx</sub>   = {tau} ns"
     for kk in range(n_qubits):
-        qubit_text.append(qubit_str.format(kk,
-                                           np.round(single_gate_errors[kk], 3),
-                                           np.round(t1s[kk], 2),
-                                           np.round(t2s[kk], 2)))
+        qubit_text.append(qubit_str.format(idx=kk,
+                                           freq=np.round(freqs[kk], 5),
+                                           t1=np.round(t1s[kk], 2),
+                                           t2=np.round(t2s[kk], 2),
+                                           anh=np.round(alphas[kk], 3) if alphas[kk] else 'NA',
+                                           err='{:.3}\u22C510<sup>{}</sup>'.format(
+                                               *_pow10_coeffs(single_gate_errors[kk])),
+                                           tau=np.round(single_gate_times[kk], 2)))
 
     if n_qubits > 20:
         qubit_size = 23
@@ -318,10 +357,7 @@ def system_error_map(backend,
 
     qtext_color = []
     for ii in range(n_qubits):
-        if single_gate_errors[ii] > 0.8*max_1q_err:
-            qtext_color.append('black')
-        else:
-            qtext_color.append('white')
+        qtext_color.append(find_text_color(q_colors[ii]))
 
     fig.append_trace(go.Scatter(
         x=[d[1] for d in grid_data],
@@ -346,8 +382,6 @@ def system_error_map(backend,
                      range=_range)
 
     # H error rate colorbar
-    min_1q_err = min(single_gate_errors)
-    max_1q_err = max(single_gate_errors)
     if n_qubits > 1:
         fig.append_trace(go.Heatmap(z=[np.linspace(min_1q_err,
                                                    max_1q_err, 100),
@@ -361,17 +395,23 @@ def system_error_map(backend,
                          col=1,
                          visible=False)
 
+        mid_1q_err = _round_log10_exp((max_1q_err-min_1q_err)/2+min_1q_err,
+                                      rnd='up', decimals=1)
+
         fig.update_xaxes(row=2,
                          col=1,
+                         tickfont=dict(size=13),
                          tickvals=[0, 49, 99],
-                         ticktext=[np.round(min_1q_err, 3),
-                                   np.round((max_1q_err-min_1q_err)/2+min_1q_err, 3),
-                                   np.round(max_1q_err, 3)])
+                         ticktext=['{:.2}\u22C510<sup>{}</sup>'.format(
+                             *_pow10_coeffs(min_1q_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(mid_1q_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(max_1q_err)),
+                                   ])
 
     # CX error rate colorbar
     if cmap and n_qubits > 1:
-        min_cx_err = min(cx_errors)
-        max_cx_err = max(cx_errors)
         fig.append_trace(go.Heatmap(z=[np.linspace(min_cx_err,
                                                    max_cx_err, 100),
                                        np.linspace(min_cx_err,
@@ -382,15 +422,21 @@ def system_error_map(backend,
 
         fig.update_yaxes(row=2, col=7, visible=False)
 
-        min_cx_idx_err = min(cx_errors[cx_idx])
-        max_cx_idx_err = max(cx_errors[cx_idx])
+        mid_cx_err = (max_cx_err-min_cx_err)/2 + min_cx_err
         fig.update_xaxes(row=2, col=7,
+                         tickfont=dict(size=13),
                          tickvals=[0, 49, 99],
-                         ticktext=[np.round(min_cx_idx_err, 3),
-                                   np.round((max_cx_idx_err-min_cx_idx_err)/2+min_cx_idx_err, 3),
-                                   np.round(max_cx_idx_err, 3)])
+                         ticktext=['{:.2}\u22C510<sup>{}</sup>'.format(
+                             *_pow10_coeffs(min_cx_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(mid_cx_err)),
+                                   '{:.2}\u22C510<sup>{}</sup>'.format(
+                                       *_pow10_coeffs(max_cx_err))])
 
-    hover_text = "<b>Qubit {}</b><br>M<sub>err</sub> = {} %"
+    hover_text = "<b>Qubit {idx}</b>"
+    hover_text += "<br>M<sub>err</sub> = {err}"
+    hover_text += "<br>P<sub>0|1</sub> = {p01}"
+    hover_text += "<br>P<sub>1|0</sub> = {p10}"
     # Add the left side meas errors
     for kk in range(num_left-1, -1, -1):
         fig.append_trace(go.Bar(x=[read_err[kk]], y=[kk],
@@ -398,8 +444,10 @@ def system_error_map(backend,
                                 marker=dict(color='#c7c7c5'),
                                 hoverinfo="text",
                                 hoverlabel=dict(font=dict(color=meas_text_color)),
-                                hovertext=[hover_text.format(kk,
-                                                             np.round(read_err[kk], 3)
+                                hovertext=[hover_text.format(idx=kk,
+                                                             err=np.round(read_err[kk], 4),
+                                                             p01=np.round(p01_err[kk], 4),
+                                                             p10=np.round(p10_err[kk], 4)
                                                              )]
                                 ),
                          row=1, col=1)
@@ -435,8 +483,12 @@ def system_error_map(backend,
                                     marker=dict(color='#c7c7c5'),
                                     hoverinfo="text",
                                     hoverlabel=dict(font=dict(color=meas_text_color)),
-                                    hovertext=[hover_text.format(kk,
-                                                                 np.round(read_err[kk], 3))]
+                                    hovertext=[hover_text.format(idx=kk,
+                                                                 err=np.round(read_err[kk], 4),
+                                                                 p01=np.round(p01_err[kk], 4),
+                                                                 p10=np.round(p10_err[kk], 4)
+                                                                 )
+                                               ]
                                     ),
                              row=1, col=9)
 
@@ -471,7 +523,7 @@ def system_error_map(backend,
     for ann in fig['layout']['annotations']:
         ann['font'] = dict(size=13)
 
-    title_text = "{} Error Map".format(backend.name()) if show_title else ''
+    title_text = "{} error map".format(backend.name()) if show_title else ''
     fig.update_layout(showlegend=False,
                       plot_bgcolor=background_color,
                       paper_bgcolor=background_color,
@@ -479,8 +531,75 @@ def system_error_map(backend,
                       title=dict(text=title_text, x=0.452),
                       title_font_size=20,
                       font=dict(color=text_color),
-                      margin=dict(t=60, l=0, r=40, b=0)
+                      margin=dict(t=60, l=0, r=0, b=0),
+                      hoverlabel=dict(font_size=14,
+                                      font_family="courier,monospace",
+                                      align='left'
+                                      )
                       )
     if as_widget:
         return PlotlyWidget(fig)
     return PlotlyFigure(fig)
+
+
+def find_text_color(hex_str):
+    """Return correct text color, black or white,
+    based on the background color.
+
+    Parameters:
+        hex_str (str): Hex color
+
+    Returns:
+        str: Output hex color for text
+    """
+    (r, g, b) = (hex_str[1:3], hex_str[3:5], hex_str[5:])
+    color = "#ffffff"
+    if 1 - (int(r, 16) * 0.299 + int(g, 16) * 0.587 + int(b, 16) * 0.114) / 255 < 0.5:
+        color = '#000000'
+    return color
+
+
+def _round_up(n, decimals=0):
+    multiplier = 10**decimals
+    return np.ceil(n*multiplier) / multiplier
+
+
+def _round_down(n, decimals=0):
+    multiplier = 10**decimals
+    return np.floor(n*multiplier) / multiplier
+
+
+def _pow10_coeffs(x):
+    """Returns the coefficient A of a number A*10**y
+    as well as the exponent y.
+
+    Parameters:
+        x (float): Input number in log10.
+
+    Returns:
+        float: Normed value
+        int: The exponent.
+    """
+    z = abs(x) + (1 if x < 0 else 0)
+    y = (-1*np.sign(x)*np.floor(z))
+    return (10**x)*10**y, int(-y)
+
+
+def _round_log10_exp(x, rnd='up', decimals=1):
+    """Rounds a log10 number to the nearest value
+    such that it can be cleanly written as A*10**y
+
+    Parameters:
+        x (float): Input number in log10.
+        rnd (str): Round 'up' or 'down'.
+        decimals (int): Number of decimals to round to.
+
+    Returns:
+        float: The adjusted value log10.
+    """
+    normed_value, y = _pow10_coeffs(x)
+    if rnd == 'up':
+        normed_value = _round_up(normed_value, decimals=decimals)
+    elif rnd == 'down':
+        normed_value = _round_down(normed_value, decimals=decimals)
+    return np.log10(normed_value)+y
