@@ -12,7 +12,6 @@
 """Configrc file functionality"""
 
 from qiskit.providers.ibmq.accountprovider import AccountProvider
-from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from kaleidoscope.configrc import has_kal_rc, has_rc_key, write_rc_key, get_rc_key
 from kaleidoscope.errors import KaleidoscopeError
 
@@ -22,6 +21,8 @@ def set_default_provider(self, hub=None, group=None, project=None, overwrite=Fal
 
     Parameters:
         hub (str, AccountProvider): A hub name, or Qiskit provider instance
+        group (str): A group name.
+        project (str): A project name.
         overwrite (bool): Overwrite if already set.
 
     Raises:
@@ -37,7 +38,7 @@ def set_default_provider(self, hub=None, group=None, project=None, overwrite=Fal
         pro = self.providers(hub, group, project)
         if not pro:
             raise KaleidoscopeError('Input hub, group, and/or project not valid.')
-        elif len(pro) > 1:
+        if len(pro) > 1:
             raise KaleidoscopeError('Inputs do not specify a unique provider.')
         pro = pro[0]
         hub = pro.credentials.hub

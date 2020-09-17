@@ -36,7 +36,8 @@ from qiskit import Aer
 from qiskit.providers import BaseBackend
 from qiskit.providers.aer.noise import NoiseModel
 from qiskit.providers.models import QasmBackendConfiguration, PulseBackendConfiguration
-from kaleidoscope.qiskit.providers import Account
+from ._account import Account
+
 
 def _version2int(version_string):
     str_list = version_string.split(

@@ -97,7 +97,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
 
             from qiskit import *
             import kaleidoscope.qiskit
-            from kaleidoscope.qiskit.providers import Simulators
+            from kaleidoscope.qiskit.services import Simulators
             from kaleidoscope.interactive import probability_distribution
 
             sim = Simulators.aer_vigo_simulator

@@ -7,7 +7,7 @@ QuantumCircuit addons
    import numpy as np
    from qiskit import QuantumCircuit
    import kaleidoscope.qiskit
-   from kaleidoscope.qiskit.providers import Simulators
+   from kaleidoscope.qiskit.services import Simulators
 
 
 Get Bloch components of a statevector

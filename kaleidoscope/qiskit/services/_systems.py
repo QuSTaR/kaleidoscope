@@ -29,7 +29,7 @@
 """Module for easily getting IBMQ systems"""
 
 import warnings
-from kaleidoscope.qiskit.providers import Account
+from ._account import Account
 
 
 class KaleidoscopeSystemService():

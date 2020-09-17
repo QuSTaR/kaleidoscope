@@ -11,21 +11,10 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=wrong-import-position
 
 """Qiskit providers"""
-from qiskit.exceptions import QiskitError
-from qiskit.providers.ibmq.ibmqfactory import IBMQFactory
-from ._config import set_default_provider, get_default_provider
-
-IBMQFactory.set_default_provider = set_default_provider
-IBMQFactory.get_default_provider = get_default_provider
-
-Account = IBMQFactory()
-try:
-    Account.load_account()
-except QiskitError:
-    pass
-
+from ._account import Account
 from ._systems import KaleidoscopeSystemService as _KALSysService
 from ._simulators import KaleidoscopeSimulatorService as _KALSimService
 Systems = _KALSysService()

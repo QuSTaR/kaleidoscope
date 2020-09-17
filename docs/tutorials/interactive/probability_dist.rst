@@ -7,7 +7,7 @@ Probability distribution
    import numpy as np
    from qiskit import QuantumCircuit
    import kaleidoscope.qiskit
-   from kaleidoscope.qiskit.providers import Simulators
+   from kaleidoscope.qiskit.services import Simulators
    from kaleidoscope import probability_distribution
 
 

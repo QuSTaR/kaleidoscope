@@ -8,7 +8,7 @@ QuantumCircuit addons
    from qiskit import QuantumCircuit
    import kaleidoscope.qiskit
    from kaleidoscope import probability_distribution
-   from kaleidoscope.qiskit.providers import Simulators
+   from kaleidoscope.qiskit.services import Simulators
 
 
 Adding a target backend to a circuit
