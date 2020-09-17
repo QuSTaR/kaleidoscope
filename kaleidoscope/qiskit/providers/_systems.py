@@ -46,7 +46,6 @@ class KaleidoscopeSystemService():
     def __init__(self):
         self._all_added_attr = None
         self._default_added_attr = None
-        self.OTHER = KaleidoscopeSystemDispatcher()
         self._default_provider = Account.get_default_provider()
         _system_loader(self)
 
@@ -56,19 +55,16 @@ class KaleidoscopeSystemService():
     def _refresh(self):
         """Refresh the service in place.
         """
-        for key in self._all_added_attr:
-            try:
-                del self.all.__dict__['get_'+key]
-            except AttributeError:
-                pass
         for key in self._default_added_attr:
             try:
-                del self.default.__dict__[key]
+                del self.__dict__[key]
             except AttributeError:
                 pass
         self._all_added_attr = []
         self._default_added_attr = []
-        self._default_provider = get_default_provider()
+        self._default_provider = Account.get_default_provider()
+        if hasattr(self, 'OTHER'):
+            delattr(self, 'OTHER')
         _system_loader(self)
 
 
@@ -96,6 +92,10 @@ def _system_loader(service):
     all_added_attr = []
     default_added_attr = []
     default_provider = service._default_provider.split('//') if service._default_provider else []
+
+    num_providers = len(Account.providers())
+    if num_providers > 1:
+        setattr(service, 'OTHER', KaleidoscopeSystemDispatcher())
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         for name, back_list in systems.items():
@@ -119,7 +119,8 @@ def _system_loader(service):
                     setattr(service, system_name, backend)
                     default_added_attr.append(system_name)
 
-            setattr(service.OTHER, 'get_'+system_name, all_dispatcher)
+            if num_providers > 1:
+                setattr(service.OTHER, 'get_'+system_name, all_dispatcher)
             all_added_attr.append(system_name)
 
     service._all_added_attr = all_added_attr

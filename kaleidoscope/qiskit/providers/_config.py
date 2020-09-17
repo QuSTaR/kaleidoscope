@@ -17,11 +17,11 @@ from kaleidoscope.configrc import has_kal_rc, has_rc_key, write_rc_key, get_rc_k
 from kaleidoscope.errors import KaleidoscopeError
 
 
-def set_default_provider(self, provider, overwrite=False):
+def set_default_provider(self, hub=None, group=None, project=None, overwrite=False):
     """Set the default provider for IBM Q systems.
 
     Parameters:
-        provider (AccountProvider, IBMQBackend): A Qiskit provider instance or IBMQbackend.
+        hub (str, AccountProvider): A hub name, or Qiskit provider instance
         overwrite (bool): Overwrite if already set.
 
     Raises:
@@ -29,13 +29,21 @@ def set_default_provider(self, provider, overwrite=False):
         KaleidoscopeError: Could not load kalrc.
         KaleidoscopeError: Default provider found and overwrite=False.
     """
-    if not isinstance(provider, (AccountProvider, IBMQBackend)):
-        raise KaleidoscopeError('Input provider is not a valid instance.')
-    if isinstance(provider, IBMQBackend):
-        provider = provider.provider()
-    hub = provider.credentials.hub
-    group = provider.credentials.group
-    project = provider.credentials.project
+    if isinstance(hub, AccountProvider):
+        hub = hub.credentials.hub
+        group = hub.credentials.group
+        project = hub.credentials.project
+    else:
+        pro = self.providers(hub, group, project)
+        if not pro:
+            raise KaleidoscopeError('Input hub, group, and/or project not valid.')
+        elif len(pro) > 1:
+            raise KaleidoscopeError('Inputs do not specify a unique provider.')
+        pro = pro[0]
+        hub = pro.credentials.hub
+        group = pro.credentials.group
+        project = pro.credentials.project
+
     provider_str = "//".join([hub, group, project])
 
     has_rc, rc_file = has_kal_rc()
