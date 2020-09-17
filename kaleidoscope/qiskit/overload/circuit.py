@@ -46,7 +46,7 @@ def rshift(self, target):
 
             from qiskit import QuantumCircuit
             import kaleidoscope.qiskit
-            from kaleidoscope.qiskit.providers import Simulators
+            from kaleidoscope.qiskit.services import Simulators
 
             qc = QuantumCircuit(5, 5) >> Simulators.aer_vigo_simulator
             print(qc.target_backend)
@@ -165,7 +165,7 @@ def transpile(self, backend=None, **kwargs):
 
             from qiskit import QuantumCircuit
             import kaleidoscope.qiskit
-            from kaleidoscope.qiskit.providers import Simulators
+            from kaleidoscope.qiskit.services import Simulators
 
             qc = QuantumCircuit(5) >> Simulators.aer_vigo_simulator
             qc.h(0)
