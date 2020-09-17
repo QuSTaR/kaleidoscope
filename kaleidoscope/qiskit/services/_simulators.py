@@ -32,10 +32,11 @@ import time
 import warnings
 import threading
 import qiskit
-from qiskit import IBMQ, Aer
+from qiskit import Aer
 from qiskit.providers import BaseBackend
 from qiskit.providers.aer.noise import NoiseModel
 from qiskit.providers.models import QasmBackendConfiguration, PulseBackendConfiguration
+from ._account import Account
 
 
 def _version2int(version_string):
@@ -90,7 +91,7 @@ class DeviceSimulator(BaseBackend):
         if local:
             self.sim = Aer.get_backend('qasm_simulator')
         else:
-            pro = IBMQ.get_provider(hub='ibm-q', group='open', project='main')
+            pro = Account.get_provider(hub='ibm-q', group='open', project='main')
             self.sim = pro.backends.ibmq_qasm_simulator
 
     def properties(self):
@@ -113,7 +114,7 @@ def get_ibmq_systems():
         dict: A dict of all IBMQ systems that a user has access to.
     """
     ibmq_backends = {}
-    for pro in IBMQ.providers():
+    for pro in Account.providers():
         for back in pro.backends():
             if not back.configuration().simulator:
                 if back.name() not in ibmq_backends \
@@ -124,25 +125,26 @@ def get_ibmq_systems():
 
 
 def _system_loader(service):
-    if not any(IBMQ.providers()):
+    if not any(Account.providers()):
         try:
-            IBMQ.load_account()
+            Account.load_account()
         except Exception:  # pylint: disable=broad-except
             pass
     systems = get_ibmq_systems()
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         for name, system in systems.items():
-            new_name = '{}_'+name.split('_')[-1]+'_simulator'
-            system = DeviceSimulator(system,
-                                     new_name.format('aer'),
-                                     local=True)
-            system2 = DeviceSimulator(system,
-                                      new_name.format('ibmq'),
-                                      local=False)
+            if system.properties():
+                new_name = '{}_'+name.split('_')[-1]+'_simulator'
+                system = DeviceSimulator(system,
+                                         new_name.format('aer'),
+                                         local=True)
+                system2 = DeviceSimulator(system,
+                                          new_name.format('ibmq'),
+                                          local=False)
 
-            setattr(service, system.name(), system)
-            setattr(service, system2.name(), system2)
+                setattr(service, system.name(), system)
+                setattr(service, system2.name(), system2)
 
     service.refreshing = False
 

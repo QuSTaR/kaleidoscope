@@ -12,6 +12,8 @@
 """Kaleidoscope"""
 
 import os
+import kaleidoscope.configrc as config
+from kaleidoscope.errors import KaleidoscopeError
 
 # This is needed because version info is only generated
 # at setup.  This should only fall back when not using
@@ -31,3 +33,13 @@ except ImportError:
     HAS_QISKIT = False
 else:
     HAS_QISKIT = True
+
+# Look for config file
+has_rc, rc_file = config.has_kal_rc()
+if not has_rc:
+    config.generate_kal_rc()
+    has_rc, rc_file = config.has_kal_rc()
+    # Write open provider as default when generating new file.
+    config.write_rc_key(rc_file, 'default_provider', 'ibm-q//open//main')
+if not has_rc:
+    raise KaleidoscopeError('Could not find or generate kalrc file.')
