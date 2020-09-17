@@ -15,6 +15,19 @@ from qiskit.exceptions import QiskitError
 from qiskit.providers.ibmq.ibmqfactory import IBMQFactory
 from ._config import set_default_provider, get_default_provider
 
+
+def refresh(self):
+    """Refresh the Account object
+    """
+    self.disable_account()
+    self.load_account()
+
+    # Trigger a refresh of the Systems provider
+    from kaleidoscope.qiskit.services import Systems  # pylint: disable=cyclic-import
+    Systems._refresh()
+
+
+IBMQFactory.refresh = refresh
 IBMQFactory.set_default_provider = set_default_provider
 IBMQFactory.get_default_provider = get_default_provider
 
