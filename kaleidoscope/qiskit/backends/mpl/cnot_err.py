@@ -176,7 +176,7 @@ def cnot_error_density(backends,
     plt.xticks(fontsize=18)
     plt.xlim(xlim)
     plt.tick_params(axis='x', colors=text_color)
-    plt.xlabel('Gate Error (%)', fontsize=18, color=text_color)
+    plt.xlabel('Gate Error', fontsize=18, color=text_color)
     plt.title('CNOT Error Distributions', fontsize=18, color=text_color)
     fig.tight_layout()
 
