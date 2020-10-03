@@ -30,6 +30,7 @@ from kaleidoscope.colors.cmap import cmap_to_plotly
 
 NORM = plt.Normalize(-1, 1)
 
+
 def bloch_sunburst(vec, colormap):
     """Create a Bloch disc using a Plotly sunburst.
 
