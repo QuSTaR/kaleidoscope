@@ -46,6 +46,20 @@ From a Qiskit statevector using kaleidoscope overloading
    bloch_disc(qc.statevector())
 
 
+Change colormap
+===============
+
+.. jupyter-execute::
+
+   from matplotlib.cm import cool_r
+   
+   qc = QuantumCircuit(1)
+   qc.ry(1, 0)
+   qc.t(0)
+
+   bloch_disc(qc.statevector(), colormap=cool_r)
+
+
 Adding a title
 ==============
 
