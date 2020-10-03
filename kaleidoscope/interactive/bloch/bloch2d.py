@@ -25,19 +25,17 @@ from kaleidoscope.utils import pi_check
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
 from kaleidoscope.interactive.bloch.utils import bloch_components
 from kaleidoscope.colors.utils import hex_to_rgb
-from kaleidoscope.colors import BMW
+from kaleidoscope.colors import BJY
 from kaleidoscope.colors.cmap import cmap_to_plotly
 
 NORM = plt.Normalize(-1, 1)
-CMAP = BMW
-PLOTLY_CMAP = cmap_to_plotly(CMAP)
 
-
-def bloch_sunburst(vec):
+def bloch_sunburst(vec, colormap):
     """Create a Bloch disc using a Plotly sunburst.
 
     Parameters:
         vec (ndarray): A vector of Bloch components.
+        colormap (Colormap): A matplotlib colormap.
 
     Returns:
         go.Figure: A Plotly figure instance,
@@ -60,7 +58,7 @@ def bloch_sunburst(vec):
     if th < 0:
         th = 2*np.pi+th
 
-    z_hex = matplotlib.colors.rgb2hex(CMAP(NORM(vec[2])))
+    z_hex = matplotlib.colors.rgb2hex(colormap(NORM(vec[2])))
 
     z_color = "rgba({},{},{},{})".format(*hex_to_rgb(z_hex), 0.95*vec_norm+0.05)
     ring_color = "rgba({},{},{},{})".format(*hex_to_rgb('#000000'), 0.95*vec_norm+0.05)
@@ -89,7 +87,7 @@ def bloch_sunburst(vec):
     return bloch
 
 
-def bloch_disc(rho, figsize=None, title=None, as_widget=False):
+def bloch_disc(rho, figsize=None, title=None, colormap=None, as_widget=False):
     """Plot a Bloch disc for a single qubit.
 
     Parameters:
@@ -97,6 +95,7 @@ def bloch_disc(rho, figsize=None, title=None, as_widget=False):
                                                                or Bloch components.
         figsize (tuple): Figure size in pixels, default=(200,275).
         title (str): Plot title.
+        colormap (Colormap): A matplotlib colormap.
         as_widget (bool): Return plot as a widget.
 
     Returns:
@@ -134,6 +133,9 @@ def bloch_disc(rho, figsize=None, title=None, as_widget=False):
     else:
         title = [""] + ["\u2329Z\u232A"]
 
+    if colormap is None:
+        colormap = BJY
+
     if figsize is None:
         figsize = (200, 275)
 
@@ -142,7 +144,7 @@ def bloch_disc(rho, figsize=None, title=None, as_widget=False):
                         subplot_titles=title,
                         column_widths=[0.93]+[0.07])
 
-    fig.add_trace(bloch_sunburst(comp[0]), row=1, col=1)
+    fig.add_trace(bloch_sunburst(comp[0], colormap), row=1, col=1)
 
     zval = comp[0][2]
     zrange = [k*np.ones(1) for k in np.linspace(-1, 1, 100)]
@@ -163,6 +165,7 @@ def bloch_disc(rho, figsize=None, title=None, as_widget=False):
 
     ticktext = [ticktext[kk] for kk in idx_sort]
 
+    PLOTLY_CMAP = cmap_to_plotly(colormap)
     fig.append_trace(go.Heatmap(z=zrange,
                                 colorscale=PLOTLY_CMAP,
                                 showscale=False,
@@ -194,13 +197,14 @@ def bloch_disc(rho, figsize=None, title=None, as_widget=False):
     return PlotlyFigure(fig)
 
 
-def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
+def bloch_multi_disc(rho, figsize=None, titles=True, colormap=None, as_widget=False):
     """Plot Bloch discs for a multi-qubit state.
 
     Parameters:
         rho (list or ndarray or Statevector or DensityMatrix): Input statevector, density matrix.
         figsize (tuple): Figure size in pixels, default=(125*num_qubits, 150).
         titles (bool): Display titles.
+        colormap (Colormap): A matplotlib colormap.
         as_widget (bool): Return plot as a widget.
 
     Returns:
@@ -249,15 +253,19 @@ def bloch_multi_disc(rho, figsize=None, titles=True, as_widget=False):
     else:
         titles = ["" for k in range(num)] + ["\u2329Z\u232A"]
 
+    if colormap is None:
+        colormap = BJY
+
     fig = make_subplots(rows=nrows, cols=ncols+1,
                         specs=[[{'type': 'domain'}]*ncols+[{'type': 'xy'}]],
                         subplot_titles=titles,
                         column_widths=[0.95/num]*num+[0.05])
 
     for jj in range(num):
-        fig.add_trace(bloch_sunburst(comp[jj]), row=1, col=jj+1)
+        fig.add_trace(bloch_sunburst(comp[jj], colormap), row=1, col=jj+1)
 
     zrange = [k*np.ones(1) for k in np.linspace(-1, 1, 100)]
+    PLOTLY_CMAP = cmap_to_plotly(colormap)
     fig.append_trace(go.Heatmap(z=zrange,
                                 colorscale=PLOTLY_CMAP,
                                 showscale=False,

@@ -19,6 +19,8 @@ import colorcet as cc
 BMW = cc.cm.bmw
 # The Black->Blue->Cyan sequential color map
 KBC = cc.cm.kbc
+# The Black->Gray->Yellow diverging color map
+BJY = cc.cm.bjy
 
 # Dark2 from colorbrewer
 DARK2 = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a",
