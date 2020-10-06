@@ -15,6 +15,7 @@
 """Interactive Qsphere"""
 
 import numpy as np
+import scipy.linalg as la
 import scipy.special as spsp
 import matplotlib as mpl
 import colorcet as cc
@@ -64,6 +65,23 @@ def qsphere(state, state_labels=True,
     if state.__class__.__name__ in ['Statevector'] \
             and 'qiskit' in state.__class__.__module__:
         state = state.data
+
+    if state.__class__.__name__ in ['DensityMatrix'] \
+            and 'qiskit' in state.__class__.__module__:
+
+        if not abs(1-state.data.dot(state.data).trace().real) < 1e-14:
+            raise KaleidoscopeError('Input density matrix is not a pure state.')
+
+        state = la.eigh(state.data, subset_by_value=[0.99, 1.01])[1].ravel()
+
+    if len(state.shape) == 2:
+        if not abs(1-state.dot(state).trace().real) < 1e-14:
+            raise KaleidoscopeError('Input density matrix is not a pure state.')
+
+        state = la.eigh(state, subset_by_value=[0.99, 1.01])[1].ravel()
+
+    if len(state.shape) != 1:
+        raise KaleidoscopeError('Input state is not 1D array.')
 
     if np.log2(state.shape[0]) % 1:
         raise KaleidoscopeError('Input is not a valid statevector of qubits.')
