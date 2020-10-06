@@ -25,13 +25,16 @@ from .plotly_wrapper import PlotlyWidget, PlotlyFigure
 from .bloch.primitives import BSPHERE
 
 
-def qsphere(state, state_labels=True, as_widget=False):
+def qsphere(state, state_labels=True, 
+            state_labels_kind='bits',
+            as_widget=False):
     """Plots a statevector of qubits using the qsphere
     representation.
 
     Parameters:
         state (ndarray): Statevector as 1D NumPy array.
         state_labels (bool): Show state labels.
+        state_labels_kind (str): 'bits' (default) or 'ints'.
         as_widget (bool): Return a widget instance.
 
     Returns:
@@ -106,6 +109,9 @@ def qsphere(state, state_labels=True, as_widget=False):
             phase = phase if phase >= 0 else phase+2*np.pi
             colors.append(mpl.colors.rgb2hex(cmap(norm(phase))))
             marker_sizes.append(np.sqrt(prob) * 40)
+
+    if state_labels_kind == 'ints':
+        bases = [int(kk, 2) for kk in bases]
 
     # Output figure instance
     fig = make_subplots(rows=5, cols=5,

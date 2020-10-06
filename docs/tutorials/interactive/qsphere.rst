@@ -46,3 +46,11 @@ Turn off state labels
 .. jupyter-execute::
 
    qsphere(qc.statevector(), state_labels=False)
+
+
+Integer state labels
+====================
+
+.. jupyter-execute::
+
+   qsphere(qc.statevector(), state_labels_kind='ints')
