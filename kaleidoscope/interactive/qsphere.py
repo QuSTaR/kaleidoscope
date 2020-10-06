@@ -25,7 +25,7 @@ from .plotly_wrapper import PlotlyWidget, PlotlyFigure
 from .bloch.primitives import BSPHERE
 
 
-def qsphere(state, state_labels=True, 
+def qsphere(state, state_labels=True,
             state_labels_kind='bits',
             as_widget=False):
     """Plots a statevector of qubits using the qsphere
