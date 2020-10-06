@@ -15,12 +15,10 @@
 """Tests for Bloch routines"""
 
 import pytest
-import numpy as np
 from qiskit import QuantumCircuit
 from qiskit. quantum_info import DensityMatrix, partial_trace
 from kaleidoscope import qsphere
 from kaleidoscope.errors import KaleidoscopeError
-import kaleidoscope.qiskit
 
 
 def test_qsphere_bad_dm_input():
