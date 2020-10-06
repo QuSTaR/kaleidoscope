@@ -6,7 +6,7 @@ Qsphere
 
    import numpy as np
    from qiskit import QuantumCircuit
-   from qiskit.quantum_info import Statevector, DensityMatrix
+   from qiskit.quantum_info import Statevector, DensityMatrix, partial_trace
    import kaleidoscope.qiskit
    from kaleidoscope import qsphere
 
