@@ -69,13 +69,13 @@ def qsphere(state, state_labels=True, as_widget=False):
         if not abs(1-state.data.dot(state.data).trace().real) < 1e-14:
             raise KaleidoscopeError('Input density matrix is not a pure state.')
 
-        state = la.eigh(state.data, subset_by_value= [0.99, 1.01])[1].ravel()
+        state = la.eigh(state.data, subset_by_value=[0.99, 1.01])[1].ravel()
 
     if len(state.shape) == 2:
         if not abs(1-state.dot(state).trace().real) < 1e-14:
             raise KaleidoscopeError('Input density matrix is not a pure state.')
 
-        state = la.eigh(state, subset_by_value= [0.99, 1.01])[1].ravel()
+        state = la.eigh(state, subset_by_value=[0.99, 1.01])[1].ravel()
 
     if len(state.shape) != 1:
         raise KaleidoscopeError('Input state is not 1D array.')

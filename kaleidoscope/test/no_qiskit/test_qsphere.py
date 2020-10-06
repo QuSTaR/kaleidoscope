@@ -26,9 +26,9 @@ def test_qsphere_bad_dm_input():
 
     qc = QuantumCircuit(3)
     qc.h(0)
-    qc.cx(0,1)
-    qc.cx(1,2)
+    qc.cx(0, 1)
+    qc.cx(1, 2)
     dm = DensityMatrix.from_instruction(qc)
-    pdm = partial_trace(dm, [0,1])
+    pdm = partial_trace(dm, [0, 1])
     with pytest.raises(KaleidoscopeError):
         assert qsphere(pdm)
