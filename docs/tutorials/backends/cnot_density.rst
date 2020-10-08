@@ -20,9 +20,8 @@ Simple multi-system comparison
    backends = []
    backends.append(provider.backends.ibmq_vigo)
    backends.append(provider.backends.ibmq_ourense)
-   backends.append(provider.backends.ibmq_london)
-   backends.append(provider.backends.ibmq_burlington)
-   backends.append(provider.backends.ibmq_essex)
+   backends.append(provider.backends.ibmq_valencia)
+   backends.append(provider.backends.ibmq_santiago)
 
    cnot_error_density(backends)
 

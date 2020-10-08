@@ -33,7 +33,7 @@ import functools
 from collections import Counter, OrderedDict
 import numpy as np
 import plotly.graph_objects as go
-from kaleidoscope.colors import DARK2
+from kaleidoscope.colors import COLORS1, COLORS2, COLORS3, COLORS4, COLORS5, COLORS14
 from .plotly_wrapper import PlotlyWidget, PlotlyFigure
 
 
@@ -150,7 +150,18 @@ def probability_distribution(data, figsize=(None, None), colors=None,
 
     # Set bar colors
     if colors is None:
-        colors = DARK2
+        if len(data) == 1:
+            colors = COLORS1
+        elif len(data) == 2:
+            colors = COLORS2
+        elif len(data) == 3:
+            colors = COLORS3
+        elif len(data) == 4:
+            colors = COLORS4
+        elif len(data) == 5:
+            colors = COLORS5
+        else:
+            colors = COLORS14
     elif isinstance(colors, str):
         colors = [colors]
 

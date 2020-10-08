@@ -16,7 +16,7 @@
 
 import numpy as np
 import plotly.graph_objects as go
-from kaleidoscope.colors import DARK2
+from kaleidoscope.colors import COLORS14
 from kaleidoscope.colors.utils import hex_to_rgb
 from kaleidoscope.interactive.plotly_wrapper import PlotlyFigure, PlotlyWidget
 from kaleidoscope.interactive.bloch.primitives import (BSPHERE, LATS, LONGS, ZAXIS, YAXIS, XAXIS,
@@ -108,14 +108,14 @@ def bloch_sphere(vectors=None,
         if points_color is None:
             # passed a single point
             if nest_depth == 1:
-                points_color = [DARK2[0]]
+                points_color = [COLORS14[0]]
             elif nest_depth == 2:
-                points_color = [[DARK2[kk % 8] for kk in range(len(points[0]))]]
+                points_color = [[COLORS14[kk % 14] for kk in range(len(points[0]))]]
 
             elif nest_depth == 3:
                 points_color = []
                 for kk, pnts in enumerate(points):
-                    points_color.append(DARK2[kk % 8]*len(pnts))
+                    points_color.append(COLORS14[kk % 14]*len(pnts))
 
         if nest_depth == 2 and nest_level(points_color) == 1:
             points_color = [points_color]
@@ -186,7 +186,7 @@ def bloch_sphere(vectors=None,
                     raise KaleidoscopeError("Invalid vector input.")
 
         if vectors_color is None:
-            vectors_color = [DARK2[kk+idx % 8] for kk in range(len(new_vecs))]
+            vectors_color = [COLORS14[kk+idx % 14] for kk in range(len(new_vecs))]
 
         if isinstance(vectors_color, str):
             vectors_color = [vectors_color]
