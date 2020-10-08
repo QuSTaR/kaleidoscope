@@ -107,4 +107,4 @@ Custom state labels
    probability_distribution([counts, counts2],
                             title='Counts distributions',
                             legend=['counts1', 'counts2'],
-                            state_labels=["\U0001D70B/4", 'chips'])
+                            state_labels=["𝜋/4", 'chips'])
