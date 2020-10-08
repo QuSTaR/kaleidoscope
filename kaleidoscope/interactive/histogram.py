@@ -33,7 +33,9 @@ import functools
 from collections import Counter, OrderedDict
 import numpy as np
 import plotly.graph_objects as go
+from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.colors import COLORS1, COLORS2, COLORS3, COLORS4, COLORS5, COLORS14
+from kaleidoscope.colors.utils import find_text_color
 from .plotly_wrapper import PlotlyWidget, PlotlyFigure
 
 
@@ -61,7 +63,11 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                              number_to_keep=None,
                              sort='asc', target_string=None,
                              legend=None, bar_labels=True,
-                             title=None, background_color='white',
+                             state_labels_kind='bits',
+                             state_labels = None,
+                             title=None,
+                             plot_background_color='#e5e0df',
+                             background_color='#e5e0df',
                              as_widget=False):
     """Interactive histogram plot of probability distributions.
 
@@ -78,9 +84,11 @@ def probability_distribution(data, figsize=(None, None), colors=None,
             The number of entries must match the length of data (if data is a
             list or 1 if it's a dict)
         bar_labels (bool): Label each bar in histogram with probability value.
+        state_labels_kind (str): 'bits' (default) or 'ints'.
+        state_labels (list): A list of custom state labels.
         title (str): A string to use for the plot title.
-        background_color (str): Set the background color to 'white'
-                                or 'black'.
+        plot_background_color (str): Set the background color behind histogram bars.
+        background_color (str): Set the background color for axes.
         as_widget (bool): Return figure as an ipywidget.
 
     Returns:
@@ -128,12 +136,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                          "number of input executions: %s" %
                          (len(legend), len(data)))
 
-    if background_color == 'white':
-        text_color = 'black'
-    elif background_color == 'black':
-        text_color = 'white'
-    else:
-        raise ValueError('Invalid background_color selection.')
+    text_color = find_text_color(background_color)
 
     labels = list(sorted(
         functools.reduce(lambda x, y: x.union(y.keys()), data, set())))
@@ -180,6 +183,13 @@ def probability_distribution(data, figsize=(None, None), colors=None,
             yvals.append(val)
 
         labels = list(labels_dict.keys())
+        if state_labels_kind == 'ints':
+            labels = [int(label,2) for label in labels]
+        if state_labels:
+            if len(state_labels) != len(labels):
+                raise KaleidoscopeError('Number of input state labels does not match data.')
+            labels = state_labels
+
         hover_template = "<b>{x}</b><br>P = {y}"
         hover_text = [hover_template.format(x=labels[kk],
                                             y=np.round(yvals[kk], 3)) for kk in range(len(yvals))]
@@ -195,15 +205,23 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                              textposition='auto'
                              ))
 
+    xaxes_labels = list(labels_dict.keys())
+    if state_labels_kind == 'ints':
+        xaxes_labels = [int(label,2) for label in xaxes_labels]
+    if state_labels:
+        if len(state_labels) != len(xaxes_labels):
+            raise KaleidoscopeError('Number of input state labels does not match data.')
+        xaxes_labels = state_labels
+
     fig.update_xaxes(tickvals=list(range(len(labels_dict.keys()))),
-                     ticktext=list(labels_dict.keys()),
+                     ticktext=xaxes_labels,
                      tickfont_size=14,
                      showline=True, linewidth=1,
                      linecolor=text_color if text_color == 'white' else None,
                      )
 
     fig.update_yaxes(title='Probability',
-                     titlefont_size=18,
+                     titlefont_size=16,
                      tickfont_size=14,
                      showline=True, linewidth=1,
                      linecolor=text_color if text_color == 'white' else None,
@@ -213,10 +231,10 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                       showlegend=(legend is not None),
                       width=figsize[0],
                       height=figsize[1],
+                      plot_bgcolor=plot_background_color,
                       paper_bgcolor=background_color,
-                      margin=dict(t=40, l=50, r=10, b=10),
                       title=dict(text=title, x=0.5),
-                      title_font_size=20,
+                      title_font_size=18,
                       font=dict(color=text_color),
                       )
     if as_widget:
