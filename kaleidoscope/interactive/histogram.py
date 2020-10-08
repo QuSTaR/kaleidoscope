@@ -64,7 +64,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                              sort='asc', target_string=None,
                              legend=None, bar_labels=True,
                              state_labels_kind='bits',
-                             state_labels = None,
+                             state_labels=None,
                              title=None,
                              plot_background_color='#e5e0df',
                              background_color='#e5e0df',
@@ -99,6 +99,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
         ValueError: When legend is provided and the length doesn't
                     match the input data.
         ImportError: When failed to load plotly.
+        KaleidoscopeError: When state labels is not correct length.
 
     Example:
         .. jupyter-execute::
@@ -184,7 +185,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
 
         labels = list(labels_dict.keys())
         if state_labels_kind == 'ints':
-            labels = [int(label,2) for label in labels]
+            labels = [int(label, 2) for label in labels]
         if state_labels:
             if len(state_labels) != len(labels):
                 raise KaleidoscopeError('Number of input state labels does not match data.')
@@ -207,7 +208,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
 
     xaxes_labels = list(labels_dict.keys())
     if state_labels_kind == 'ints':
-        xaxes_labels = [int(label,2) for label in xaxes_labels]
+        xaxes_labels = [int(label, 2) for label in xaxes_labels]
     if state_labels:
         if len(state_labels) != len(xaxes_labels):
             raise KaleidoscopeError('Number of input state labels does not match data.')
