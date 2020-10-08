@@ -63,7 +63,7 @@ Change background color
 
 .. jupyter-execute:: 
 
-   probability_distribution(counts, background_color='black')
+   probability_distribution(counts, background_color='#000000')
 
 
 Multiple distributions
@@ -88,3 +88,23 @@ Multiple distribution colors
 
    probability_distribution([counts, counts2], legend=['Vigo sim', 'Rome sim'],
                             colors=['#2c3d63', '#f2d58f'])
+
+
+Custom state labels
+===================
+
+.. jupyter-execute:: 
+
+   qc = QuantumCircuit(3)
+   qc.h(0)
+   qc.cx(0,1)
+   qc.cx(0,2)
+   qc.measure_all()
+
+   counts = qc.sample().result_when_done()
+   counts2 = qc.sample().result_when_done()
+
+   probability_distribution([counts, counts2],
+                            title='Counts distributions',
+                            legend=['counts1', 'counts2'],
+                            state_labels=["𝜋/4", 'chips'])

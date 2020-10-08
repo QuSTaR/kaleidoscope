@@ -39,6 +39,7 @@ from qiskit.providers.models.backendproperties import BackendProperties
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.test.mock.fake_backend import FakeBackend
 from kaleidoscope.errors import KaleidoscopeError
+from kaleidoscope.colors.utils import find_text_color
 from kaleidoscope.qiskit.services._simulators import DeviceSimulator
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
 from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
@@ -540,23 +541,6 @@ def system_error_map(backend,
     if as_widget:
         return PlotlyWidget(fig)
     return PlotlyFigure(fig)
-
-
-def find_text_color(hex_str):
-    """Return correct text color, black or white,
-    based on the background color.
-
-    Parameters:
-        hex_str (str): Hex color
-
-    Returns:
-        str: Output hex color for text
-    """
-    (r, g, b) = (hex_str[1:3], hex_str[3:5], hex_str[5:])
-    color = "#ffffff"
-    if 1 - (int(r, 16) * 0.299 + int(g, 16) * 0.587 + int(b, 16) * 0.114) / 255 < 0.5:
-        color = '#000000'
-    return color
 
 
 def _round_up(n, decimals=0):
