@@ -20,7 +20,7 @@ from scipy.stats import gaussian_kde
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from qiskit.providers.models.backendproperties import BackendProperties
-from kaleidoscope.colors import DARK2
+from kaleidoscope.colors import COLORS1, COLORS2, COLORS3, COLORS4, COLORS5, COLORS14
 from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 
@@ -65,9 +65,8 @@ def cnot_error_density(backends,
             backends = []
             backends.append(provider.backends.ibmq_vigo)
             backends.append(provider.backends.ibmq_ourense)
-            backends.append(provider.backends.ibmq_london)
-            backends.append(provider.backends.ibmq_burlington)
-            backends.append(provider.backends.ibmq_essex)
+            backends.append(provider.backends.ibmq_valencia)
+            backends.append(provider.backends.ibmq_santiago)
 
             cnot_error_density(backends)
     """
@@ -100,7 +99,18 @@ def cnot_error_density(backends,
         offset = 100 if len(backends) > 3 else 200
     offset = -offset
     if colors is None:
-        colors = [DARK2[kk % 8] for kk in range(len(backends))]
+        if len(backends) == 1:
+            colors = COLORS1
+        elif len(backends) == 2:
+            colors = COLORS2
+        elif len(backends) == 3:
+            colors = COLORS3
+        elif len(backends) == 4:
+            colors = COLORS4
+        elif len(backends) == 5:
+            colors = COLORS5
+        else:
+            colors = [COLORS14[kk % 14] for kk in range(len(backends))]
     else:
         if len(colors) != len(backends):
             raise KaleidoscopeError('Number of colors does not match number of backends.')
