@@ -134,7 +134,7 @@ class HasPulse(Comparator):
             data (BackendCollection): Collection of IBMQbackend instances
         """
         self._full_data = data
-        super().__init__([back for back in data if back.configuration().open_pulse == True])
+        super().__init__([back for back in data if back.configuration().open_pulse])
 
     def __eq__(self, other):
         if (other is not None) and not isinstance(other, (bool, int)):
