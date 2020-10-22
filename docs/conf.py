@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# This code is part of Qiskit.
-#
-# (C) Copyright IBM 2018.
+# (C) Copyright IBM 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -68,7 +66,7 @@ extensions = [
     'jupyter_sphinx'
 ]
 html_static_path = ['_static']
-#templates_path = ['_templates']
+#stemplates_path = ['_templates']
 html_css_files = ['gallery.css']
 
 exclude_patterns = ['_build', '**.ipynb_checkpoints']

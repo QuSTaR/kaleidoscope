@@ -35,4 +35,5 @@ Kaleidoscope.
 
   Interactive figures<apidocs/interactive>
   IBM Quantum system visualizations<apidocs/backends>
+  Qiskit services <apidocs/services>
   Qiskit addons <apidocs/overload>

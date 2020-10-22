@@ -167,7 +167,7 @@ class KaleidoscopeSimulatorService():
     .. jupyter-execute::
 
         import kaleidoscope as kal
-        sim = kal.simulators.aer_vigo_simulator
+        sim = kal.qiskit.services.Simulators.aer_vigo_simulator
 
     Attributes:
         refreshing (bool): Is the service refreshing its simulators async.
