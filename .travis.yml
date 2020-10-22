@@ -79,8 +79,8 @@ _stage_linux_38: &stage_linux_38_docs
 
 _stage_osx_38: &stage_osx_38
   os: osx
-  name: "Python 3.8, OSX 10.13, XCode 10"
-  osx_image: xcode10
+  name: "Python 3.8, OSX 10.15, XCode 12"
+  osx_image: xcode12
   language: generic
   # change dir
   before_script:
