@@ -30,7 +30,8 @@
 
 import warnings
 from ._account import Account
-from .filters.backend import (NumQubits, HasPulse, QVCompare, IsOperational)
+from .filters.backend import (NumQubits, HasPulse, QVCompare, IsOperational,
+                              MaxCircuits, MaxShots)
 
 
 class KaleidoscopeSystemService():
@@ -42,8 +43,21 @@ class KaleidoscopeSystemService():
     This class is much simpler than the simulators
     one because there is no processing that needs
     to be done async.
-    """
 
+    Allows for filtering backends by the following:
+
+    - `num_qubits` : Filter against an integer number of qubits.
+
+    - `open_pulse` : Boolean filter for open_pulse capability.
+
+    - `quantum_volume` : Filter against an integer number for quantum volume.
+
+    - `operational` : Boolean filter for system operational status.
+
+    - `max_circuits` : Filter against integer number of max circuits.
+
+    - `max_shots` : Filter against integer number of max shots.
+    """
     def __init__(self):
         self._all_added_attr = None
         self._default_added_attr = None
@@ -63,6 +77,10 @@ class KaleidoscopeSystemService():
             return QVCompare(self._default_added_backends)
         elif name == 'operational':
             return IsOperational(self._default_added_backends)
+        elif name == 'max_circuits':
+            return MaxCircuits(self._default_added_backends)
+        elif name == 'max_shots':
+            return MaxShots(self._default_added_backends)
         else:
             raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
 
@@ -90,6 +108,20 @@ class KaleidoscopeSystemDispatcher():
 
     All attributes are dynamically attached to
     this class.
+
+    Allows for filtering backends by the following:
+
+    - `num_qubits` : Filter against an integer number of qubits.
+
+    - `open_pulse` : Boolean filter for open_pulse capability.
+
+    - `quantum_volume` : Filter against an integer number for quantum volume.
+
+    - `operational` : Boolean filter for system operational status.
+
+    - `max_circuits` : Filter against integer number of max circuits.
+
+    - `max_shots` : Filter against integer number of max shots.
     """
     def __call__(self):
         return self._added_backends
@@ -103,6 +135,10 @@ class KaleidoscopeSystemDispatcher():
             return QVCompare(self._added_backends)
         elif name == 'operational':
             return IsOperational(self._added_backends)
+        elif name == 'max_circuits':
+            return MaxCircuits(self._added_backends)
+        elif name == 'max_shots':
+            return MaxShots(self._added_backends)
         else:
             raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
 

@@ -193,6 +193,86 @@ class NumQubits(Comparator):
         return BackendCollection(out)
 
 
+class MaxCircuits(Comparator):
+    """Implements a number of max circuits comparator.
+    """
+    def __eq__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_experiments == other]
+        return BackendCollection(out)
+
+    def __ne__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_experiments != other]
+        return BackendCollection(out)
+
+    def __gt__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_experiments > other]
+        return BackendCollection(out)
+
+    def __ge__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_experiments >= other]
+        return BackendCollection(out)
+
+    def __lt__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_experiments < other]
+        return BackendCollection(out)
+
+    def __le__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_experiments <= other]
+        return BackendCollection(out)
+
+
+class MaxShots(Comparator):
+    """Implements a number of max shots comparator.
+    """
+    def __eq__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_shots == other]
+        return BackendCollection(out)
+
+    def __ne__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_shots != other]
+        return BackendCollection(out)
+
+    def __gt__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_shots > other]
+        return BackendCollection(out)
+
+    def __ge__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_shots >= other]
+        return BackendCollection(out)
+
+    def __lt__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_shots < other]
+        return BackendCollection(out)
+
+    def __le__(self, other):
+        if not isinstance(other, int):
+            raise KaleidoscopeError('Can only compare against ints')
+        out = [back for back in self if back.configuration().max_shots <= other]
+        return BackendCollection(out)
+
+
 class QVCompare(Comparator):
     """Implements a quantum volume comparator.
     """
