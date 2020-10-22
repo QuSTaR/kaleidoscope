@@ -175,7 +175,8 @@ def _system_loader(service):
                 pro_str = "{}_{}_{}".format(hub, group, project)
                 pro_str = pro_str.replace('-', 'ー')
                 setattr(all_dispatcher, pro_str, backend)
-                service.ALL._added_backends.append(backend)
+                if num_providers > 1:
+                    service.ALL._added_backends.append(backend)
                 # is backend in default provider
                 if [hub, group, project] == default_provider:
                     setattr(service, system_name, backend)
