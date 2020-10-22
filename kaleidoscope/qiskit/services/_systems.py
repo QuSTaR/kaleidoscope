@@ -30,6 +30,7 @@
 
 import warnings
 from ._account import Account
+from .filters.backend import (NumQubits, HasPulse, QVCompare, IsOperational)
 
 
 class KaleidoscopeSystemService():
@@ -46,11 +47,24 @@ class KaleidoscopeSystemService():
     def __init__(self):
         self._all_added_attr = None
         self._default_added_attr = None
+        self._default_added_backends = None
         self._default_provider = Account.get_default_provider()
         _system_loader(self)
 
     def __call__(self):
-        return list(vars(self).keys())
+        return self._default_added_backends
+
+    def __getattr__(self, name):
+        if name == 'num_qubits':
+            return NumQubits(self._default_added_backends)
+        elif name == 'open_pulse':
+            return HasPulse(self._default_added_backends)
+        elif name == 'quantum_volume':
+            return QVCompare(self._default_added_backends)
+        elif name == 'operational':
+            return IsOperational(self._default_added_backends)
+        else:
+            raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
 
     def _refresh(self):
         """Refresh the service in place.
@@ -62,9 +76,10 @@ class KaleidoscopeSystemService():
                 pass
         self._all_added_attr = []
         self._default_added_attr = []
+        self._default_added_backends = []
         self._default_provider = Account.get_default_provider()
-        if hasattr(self, 'OTHER'):
-            delattr(self, 'OTHER')
+        if hasattr(self, 'ALL'):
+            delattr(self, 'ALL')
         _system_loader(self)
 
 
@@ -77,7 +92,19 @@ class KaleidoscopeSystemDispatcher():
     this class.
     """
     def __call__(self):
-        return list(vars(self).keys())
+        return self._added_backends
+
+    def __getattr__(self, name):
+        if name == 'num_qubits':
+            return NumQubits(self._added_backends)
+        elif name == 'open_pulse':
+            return HasPulse(self._added_backends)
+        elif name == 'quantum_volume':
+            return QVCompare(self._added_backends)
+        elif name == 'operational':
+            return IsOperational(self._added_backends)
+        else:
+            raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
 
 
 def _system_loader(service):
@@ -91,11 +118,13 @@ def _system_loader(service):
     systems = _get_ibmq_systems()
     all_added_attr = []
     default_added_attr = []
+    default_added_backends = []
     default_provider = service._default_provider.split('//') if service._default_provider else []
 
     num_providers = len(Account.providers())
     if num_providers > 1:
-        setattr(service, 'OTHER', KaleidoscopeSystemDispatcher())
+        setattr(service, 'ALL', KaleidoscopeSystemDispatcher())
+        setattr(service.ALL, '_added_backends', [])
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         for name, back_list in systems.items():
@@ -107,24 +136,23 @@ def _system_loader(service):
                 hub = backend.hub
                 group = backend.group
                 project = backend.project
-                max_shots = backend._configuration.max_shots
-                max_circuits = backend._configuration.max_experiments
-                pulse = '_P' if backend._configuration.open_pulse else ''
-                pro_str = "𖼯{}_{}{}𖼞{}_{}_{}".format(max_circuits, max_shots, pulse,
-                                                     hub, group, project)
+                pro_str = "{}_{}_{}".format(hub, group, project)
                 pro_str = pro_str.replace('-', 'ー')
                 setattr(all_dispatcher, pro_str, backend)
+                service.ALL._added_backends.append(backend)
                 # is backend in default provider
                 if [hub, group, project] == default_provider:
                     setattr(service, system_name, backend)
                     default_added_attr.append(system_name)
+                    default_added_backends.append(backend)
 
             if num_providers > 1:
-                setattr(service.OTHER, 'get_'+system_name, all_dispatcher)
+                setattr(service.ALL, 'get_'+system_name, all_dispatcher)
             all_added_attr.append(system_name)
 
     service._all_added_attr = all_added_attr
     service._default_added_attr = default_added_attr
+    service._default_added_backends = default_added_backends
 
 
 def _get_ibmq_systems():
