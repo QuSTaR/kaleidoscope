@@ -13,15 +13,4 @@
 # that they have been altered from the originals.
 # pylint: disable=wrong-import-position
 
-"""Qiskit specific functionality"""
-
-from kaleidoscope import HAS_QISKIT
-from kaleidoscope.errors import KaleidoscopeError
-
-if not HAS_QISKIT:
-    raise KaleidoscopeError('Must install qiskit-terra, qiskit-aer, and qiskit-ibmq-provider.')
-
-import kaleidoscope.qiskit.overload
-from .backends.mpl import *
-from .backends.interactive import system_error_map, system_gate_map
-from .services import Account, Systems, Simulators
+"""Filtering module"""

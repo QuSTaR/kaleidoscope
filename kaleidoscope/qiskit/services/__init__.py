@@ -13,9 +13,24 @@
 # that they have been altered from the originals.
 # pylint: disable=wrong-import-position
 
-"""Qiskit providers"""
+"""
+==================================================================
+IBM Quantum Services (:mod:`kaleidoscope.qiskit.services`)
+==================================================================
+
+.. currentmodule:: kaleidoscope.qiskit.services
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   Account
+   KaleidoscopeSystemService
+   KaleidoscopeSimulatorService
+
+"""
 from ._account import Account
-from ._systems import KaleidoscopeSystemService as _KALSysService
-from ._simulators import KaleidoscopeSimulatorService as _KALSimService
-Systems = _KALSysService()
-Simulators = _KALSimService()
+from ._systems import KaleidoscopeSystemService
+from ._simulators import KaleidoscopeSimulatorService
+
+Systems = KaleidoscopeSystemService()
+Simulators = KaleidoscopeSimulatorService()

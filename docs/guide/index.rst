@@ -7,6 +7,6 @@ for a good introduction.
 
 .. toctree::
   :maxdepth: 2
-  :hidden:
 
   Saving figures <saving.rst>
+  Qiskit systems <systems.rst>

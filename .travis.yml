@@ -1,6 +1,6 @@
-# This code is part of Qiskit.
+# This code is part of Kaleidoscope.
 #
-# (C) Copyright IBM 2017.
+# (C) Copyright IBM 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -15,7 +15,7 @@ notifications:
 
 _stage_generic_linux: &stage_generic_linux
   os: linux
-  dist: bionic
+  dist: focal
   language: python
   install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
@@ -75,12 +75,12 @@ _stage_linux_38: &stage_linux_38_docs
   before_script:
     - cd docs
   script:
-    - sphinx-build . _build -j auto
+    - sphinx-build . _build
 
 _stage_osx_38: &stage_osx_38
   os: osx
-  name: "Python 3.8, OSX 10.13, XCode 10"
-  osx_image: xcode10
+  name: "Python 3.8, OSX 10.15, XCode 12"
+  osx_image: xcode12
   language: generic
   # change dir
   before_script:

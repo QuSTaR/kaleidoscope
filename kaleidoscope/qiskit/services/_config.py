@@ -31,9 +31,10 @@ def set_default_provider(self, hub=None, group=None, project=None, overwrite=Fal
         KaleidoscopeError: Default provider found and overwrite=False.
     """
     if isinstance(hub, AccountProvider):
-        hub = hub.credentials.hub
-        group = hub.credentials.group
-        project = hub.credentials.project
+        _temp = hub
+        hub = _temp.credentials.hub
+        group = _temp.credentials.group
+        project = _temp.credentials.project
     else:
         pro = self.providers(hub, group, project)
         if not pro:
