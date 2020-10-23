@@ -67,7 +67,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                              state_labels=None,
                              title=None,
                              plot_background_color='#e5e0df',
-                             background_color='#e5e0df',
+                             background_color='#ffffff',
                              as_widget=False):
     """Interactive histogram plot of probability distributions.
 
@@ -214,7 +214,9 @@ def probability_distribution(data, figsize=(None, None), colors=None,
             raise KaleidoscopeError('Number of input state labels does not match data.')
         xaxes_labels = state_labels
 
-    fig.update_xaxes(tickvals=list(range(len(labels_dict.keys()))),
+    fig.update_xaxes(title='Basis state',
+                     titlefont_size=16,
+                     tickvals=list(range(len(labels_dict.keys()))),
                      ticktext=xaxes_labels,
                      tickfont_size=14,
                      showline=True, linewidth=1,
