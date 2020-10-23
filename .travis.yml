@@ -75,7 +75,7 @@ _stage_linux_38: &stage_linux_38_docs
   before_script:
     - cd docs
   script:
-    - sphinx-build . _build -j auto
+    - sphinx-build . _build
 
 _stage_osx_38: &stage_osx_38
   os: osx
