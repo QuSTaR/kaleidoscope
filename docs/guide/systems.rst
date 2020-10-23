@@ -141,7 +141,7 @@ provider.  To do this, I can simply grab a system from the open provider:
 .. jupyter-execute::
 
     open_vigo = Systems.ALL.get_ibmq_vigo𖼯5Q𖼞.ibmーq_open_main
-    Account.set_default_provider(open_vigo.provider, overwrite=True)
+    Account.set_default_provider(open_vigo.provider(), overwrite=True)
 
 I also need to set ``overwrite=True`` to overwrite the current default provider.
 
