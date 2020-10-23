@@ -175,7 +175,7 @@ class KaleidoscopeSystemDispatcher():
                 name = [name]
             for nm in name:
                 _temp += [back for back in self._added_backends
-                                  if back.name() == nm and back in filtered_backends]
+                          if back.name() == nm and back in filtered_backends]
             filtered_backends = _temp
 
         if hub is not None:
