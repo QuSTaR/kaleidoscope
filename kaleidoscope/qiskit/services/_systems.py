@@ -168,30 +168,46 @@ class KaleidoscopeSystemDispatcher():
         Raises:
             KaleidoscopeError: No matching backends.
         """
-        ret_backends = self._added_backends
+        filtered_backends = self._added_backends
         if name is not None:
+            _temp = []
             if not isinstance(name, list):
-                name = list(name)
+                name = [name]
             for nm in name:
-                ret_backends = [back for back in ret_backends if back.name() == nm]
+                _temp += [back for back in self._added_backends
+                                  if back.name() == nm and back in filtered_backends]
+            filtered_backends = _temp
+
         if hub is not None:
+            _temp = []
             if not isinstance(hub, list):
-                hub = list(hub)
+                hub = [hub]
             for hb in hub:
-                ret_backends = [back for back in ret_backends if back.hub == hb]
+                _temp += [back for back in self._added_backends
+                          if back.hub == hb and back in filtered_backends]
+            filtered_backends = _temp
+
         if group is not None:
+            _temp = []
             if not isinstance(group, list):
-                group = list(group)
+                group = [group]
             for gp in group:
-                ret_backends = [back for back in ret_backends if back.group == gp]
+                _temp += [back for back in self._added_backends
+                          if back.group == gp and back in filtered_backends]
+            filtered_backends = _temp
+
         if project is not None:
+            _temp = []
             if not isinstance(project, list):
-                project = list(project)
+                project = [project]
             for pt in project:
-                ret_backends = [back for back in ret_backends if back.project == pt]
-        if not any(ret_backends):
+                _temp += [back for back in self._added_backends
+                          if back.project == pt and back in filtered_backends]
+            filtered_backends = _temp
+
+        if not any(filtered_backends):
             raise KaleidoscopeError('No matching systems found.')
-        return BackendCollection(ret_backends)
+        return BackendCollection(filtered_backends)
 
     def __getattr__(self, name):
         if name == 'num_qubits':
