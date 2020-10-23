@@ -157,7 +157,6 @@ Finally we set it back the old-fashion way:
 
 .. jupyter-execute::
 
-    open_vigo = Systems.ALL.get_ibmq_vigo𖼯5Q𖼞.ibmーq_open_main
     Account.set_default_provider(hub='ibm-q-internal',
                                  group='deployed',
                                  project='default', overwrite=True)
