@@ -69,6 +69,10 @@ class BackendCollection(list):
             return QVCompare(self)
         elif name == 'operational':
             return IsOperational(self)
+        elif name == 'max_circuits':
+            return MaxCircuits(self)
+        elif name == 'max_shots':
+            return MaxShots(self)
         else:
             raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
 

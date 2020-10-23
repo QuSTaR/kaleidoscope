@@ -29,8 +29,10 @@
 """Module for easily getting IBMQ systems"""
 
 import warnings
+from kaleidoscope.errors import KaleidoscopeError
 from ._account import Account
-from .filters.backend import (NumQubits, HasPulse, QVCompare, IsOperational,
+from .filters.backend import (BackendCollection, NumQubits, HasPulse,
+                              QVCompare, IsOperational,
                               MaxCircuits, MaxShots)
 
 
@@ -65,8 +67,34 @@ class KaleidoscopeSystemService():
         self._default_provider = Account.get_default_provider()
         _system_loader(self)
 
-    def __call__(self):
-        return self._default_added_backends
+    def __call__(self, name=None):
+        """Return all backends that satisfy the given criteria.
+
+        If no criteria passed then returns all systems.
+
+        Parameters:
+            name (str or list): System name(s).
+
+        Returns:
+            IBMQBackend: A single backend instance if only one.
+            BackendCollection: List of specified backends if more than one.
+
+        Raises:
+            KaleidoscopeError: No matching backends.
+        """
+        if name is not None:
+            if not isinstance(name, list):
+                out = [back for back in self._default_added_backends if back.name() == name]
+                if any(out):
+                    return out[0]
+                raise KaleidoscopeError('No matching backend name.')
+            out = []
+            for nm in name:
+                out += [back for back in self._default_added_backends if back.name() == nm]
+            if any(out):
+                return BackendCollection(out)
+            raise KaleidoscopeError('No matching backend names.')
+        return BackendCollection(self._default_added_backends)
 
     def __getattr__(self, name):
         if name == 'num_qubits':
@@ -123,8 +151,47 @@ class KaleidoscopeSystemDispatcher():
 
     - `max_shots` : Filter against integer number of max shots.
     """
-    def __call__(self):
-        return self._added_backends
+    def __call__(self, name=None, hub=None, group=None, project=None):
+        """Return all backends that satisfy the given criteria.
+
+        If no criteria passed then returns all systems.
+
+        Parameters:
+            name (str or list): System name.
+            hub (str or list): Specified hub.
+            group (str or list): Specified group.
+            project (str or list): Specified project.
+
+        Returns:
+            BackendCollection: List of specified backends.
+
+        Raises:
+            KaleidoscopeError: No matching backends.
+        """
+        ret_backends = self._added_backends
+        if name is not None:
+            if not isinstance(name, list):
+                name = list(name)
+            for nm in name:
+                ret_backends = [back for back in ret_backends if back.name() == nm]
+        if hub is not None:
+            if not isinstance(hub, list):
+                hub = list(hub)
+            for hb in hub:
+                ret_backends = [back for back in ret_backends if back.hub == hb]
+        if group is not None:
+            if not isinstance(group, list):
+                group = list(group)
+            for gp in group:
+                ret_backends = [back for back in ret_backends if back.group == gp]
+        if project is not None:
+            if not isinstance(project, list):
+                project = list(project)
+            for pt in project:
+                ret_backends = [back for back in ret_backends if back.project == pt]
+        if not any(ret_backends):
+            raise KaleidoscopeError('No matching systems found.')
+        return BackendCollection(ret_backends)
 
     def __getattr__(self, name):
         if name == 'num_qubits':
