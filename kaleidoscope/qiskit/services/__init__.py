@@ -23,6 +23,7 @@ IBM Quantum Services (:mod:`kaleidoscope.qiskit.services`)
 .. autosummary::
    :toctree: ../stubs/
 
+   Account
    KaleidoscopeSystemService
    KaleidoscopeSimulatorService
 

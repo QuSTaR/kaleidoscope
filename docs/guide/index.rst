@@ -10,3 +10,4 @@ for a good introduction.
   :hidden:
 
   Saving figures <saving.rst>
+  Qiskit systems <systems.rst>

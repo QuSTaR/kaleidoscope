@@ -24,4 +24,4 @@ if not HAS_QISKIT:
 import kaleidoscope.qiskit.overload
 from .backends.mpl import *
 from .backends.interactive import system_error_map, system_gate_map
-from .services import Systems, Simulators
+from .services import Account, Systems, Simulators
