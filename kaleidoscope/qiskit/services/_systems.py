@@ -124,8 +124,7 @@ class KaleidoscopeSystemService():
         self._default_added_attr = []
         self._default_added_backends = []
         self._default_provider = Account.get_default_provider()
-        if hasattr(self, 'ALL'):
-            delattr(self, 'ALL')
+        delattr(self, 'ALL')
         _system_loader(self)
 
 
@@ -240,10 +239,8 @@ def _system_loader(service):
     default_added_backends = []
     default_provider = service._default_provider.split('//') if service._default_provider else []
 
-    num_providers = len(Account.providers())
-    if num_providers > 1:
-        setattr(service, 'ALL', KaleidoscopeSystemDispatcher())
-        setattr(service.ALL, '_added_backends', [])
+    setattr(service, 'ALL', KaleidoscopeSystemDispatcher())
+    setattr(service.ALL, '_added_backends', [])
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         for name, back_list in systems.items():
@@ -258,16 +255,14 @@ def _system_loader(service):
                 pro_str = "{}_{}_{}".format(hub, group, project)
                 pro_str = pro_str.replace('-', 'ー')
                 setattr(all_dispatcher, pro_str, backend)
-                if num_providers > 1:
-                    service.ALL._added_backends.append(backend)
+                service.ALL._added_backends.append(backend)
                 # is backend in default provider
                 if [hub, group, project] == default_provider:
                     setattr(service, system_name, backend)
                     default_added_attr.append(system_name)
                     default_added_backends.append(backend)
 
-            if num_providers > 1:
-                setattr(service.ALL, 'get_'+system_name, all_dispatcher)
+            setattr(service.ALL, 'get_'+system_name, all_dispatcher)
             all_added_attr.append(system_name)
 
     service._all_added_attr = all_added_attr
