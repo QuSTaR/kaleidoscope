@@ -11,7 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-# pylint: disable=broad-except, line-too-long
+# pylint: disable=broad-except
 
 """Device layout information."""
 import os
@@ -21,7 +21,8 @@ import requests
 # Try remote first since can be more up to date.
 LAYOUTS = None
 try:
-    REMOTE_JSON_URL = "https://github.com/nonhermitian/ibm_quantum_system_layouts/raw/main/layouts.json"
+    REMOTE_JSON_URL = "https://github.com/nonhermitian/ \
+                       ibm_quantum_system_layouts/raw/main/layouts.json"
     req = requests.get(REMOTE_JSON_URL)
     req.raise_for_status()
 except Exception:
