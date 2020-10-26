@@ -42,7 +42,7 @@ from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.colors.utils import find_text_color
 from kaleidoscope.qiskit.services._simulators import DeviceSimulator
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
-from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
+from kaleidoscope.qiskit.backends.device_layouts import LAYOUTS
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 from kaleidoscope.colors import BMW
 from kaleidoscope.colors.cmap import cmap_to_plotly
@@ -119,8 +119,12 @@ def system_error_map(backend,
     n_qubits = config.n_qubits
     cmap = config.coupling_map
 
-    if n_qubits in DEVICE_LAYOUTS.keys():
-        grid_data = DEVICE_LAYOUTS[n_qubits]
+    if str(n_qubits) in LAYOUTS['layouts'].keys():
+        kind = 'generic'
+        if backend.name() in LAYOUTS['special_names']:
+            if LAYOUTS['special_names'][backend.name()] in LAYOUTS['layouts'][str(n_qubits)]:
+                kind = LAYOUTS['special_names'][backend.name()]
+        grid_data = LAYOUTS['layouts'][str(n_qubits)][kind]
     else:
         fig = go.Figure()
         fig.update_layout(showlegend=False,

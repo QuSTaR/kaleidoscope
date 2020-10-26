@@ -34,7 +34,7 @@ from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.qiskit.services._simulators import DeviceSimulator
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
-from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
+from kaleidoscope.qiskit.backends.device_layouts import LAYOUTS
 
 
 def system_gate_map(
@@ -102,8 +102,12 @@ def system_gate_map(
     if isinstance(line_colors, str):
         line_colors = [line_colors] * len(cmap) if cmap else []
 
-    if n_qubits in DEVICE_LAYOUTS.keys():
-        grid_data = DEVICE_LAYOUTS[n_qubits]
+    if str(n_qubits) in LAYOUTS['layouts'].keys():
+        kind = 'generic'
+        if backend.name() in LAYOUTS['special_names']:
+            if LAYOUTS['special_names'][backend.name()] in LAYOUTS['layouts'][str(n_qubits)]:
+                kind = LAYOUTS['special_names'][backend.name()]
+        grid_data = LAYOUTS['layouts'][str(n_qubits)][kind]
     else:
         fig = go.Figure()
         fig.update_layout(showlegend=False,
