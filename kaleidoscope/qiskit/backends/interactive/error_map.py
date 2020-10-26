@@ -30,9 +30,7 @@
 
 """Interactive error map for IBM Quantum Experience devices."""
 
-import os
 import math
-import json
 import numpy as np
 import matplotlib as mpl
 import plotly.graph_objects as go
@@ -44,15 +42,11 @@ from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.colors.utils import find_text_color
 from kaleidoscope.qiskit.services._simulators import DeviceSimulator
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
-from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
+from kaleidoscope.qiskit.backends.device_layouts import LAYOUTS
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 from kaleidoscope.colors import BMW
 from kaleidoscope.colors.cmap import cmap_to_plotly
 
-LAYOUTS_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-with open(LAYOUTS_DIR+"/layouts.json",'r') as f:
-    LAYOUTS = json.load(f)
-f.close()
 
 def system_error_map(backend,
                      figsize=(None, None),

@@ -25,8 +25,7 @@
 # that they have been altered from the originals.
 
 """Interactive gate map for IBM Quantum Experience devices."""
-import os
-import json
+
 import plotly.graph_objects as go
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.test.mock.fake_backend import FakeBackend
@@ -35,12 +34,7 @@ from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.qiskit.services._simulators import DeviceSimulator
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
-from kaleidoscope.qiskit.backends.device_layouts import DEVICE_LAYOUTS
-
-LAYOUTS_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-with open(LAYOUTS_DIR+"/layouts.json",'r') as f:
-    LAYOUTS = json.load(f)
-f.close()
+from kaleidoscope.qiskit.backends.device_layouts import LAYOUTS
 
 
 def system_gate_map(
