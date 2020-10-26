@@ -11,12 +11,26 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=broad-except, line-too-long
 
 """Device layout information."""
 import os
 import json
+import requests
 
-LAYOUTS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(LAYOUTS_DIR+"/layouts.json", 'r') as f:
-    LAYOUTS = json.load(f)
-f.close()
+# Try remote first since can be more up to date.
+LAYOUTS = None
+try:
+    REMOTE_JSON_URL = "https://github.com/nonhermitian/ibm_quantum_system_layouts/raw/main/layouts.json"
+    req = requests.get(REMOTE_JSON_URL)
+    req.raise_for_status()
+except Exception:
+    pass
+else:
+    LAYOUTS = req.json()
+
+if LAYOUTS is None:
+    LAYOUTS_DIR = os.path.dirname(os.path.realpath(__file__))
+    with open(LAYOUTS_DIR+"/layouts.json", 'r') as f:
+        LAYOUTS = json.load(f)
+    f.close()
