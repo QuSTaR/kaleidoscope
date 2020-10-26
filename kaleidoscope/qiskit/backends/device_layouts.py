@@ -17,6 +17,6 @@ import os
 import json
 
 LAYOUTS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(LAYOUTS_DIR+"/layouts.json",'r') as f:
+with open(LAYOUTS_DIR+"/layouts.json", 'r') as f:
     LAYOUTS = json.load(f)
 f.close()
