@@ -107,7 +107,7 @@ def _get_reservations(systems, time_interval, collected_sys):
     Parameters:
         systems (list): A list of system instances.
         time_interval (tuple): A tuple of datetimes.
-        collected_sys (list): A list of collected systems with rervations.
+        collected_sys (list): A list of collected systems with reservations.
     """
     for system in systems:
         if any(system.reservations(*time_interval)):
