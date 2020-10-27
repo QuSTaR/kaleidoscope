@@ -359,6 +359,32 @@ class QVCompare(Comparator):
 class Reservations(Comparator):
     """Implements a upcoming reservations comparator.
     """
+
+    def get_reservations(self, time_interval):
+        """Gets the reservations in the given time interval.
+
+        Parameters:
+            time_interval (tuple): Datetime objects for interval.
+
+        Returns:
+            BackendCollection: Collection of backends with reservations.
+        """
+        num_sys = len(self)
+        grouped_systems = [self[i:i+_NCPUS] for i in range(0, num_sys, _NCPUS)]
+
+        threads = []
+        collected_sys = []
+        for kk, _ in enumerate(grouped_systems):
+            thread = threading.Thread(target=_get_reservations,
+                                      args=(grouped_systems[kk], time_interval, collected_sys))
+            thread.start()
+            threads.append(thread)
+
+        for kk in range(len(grouped_systems)):
+            threads[kk].join()
+
+        return BackendCollection(collected_sys)
+
     def __eq__(self, other):
         if not isinstance(other, (str, datetime)):
             raise KaleidoscopeError('Equality can only be checked against a string or datetime')
@@ -368,21 +394,7 @@ class Reservations(Comparator):
         else:
             tvals = time_intervals(other)
 
-        num_sys = len(self)
-        grouped_systems = [self[i:i+_NCPUS] for i in range(0, num_sys, _NCPUS)]
-
-        threads = []
-        collected_sys = []
-        for kk, _ in enumerate(grouped_systems):
-            thread = threading.Thread(target=_get_reservations,
-                                      args=(grouped_systems[kk], tvals, collected_sys))
-            thread.start()
-            threads.append(thread)
-
-        for kk in range(len(grouped_systems)):
-            threads[kk].join()
-
-        return BackendCollection(collected_sys)
+        return self.get_reservations(tvals)
 
     def __lt__(self, other):
         if not isinstance(other, (str, datetime)):
@@ -395,48 +407,18 @@ class Reservations(Comparator):
         else:
             tvals = (None, time_intervals(other)[0]-timedelta(seconds=1))
 
-        num_sys = len(self)
-        grouped_systems = [self[i:i+_NCPUS] for i in range(0, num_sys, _NCPUS)]
-
-        threads = []
-        collected_sys = []
-        for kk, _ in enumerate(grouped_systems):
-            thread = threading.Thread(target=_get_reservations,
-                                      args=(grouped_systems[kk], tvals, collected_sys))
-            thread.start()
-            threads.append(thread)
-
-        for kk in range(len(grouped_systems)):
-            threads[kk].join()
-
-        return BackendCollection(collected_sys)
+        return self.get_reservations(tvals)
 
     def __le__(self, other):
         if not isinstance(other, (str, datetime)):
             raise KaleidoscopeError('Equality can only be checked against a string or datetime')
 
         if isinstance(other, datetime):
-            if other < datetime.now():
-                raise KaleidoscopeError('Datetime must be in the future.')
             tvals = (None, other)
         else:
             tvals = (None, time_intervals(other)[1])
 
-        num_sys = len(self)
-        grouped_systems = [self[i:i+_NCPUS] for i in range(0, num_sys, _NCPUS)]
-
-        threads = []
-        collected_sys = []
-        for kk, _ in enumerate(grouped_systems):
-            thread = threading.Thread(target=_get_reservations,
-                                      args=(grouped_systems[kk], tvals, collected_sys))
-            thread.start()
-            threads.append(thread)
-
-        for kk in range(len(grouped_systems)):
-            threads[kk].join()
-
-        return BackendCollection(collected_sys)
+        return self.get_reservations(tvals)
 
     def __gt__(self, other):
         if not isinstance(other, (str, datetime)):
@@ -449,21 +431,7 @@ class Reservations(Comparator):
         else:
             tvals = (time_intervals(other)[1]+timedelta(seconds=1), None)
 
-        num_sys = len(self)
-        grouped_systems = [self[i:i+_NCPUS] for i in range(0, num_sys, _NCPUS)]
-
-        threads = []
-        collected_sys = []
-        for kk, _ in enumerate(grouped_systems):
-            thread = threading.Thread(target=_get_reservations,
-                                      args=(grouped_systems[kk], tvals, collected_sys))
-            thread.start()
-            threads.append(thread)
-
-        for kk in range(len(grouped_systems)):
-            threads[kk].join()
-
-        return BackendCollection(collected_sys)
+        return self.get_reservations(tvals)
 
     def __ge__(self, other):
         if not isinstance(other, (str, datetime)):
@@ -476,18 +444,4 @@ class Reservations(Comparator):
         else:
             tvals = (time_intervals(other)[0], None)
 
-        num_sys = len(self)
-        grouped_systems = [self[i:i+_NCPUS] for i in range(0, num_sys, _NCPUS)]
-
-        threads = []
-        collected_sys = []
-        for kk, _ in enumerate(grouped_systems):
-            thread = threading.Thread(target=_get_reservations,
-                                      args=(grouped_systems[kk], tvals, collected_sys))
-            thread.start()
-            threads.append(thread)
-
-        for kk in range(len(grouped_systems)):
-            threads[kk].join()
-
-        return BackendCollection(collected_sys)
+        return self.get_reservations(tvals)
