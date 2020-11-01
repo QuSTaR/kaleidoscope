@@ -7,3 +7,4 @@ plotly>=4.9
 kaleido
 jupyter
 colorcet
+psutil

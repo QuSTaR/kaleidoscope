@@ -33,7 +33,7 @@ from kaleidoscope.errors import KaleidoscopeError
 from ._account import Account
 from .filters.backend import (BackendCollection, NumQubits, HasPulse,
                               QVCompare, IsOperational,
-                              MaxCircuits, MaxShots)
+                              MaxCircuits, MaxShots, Reservations)
 
 
 class KaleidoscopeSystemService():
@@ -98,19 +98,22 @@ class KaleidoscopeSystemService():
 
     def __getattr__(self, name):
         if name == 'num_qubits':
-            return NumQubits(self._default_added_backends)
+            out = NumQubits(self._default_added_backends)
         elif name == 'open_pulse':
-            return HasPulse(self._default_added_backends)
+            out = HasPulse(self._default_added_backends)
         elif name == 'quantum_volume':
-            return QVCompare(self._default_added_backends)
+            out = QVCompare(self._default_added_backends)
         elif name == 'operational':
-            return IsOperational(self._default_added_backends)
+            out = IsOperational(self._default_added_backends)
         elif name == 'max_circuits':
-            return MaxCircuits(self._default_added_backends)
+            out = MaxCircuits(self._default_added_backends)
         elif name == 'max_shots':
-            return MaxShots(self._default_added_backends)
+            out = MaxShots(self._default_added_backends)
+        elif name == 'reservations':
+            out = Reservations(self._default_added_backends)
         else:
             raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
+        return out
 
     def _refresh(self):
         """Refresh the service in place.
@@ -210,19 +213,22 @@ class KaleidoscopeSystemDispatcher():
 
     def __getattr__(self, name):
         if name == 'num_qubits':
-            return NumQubits(self._added_backends)
+            out = NumQubits(self._added_backends)
         elif name == 'open_pulse':
-            return HasPulse(self._added_backends)
+            out = HasPulse(self._added_backends)
         elif name == 'quantum_volume':
-            return QVCompare(self._added_backends)
+            out = QVCompare(self._added_backends)
         elif name == 'operational':
-            return IsOperational(self._added_backends)
+            out = IsOperational(self._added_backends)
         elif name == 'max_circuits':
-            return MaxCircuits(self._added_backends)
+            out = MaxCircuits(self._added_backends)
         elif name == 'max_shots':
-            return MaxShots(self._added_backends)
+            out = MaxShots(self._added_backends)
+        elif name == 'reservations':
+            out = Reservations(self._added_backends)
         else:
             raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
+        return out
 
 
 def _system_loader(service):

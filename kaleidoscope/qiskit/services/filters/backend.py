@@ -11,8 +11,14 @@
 
 """Backend filtering functionality"""
 
+import threading
+from datetime import datetime, timedelta
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from kaleidoscope.errors import KaleidoscopeError
+from kaleidoscope.utils.hardware import local_hardware_info
+from .reservation_helpers import (time_intervals, _get_reservations)
+
+_NCPUS = local_hardware_info()['cpus']
 
 
 class BackendCollection(list):
@@ -62,19 +68,22 @@ class BackendCollection(list):
 
     def __getattr__(self, name):
         if name == 'num_qubits':
-            return NumQubits(self)
+            out = NumQubits(self)
         elif name == 'open_pulse':
-            return HasPulse(self)
+            out = HasPulse(self)
         elif name == 'quantum_volume':
-            return QVCompare(self)
+            out = QVCompare(self)
         elif name == 'operational':
-            return IsOperational(self)
+            out = IsOperational(self)
         elif name == 'max_circuits':
-            return MaxCircuits(self)
+            out = MaxCircuits(self)
         elif name == 'max_shots':
-            return MaxShots(self)
+            out = MaxShots(self)
+        elif name == 'reservations':
+            out = Reservations(self)
         else:
             raise AttributeError("BackendCollection does not have attr '{}'.".format(name))
+        return out
 
 
 class Comparator(BackendCollection):
@@ -345,3 +354,94 @@ class QVCompare(Comparator):
                 if qv_val and qv_val <= other:
                     out.append(back)
         return BackendCollection(out)
+
+
+class Reservations(Comparator):
+    """Implements a upcoming reservations comparator.
+    """
+
+    def get_reservations(self, time_interval):
+        """Gets the reservations in the given time interval.
+
+        Parameters:
+            time_interval (tuple): Datetime objects for interval.
+
+        Returns:
+            BackendCollection: Collection of backends with reservations.
+        """
+        num_sys = len(self)
+        grouped_systems = [self[i:i+_NCPUS] for i in range(0, num_sys, _NCPUS)]
+
+        threads = []
+        collected_sys = []
+        for kk, _ in enumerate(grouped_systems):
+            thread = threading.Thread(target=_get_reservations,
+                                      args=(grouped_systems[kk], time_interval, collected_sys))
+            thread.start()
+            threads.append(thread)
+
+        for kk in range(len(grouped_systems)):
+            threads[kk].join()
+
+        return BackendCollection(collected_sys)
+
+    def __eq__(self, other):
+        if not isinstance(other, (str, datetime)):
+            raise KaleidoscopeError('Equality can only be checked against a string or datetime')
+
+        if isinstance(other, datetime):
+            tvals = (other, other)
+        else:
+            tvals = time_intervals(other)
+
+        return self.get_reservations(tvals)
+
+    def __lt__(self, other):
+        if not isinstance(other, (str, datetime)):
+            raise KaleidoscopeError('Equality can only be checked against a string or datetime')
+
+        if isinstance(other, datetime):
+            if other <= datetime.now():
+                raise KaleidoscopeError('Datetime must be in the future.')
+            tvals = (None, other-timedelta(seconds=1))
+        else:
+            tvals = (None, time_intervals(other)[0]-timedelta(seconds=1))
+
+        return self.get_reservations(tvals)
+
+    def __le__(self, other):
+        if not isinstance(other, (str, datetime)):
+            raise KaleidoscopeError('Equality can only be checked against a string or datetime')
+
+        if isinstance(other, datetime):
+            tvals = (None, other)
+        else:
+            tvals = (None, time_intervals(other)[1])
+
+        return self.get_reservations(tvals)
+
+    def __gt__(self, other):
+        if not isinstance(other, (str, datetime)):
+            raise KaleidoscopeError('Equality can only be checked against a string or datetime')
+
+        if isinstance(other, datetime):
+            if other <= datetime.now():
+                raise KaleidoscopeError('Datetime must be in the future.')
+            tvals = (other+timedelta(seconds=1), None)
+        else:
+            tvals = (time_intervals(other)[1]+timedelta(seconds=1), None)
+
+        return self.get_reservations(tvals)
+
+    def __ge__(self, other):
+        if not isinstance(other, (str, datetime)):
+            raise KaleidoscopeError('Equality can only be checked against a string or datetime')
+
+        if isinstance(other, datetime):
+            if other <= datetime.now():
+                raise KaleidoscopeError('Datetime must be in the future.')
+            tvals = (other, None)
+        else:
+            tvals = (time_intervals(other)[0], None)
+
+        return self.get_reservations(tvals)
