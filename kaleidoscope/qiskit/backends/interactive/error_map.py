@@ -157,7 +157,7 @@ def system_error_map(backend,
     single_gate_errors = [0]*n_qubits
     single_gate_times = [0]*n_qubits
     for gate in props.gates:
-        if gate.gate == 'u2':
+        if gate.gate in ['u2', 'sx']:
             _qubit = gate.qubits[0]
             for gpar in gate.parameters:
                 if gpar.name == 'gate_error':
