@@ -15,7 +15,6 @@
 """Interactive Bloch sphere"""
 
 import numpy as np
-import scipy.linalg as la
 import plotly.graph_objects as go
 from kaleidoscope.colors import COLORS14
 from kaleidoscope.colors.utils import hex_to_rgb
