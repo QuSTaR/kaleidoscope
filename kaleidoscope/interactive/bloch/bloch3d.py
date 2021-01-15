@@ -166,6 +166,9 @@ def bloch_sphere(vectors=None,
         if vectors.__class__.__name__ in ['Statevector'] \
                 and 'qiskit' in vectors.__class__.__module__:
             vectors = bloch_components(vectors.data)
+        elif vectors.__class__.__name__ in ['DensityMatrix'] \
+                and 'qiskit' in vectors.__class__.__module__:
+            vectors = bloch_components(vectors.data)
 
         elif not isinstance(vectors[0], (list, np.ndarray)):
             if vectors[0].__class__.__name__ not in ['Statevector']:
