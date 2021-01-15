@@ -45,7 +45,7 @@ rst_prolog = """
 
 # -- Project information -----------------------------------------------------
 project = 'Kaleidoscope {}'.format(version)
-copyright = '2020, Kaleidoscope Team'  # pylint: disable=redefined-builtin
+copyright = '2021, Kaleidoscope Team'  # pylint: disable=redefined-builtin
 author = 'Kaleidoscope Development Team'
 # -- General configuration ---------------------------------------------------
 
