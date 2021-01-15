@@ -15,6 +15,7 @@
 """Interactive Bloch sphere"""
 
 import numpy as np
+import scipy.linalg as la
 import plotly.graph_objects as go
 from kaleidoscope.colors import COLORS14
 from kaleidoscope.colors.utils import hex_to_rgb
@@ -164,6 +165,9 @@ def bloch_sphere(vectors=None,
     if vectors is not None:
 
         if vectors.__class__.__name__ in ['Statevector'] \
+                and 'qiskit' in vectors.__class__.__module__:
+            vectors = bloch_components(vectors.data)
+        elif vectors.__class__.__name__ in ['DensityMatrix'] \
                 and 'qiskit' in vectors.__class__.__module__:
             vectors = bloch_components(vectors.data)
 
