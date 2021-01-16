@@ -6,6 +6,7 @@ Bloch sphere
 
    import numpy as np
    from qiskit import QuantumCircuit
+   from qiskit.quantum_info import DensityMatrix
    import kaleidoscope.qiskit
    from kaleidoscope import bloch_sphere
 
@@ -38,6 +39,19 @@ Single vector from a Qiskit statevector
    qc.t(0)
 
    bloch_sphere(qc.statevector())
+
+
+Single vector from a Qiskit density matrix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. jupyter-execute::
+
+   qc = QuantumCircuit(1)
+   qc.h(0)
+   qc.t(0)
+
+   dm = DensityMatrix.from_instruction(qc)
+   bloch_sphere(dm)
 
 
 Multiple vectors
