@@ -10,7 +10,10 @@
                     "ibmq_rome": "linear",
                     "ibmq_santiago": "linear",
                     "ibmq_valencia": "cross",
-                    "ibmq_vigo": "cross"
+                    "ibmq_vigo": "cross",
+                    "ibmq_quito": "cross",
+                    "ibmq_lima": "cross",
+                    "ibmq_belem": "cross"
                       },
     
     "layouts" : {
