@@ -60,6 +60,7 @@ DIST_MEAS = {'hamming': hamming_distance}
 
 
 def probability_distribution(data, figsize=(None, None), colors=None,
+                             scale='linear',
                              number_to_keep=None,
                              sort='asc', target_string=None,
                              legend=None, bar_labels=True,
@@ -229,7 +230,16 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                      showline=True, linewidth=1,
                      linecolor=text_color if text_color == 'white' else None,
                      )
-
+    if scale is 'log':
+        lower = np.min([min(item.values())/sum(item.values()) for item in data])
+        lower = int(np.floor(np.log10(lower)))
+        fig.update_yaxes(type="log", range=[lower,0])
+        fig.update_layout(yaxis = dict(tickmode = 'array',
+                          tickvals = [10**k for k in range(lower,1)],
+                          ticktext = ["10<sup>{}</sup>".format(k) for k in range(lower,1)]
+    )
+)
+    
     fig.update_layout(xaxis_tickangle=-70,
                       showlegend=(legend is not None),
                       width=figsize[0],
