@@ -153,7 +153,6 @@ def probability_distribution(data, figsize=(None, None), colors=None,
 
         labels = [list(x) for x in zip(*sorted(zip(dist, labels),
                                                key=lambda pair: pair[0]))][1]
-
     # Set bar colors
     if colors is None:
         if len(data) == 1:
