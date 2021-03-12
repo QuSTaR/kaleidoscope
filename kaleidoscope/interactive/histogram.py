@@ -77,6 +77,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
             dict containing the values to represent (ex {'001': 130})
         figsize (tuple): Figure size in pixels.
         colors (list or str): String or list of strings for histogram bar colors.
+        scale (str): Probability scale 'linear' (default) or 'log'.
         number_to_keep (int): The number of terms to plot and rest
             is made into a single bar called 'rest'.
         sort (string): Could be 'asc', 'desc', or 'hamming'.
@@ -237,9 +238,8 @@ def probability_distribution(data, figsize=(None, None), colors=None,
         fig.update_layout(yaxis = dict(tickmode = 'array',
                           tickvals = [10**k for k in range(lower,1)],
                           ticktext = ["10<sup>{}</sup>".format(k) for k in range(lower,1)]
-    )
-)
-    
+                          ))
+
     fig.update_layout(xaxis_tickangle=-70,
                       showlegend=(legend is not None),
                       width=figsize[0],
