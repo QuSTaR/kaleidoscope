@@ -230,6 +230,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                      showline=True, linewidth=1,
                      linecolor=text_color if text_color == 'white' else None,
                      )
+
     if scale is 'log':
         lower = np.min([min(item.values())/sum(item.values()) for item in data])
         lower = int(np.floor(np.log10(lower)))
