@@ -210,6 +210,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
     xaxes_labels = list(labels_dict.keys())
     if state_labels_kind == 'ints':
         xaxes_labels = [int(label, 2) for label in xaxes_labels]
+
     if state_labels:
         if len(state_labels) != len(xaxes_labels):
             raise KaleidoscopeError('Number of input state labels does not match data.')
