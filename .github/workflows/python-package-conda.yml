@@ -26,7 +26,7 @@ jobs:
     - name: Test no-Qiskit with pytest
       run: |
         conda install pytest
-        pytest -p no:warnings --pyargs kaleidoscope
+        pytest -p no:warnings --pyargs kaleidoscope/test/no_qiskit
     - name: Lint with pylint and pycodestyle
       run: |
         pip install -U -r requirements-dev.txt
