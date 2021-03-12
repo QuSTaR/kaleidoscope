@@ -25,6 +25,7 @@ jobs:
         python setup.py install
     - name: Lint with pylint and pycodestyle
       run: |
+        conda install pylint pycodestyle
         pylint -rn kaleidoscope
         pycodestyle --max-line-length=100 kaleidoscope
     - name: Test no-Qiskit with pytest
