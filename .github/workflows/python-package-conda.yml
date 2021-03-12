@@ -23,11 +23,11 @@ jobs:
         conda config --set always_yes yes --set changeps1 no
         pip install -U -r requirements.txt
         python setup.py install
-    - name: Lint with pylint and pycodestyle
-      run: |
-        conda install pylint pycodestyle
-        pylint -rn kaleidoscope
-        pycodestyle --max-line-length=100 kaleidoscope
     - name: Test no-Qiskit with pytest
       run: |
         pytest -p no:warnings --pyargs kaleidoscope
+    - name: Lint with pylint and pycodestyle
+      run: |
+        pip install -U -r requirements-dev.txt
+        pylint -rn kaleidoscope
+        pycodestyle --max-line-length=100 kaleidoscope
