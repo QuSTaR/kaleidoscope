@@ -232,7 +232,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                      linecolor=text_color if text_color == 'white' else None,
                      )
 
-    if scale is 'log':
+    if scale == 'log':
         lower = np.min([min(item.values())/sum(item.values()) for item in data])
         lower = int(np.floor(np.log10(lower)))
         fig.update_yaxes(type="log", range=[lower,0])
