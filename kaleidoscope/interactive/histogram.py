@@ -60,6 +60,7 @@ DIST_MEAS = {'hamming': hamming_distance}
 
 
 def probability_distribution(data, figsize=(None, None), colors=None,
+                             scale='linear',
                              number_to_keep=None,
                              sort='asc', target_string=None,
                              legend=None, bar_labels=True,
@@ -76,6 +77,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
             dict containing the values to represent (ex {'001': 130})
         figsize (tuple): Figure size in pixels.
         colors (list or str): String or list of strings for histogram bar colors.
+        scale (str): Probability scale 'linear' (default) or 'log'.
         number_to_keep (int): The number of terms to plot and rest
             is made into a single bar called 'rest'.
         sort (string): Could be 'asc', 'desc', or 'hamming'.
@@ -151,7 +153,6 @@ def probability_distribution(data, figsize=(None, None), colors=None,
 
         labels = [list(x) for x in zip(*sorted(zip(dist, labels),
                                                key=lambda pair: pair[0]))][1]
-
     # Set bar colors
     if colors is None:
         if len(data) == 1:
@@ -209,6 +210,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
     xaxes_labels = list(labels_dict.keys())
     if state_labels_kind == 'ints':
         xaxes_labels = [int(label, 2) for label in xaxes_labels]
+
     if state_labels:
         if len(state_labels) != len(xaxes_labels):
             raise KaleidoscopeError('Number of input state labels does not match data.')
@@ -229,6 +231,15 @@ def probability_distribution(data, figsize=(None, None), colors=None,
                      showline=True, linewidth=1,
                      linecolor=text_color if text_color == 'white' else None,
                      )
+
+    if scale == 'log':
+        lower = np.min([min(item.values())/sum(item.values()) for item in data])
+        lower = int(np.floor(np.log10(lower)))
+        fig.update_yaxes(type="log", range=[lower, 0])
+        fig.update_layout(yaxis=dict(tickmode='array',
+                          tickvals=[10**k for k in range(lower, 1)],
+                          ticktext=["10<sup>{}</sup>".format(k) for k in range(lower, 1)]
+                          ))
 
     fig.update_layout(xaxis_tickangle=-70,
                       showlegend=(legend is not None),
