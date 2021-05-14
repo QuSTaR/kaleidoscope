@@ -17,7 +17,7 @@
 from types import MethodType
 from qiskit import Aer
 from qiskit.circuit.quantumcircuit import QuantumCircuit
-from qiskit.compiler.assemble import assemble
+from qiskit.compiler import assemble
 from qiskit.compiler import transpile as trans
 from qiskit.quantum_info import Statevector, Operator
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
