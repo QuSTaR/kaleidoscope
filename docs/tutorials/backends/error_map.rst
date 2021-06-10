@@ -15,7 +15,7 @@ Error map from backend instance
 .. jupyter-execute::
 
    pro = IBMQ.get_provider(group='open')
-   backend = pro.backends.ibmq_vigo
+   backend = pro.backends.ibmq_lima
    system_error_map(backend)
 
 
@@ -25,7 +25,7 @@ Error map from backend properties
 .. jupyter-execute::
 
    import datetime
-   # Grab ibmq_vigo properties on Jan. 1, 2020.
+   # Grab ibmq_lima properties on Jan. 1, 2020.
    old_props = backend.properties(datetime=datetime.datetime(2020, 1, 1))
    system_error_map(old_props)
 
