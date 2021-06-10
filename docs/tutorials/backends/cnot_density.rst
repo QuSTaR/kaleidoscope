@@ -18,10 +18,10 @@ Simple multi-system comparison
    provider = IBMQ.get_provider(group='open')
 
    backends = []
-   backends.append(provider.backends.ibmq_vigo)
-   backends.append(provider.backends.ibmq_ourense)
-   backends.append(provider.backends.ibmq_valencia)
+   backends.append(provider.backends.ibmq_lima)
    backends.append(provider.backends.ibmq_santiago)
+   backends.append(provider.backends.ibmq_belem)
+   backends.append(provider.backends.ibmq_quito)
 
    cnot_error_density(backends)
 
@@ -39,7 +39,7 @@ Historical data with custom colors
 
 .. jupyter-execute::
 
-   backend = provider.backends.ibmq_vigo
+   backend = provider.backends.ibmq_lima
    props = [backend.properties(datetime=datetime.datetime(2020, kk, 1)) for kk in range(2, 7)]
    cnot_error_density(props, offset=200,
                       colors=['#d6d6d6', '#bebebe', '#a6a6a6', '#8e8e8e', '#ff007f'])

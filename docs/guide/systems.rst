@@ -31,13 +31,13 @@ To grab a specific system by name simply do:
 
 .. jupyter-execute::
 
-    Systems('ibmq_vigo')
+    Systems('ibmq_lima')
 
 The systems can also be accessed via autocompletion:
 
 .. jupyter-execute::
 
-    Systems.ibmq_vigo𖼯5Q𖼞
+    Systems.ibmq_lima𖼯5Q𖼞
 
 where the system identifier also includes the number of qubits.
 
@@ -85,7 +85,7 @@ If the users has more than one provider available to them, then the ``Systems`` 
 
 .. jupyter-execute::
 
-    Systems.ALL.get_ibmq_vigo𖼯5Q𖼞.ibmーq_open_main
+    Systems.ALL.get_ibmq_lima𖼯5Q𖼞.ibmーq_open_main
 
 
 Here the ``get_ibmq_vigo𖼯5Q𖼞`` class contains the system instance from all available providers.
@@ -140,7 +140,7 @@ provider.  To do this, I can simply grab a system from the open provider:
 
 .. jupyter-execute::
 
-    open_vigo = Systems.ALL.get_ibmq_vigo𖼯5Q𖼞.ibmーq_open_main
+    open_vigo = Systems.ALL.get_ibmq_lima𖼯5Q𖼞.ibmーq_open_main
     Account.set_default_provider(open_vigo.provider(), overwrite=True)
 
 I also need to set ``overwrite=True`` to overwrite the current default provider.
