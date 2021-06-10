@@ -25,7 +25,7 @@ import setuptools
 
 MAJOR = 0
 MINOR = 0
-MICRO = 12
+MICRO = 13
 
 ISRELEASED = False
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
