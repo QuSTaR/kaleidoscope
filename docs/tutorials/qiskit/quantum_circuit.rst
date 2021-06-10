@@ -16,7 +16,7 @@ Adding a target backend to a circuit
 
 .. jupyter-execute::
 
-   sim = Simulators.aer_vigo_simulator
+   sim = Simulators.aer_lima_simulator
    qc = QuantumCircuit(5, 5) >> sim
 
    print(qc.target_backend)
@@ -42,7 +42,7 @@ Transpiling for different backend
 
 .. jupyter-execute::
 
-   new_sim = Simulators.aer_valencia_simulator
+   new_sim = Simulators.aer_belem_simulator
 
    new_qc = qc.transpile(backend=new_sim)
 
