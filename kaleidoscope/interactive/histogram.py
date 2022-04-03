@@ -127,7 +127,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
         raise ValueError("Value of sort option, %s, isn't a "
                          "valid choice. Must be 'asc', "
                          "'desc', or 'hamming'")
-    if sort in DIST_MEAS.keys() and target_string is None:
+    if sort in DIST_MEAS and target_string is None:
         err_msg = 'Must define target_string when using distance measure.'
         raise ValueError(err_msg)
 
@@ -146,7 +146,7 @@ def probability_distribution(data, figsize=(None, None), colors=None,
     if number_to_keep is not None:
         labels.append('rest')
 
-    if sort in DIST_MEAS.keys():
+    if sort in DIST_MEAS:
         dist = []
         for item in labels:
             dist.append(DIST_MEAS[sort](item, target_string))

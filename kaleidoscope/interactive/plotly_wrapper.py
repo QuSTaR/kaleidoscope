@@ -42,7 +42,7 @@ class PlotlyFigure():
         import plotly.io as pio
 
         config = {}
-        if 'config' not in kwargs.keys():
+        if 'config' not in kwargs:
             config = {'displayModeBar': self._modebar,
                       'editable': False}
 
@@ -77,7 +77,7 @@ class PlotlyWidget(go.FigureWidget):
         import plotly.io as pio
 
         config = {}
-        if 'config' not in kwargs.keys():
+        if 'config' not in kwargs:
             config = {'displayModeBar': False,
                       'editable': False}
 
