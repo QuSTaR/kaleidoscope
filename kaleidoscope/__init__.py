@@ -12,7 +12,6 @@
 """Kaleidoscope"""
 
 import os
-import kaleidoscope.configrc as config
 from kaleidoscope.errors import KaleidoscopeError
 
 # This is needed because version info is only generated
