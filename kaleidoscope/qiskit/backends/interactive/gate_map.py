@@ -31,7 +31,6 @@ from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
 from qiskit.test.mock.fake_backend import FakeBackend
 from qiskit.providers.models.backendproperties import BackendProperties
 from kaleidoscope.errors import KaleidoscopeError
-from kaleidoscope.qiskit.services._simulators import DeviceSimulator
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
 from kaleidoscope.qiskit.backends.device_layouts import LAYOUTS
@@ -85,8 +84,7 @@ def system_gate_map(
            backend = pro.backends.ibmq_vigo
            system_gate_map(backend)
     """
-    if not isinstance(backend, (IBMQBackend, DeviceSimulator,
-                                FakeBackend, BackendProperties)):
+    if not isinstance(backend, (IBMQBackend, FakeBackend, BackendProperties)):
         raise KaleidoscopeError('Input is not a valid backend or properties object.')
 
     if isinstance(backend, BackendProperties):
