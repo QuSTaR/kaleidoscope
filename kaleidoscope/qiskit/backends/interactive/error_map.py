@@ -110,7 +110,7 @@ def system_error_map(backend,
         raise KaleidoscopeError(
             '"{}" is not a valid background_color selection.'.format(background_color))
 
-    if backend.configuration().simulator and not isinstance(backend, DeviceSimulator):
+    if backend.configuration().simulator:
         raise KaleidoscopeError('Requires a device backend, not a simulator.')
 
     config = backend.configuration()
