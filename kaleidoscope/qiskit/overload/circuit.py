@@ -21,7 +21,7 @@ from qiskit.compiler import assemble
 from qiskit.compiler import transpile as trans
 from qiskit.quantum_info import Statevector, Operator
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
-from qiskit.providers.basebackend import BaseBackend
+from qiskit.providers.backend import Backend
 from qiskit.tools.monitor import job_monitor as aer_monitor
 from qiskit.providers.ibmq.job import job_monitor as ibmq_monitor
 from kaleidoscope.errors import KaleidoscopeError
@@ -31,7 +31,7 @@ def rshift(self, target):
     """Add a target backend to circuit.
 
     Parameters:
-        target (BaseBackend): The target backend
+        target (Backend): The target backend
 
     Returns:
         QuantumCircuit: QuantumCircuit with attached target_backend.
@@ -51,7 +51,7 @@ def rshift(self, target):
             qc = QuantumCircuit(5, 5) >> Simulators.aer_vigo_simulator
             print(qc.target_backend)
     """
-    if not isinstance(target, BaseBackend):
+    if not isinstance(target, Backend):
         raise KaleidoscopeError('Target is not a valid backend instance.')
     if self.num_qubits > target.configuration().num_qubits:
         raise KaleidoscopeError('Number of qubits larger than target backend.')
