@@ -11,6 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=consider-using-generator
 
 # This code is part of Qiskit.
 #
@@ -37,10 +38,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from qiskit.providers.models.backendproperties import BackendProperties
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
-from qiskit.test.mock.fake_backend import FakeBackend
+from qiskit.providers.fake_provider import FakeBackend
 from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.colors.utils import find_text_color
-from kaleidoscope.qiskit.services._simulators import DeviceSimulator
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure
 from kaleidoscope.qiskit.backends.device_layouts import LAYOUTS
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
@@ -85,8 +85,7 @@ def system_error_map(backend,
             system_error_map(backend)
 
     """
-    if not isinstance(backend, (IBMQBackend, DeviceSimulator,
-                                FakeBackend, BackendProperties)):
+    if not isinstance(backend, (IBMQBackend, FakeBackend, BackendProperties)):
         raise KaleidoscopeError('Input is not a valid backend or properties object.')
 
     if isinstance(backend, BackendProperties):
@@ -112,7 +111,7 @@ def system_error_map(backend,
         raise KaleidoscopeError(
             '"{}" is not a valid background_color selection.'.format(background_color))
 
-    if backend.configuration().simulator and not isinstance(backend, DeviceSimulator):
+    if backend.configuration().simulator:
         raise KaleidoscopeError('Requires a device backend, not a simulator.')
 
     config = backend.configuration()

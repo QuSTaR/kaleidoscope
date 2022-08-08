@@ -36,8 +36,7 @@ Change colormap
 .. jupyter-execute::
 
    from kaleidoscope.qiskit import system_error_map
-   from kaleidoscope.qiskit.services import Systems
    from matplotlib.cm import cividis
 
-   backend = Systems.ibmq_santiago𖼯5Q𖼞
+   backend = pro.backends.ibmq_santiago
    system_error_map(backend, colormap=cividis)
