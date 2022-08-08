@@ -9,4 +9,3 @@ for a good introduction.
   :maxdepth: 2
 
   Saving figures <saving.rst>
-  Qiskit systems <systems.rst>
