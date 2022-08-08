@@ -37,7 +37,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from qiskit.providers.models.backendproperties import BackendProperties
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
-from qiskit.test.mock.fake_backend import FakeBackend
+from qiskit.providers.fake_provider import FakeBackend
 from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.colors.utils import find_text_color
 from kaleidoscope.interactive.plotly_wrapper import PlotlyWidget, PlotlyFigure

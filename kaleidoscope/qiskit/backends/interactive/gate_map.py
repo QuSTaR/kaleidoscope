@@ -28,7 +28,7 @@
 
 import plotly.graph_objects as go
 from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
-from qiskit.test.mock.fake_backend import FakeBackend
+from qiskit.providers.fake_provider import FakeBackend
 from qiskit.providers.models.backendproperties import BackendProperties
 from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.qiskit.backends.pseudobackend import properties_to_pseudobackend
