@@ -30,14 +30,6 @@ From a Qiskit statevector
    bloch_multi_disc(state)
 
 
-From a Qiskit statevector using kaleidoscope overloading
-========================================================
-
-.. jupyter-execute::
-
-   bloch_multi_disc(qc.statevector())
-
-
 Change colormap
 ===============
 
@@ -45,7 +37,7 @@ Change colormap
 
    from matplotlib.cm import cool_r
 
-   bloch_multi_disc(qc.statevector(), colormap=cool_r)
+   bloch_multi_disc(Statevector.from_instruction(qc), colormap=cool_r)
 
 
 Turn off qubit labels
@@ -53,4 +45,4 @@ Turn off qubit labels
 
 .. jupyter-execute::
 
-   bloch_multi_disc(qc.statevector(), titles=False)
+   bloch_multi_disc(Statevector.from_instruction(qc), titles=False)

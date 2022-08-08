@@ -37,7 +37,7 @@ From a Qiskit statevector using kaleidoscope overloading
 
 .. jupyter-execute::
 
-   qsphere(qc.statevector())
+   qsphere(Statevector.from_instruction(qc))
 
 
 From a Qiskit density matrix
@@ -67,7 +67,7 @@ Turn off state labels
 
 .. jupyter-execute::
 
-   qsphere(qc.statevector(), state_labels=False)
+   qsphere(Statevector.from_instruction(qc), state_labels=False)
 
 
 Integer state labels
@@ -75,4 +75,4 @@ Integer state labels
 
 .. jupyter-execute::
 
-   qsphere(qc.statevector(), state_labels_kind='ints')
+   qsphere(Statevector.from_instruction(qc), state_labels_kind='ints')

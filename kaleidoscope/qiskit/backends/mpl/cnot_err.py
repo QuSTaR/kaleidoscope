@@ -190,7 +190,8 @@ def cnot_error_density(backends,
     plt.title('CNOT Error Distributions', fontsize=18, color=text_color)
     fig.tight_layout()
 
-    if mpl.get_backend() in ['module://ipykernel.pylab.backend_inline',
-                             'nbAgg']:
+    if mpl.get_backend() in ["module://ipykernel.pylab.backend_inline",
+                             "module://matplotlib_inline.backend_inline",
+                             "nbAgg"]:
         plt.close(fig)
     return fig
