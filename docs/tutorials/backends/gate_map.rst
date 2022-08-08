@@ -15,7 +15,7 @@ Gate map from backend instance
 .. jupyter-execute::
 
    pro = IBMQ.get_provider(group='open')
-   backend = pro.backends.ibmq_lima
+   backend = pro.get_backend('ibm_nairobi')
    system_gate_map(backend)
 
 
@@ -24,7 +24,7 @@ Gate map qubit labels
 
 .. jupyter-execute::
 
-   system_gate_map(backend, qubit_labels=['A', 'B', 'C', 'D', 'E'])
+   system_gate_map(backend, qubit_labels=['A', 'B', 'C', 'D', 'E', 'F', 'G'])
 
 
 Gate map qubit color
@@ -33,7 +33,7 @@ Gate map qubit color
 .. jupyter-execute::
 
    system_gate_map(backend,
-                qubit_labels=['A', 'B', 'C', 'D', 'E'],
+                qubit_labels=['A', 'B', 'C', 'D', 'E', 'F', 'G'],
                 qubit_colors='#8b7b8b')
 
 
@@ -43,8 +43,9 @@ Gate map qubit colors as list
 .. jupyter-execute::
 
    system_gate_map(backend,
-                qubit_labels=['A', 'B', 'C', 'D', 'E'],
-                qubit_colors=['#8b7b8b', '#845e49', '#496b3a', '#e97fa5', '#ff9999'])
+                qubit_labels=['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+                qubit_colors=['#8b7b8b', '#845e49', '#496b3a', '#e97fa5',
+                              '#ff9999', '#8b7b8b', '#845e49'])
 
 
 Gate map qubit and line colors
@@ -64,7 +65,7 @@ Gate line colors as list
 .. jupyter-execute::
 
    system_gate_map(backend,
-                line_colors=['#845e49', '#496b3a', '#e97fa5', '#ff9999']*2)
+                line_colors=['#845e49', '#496b3a', '#e97fa5', '#ff9999', '#845e49', '#496b3a']*2)
 
 
 Disable qubit labels

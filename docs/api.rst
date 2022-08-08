@@ -2,13 +2,11 @@
 API reference
 =============
 
-The Kaleidoscope API is currently broken into three parts:
+The Kaleidoscope API is currently broken into two parts:
 
 1.) General interactive figures.
 
 2.) IBM Quantum system plots via Qiskit.
-
-3.) Additional Qiskit functionality
 
 The general interactive figures take generic Python objects as inputs and therefore
 will work with any quantum computing framework.  In addition, these functions will also
@@ -23,11 +21,6 @@ installation dependencies.  Others are generalized versions of figures
 that have been used in various IBM Quantum press releases, presentations,
 and other materials.
 
-Finally, the API contains several Qiskit addons that provide functionality
-that does not exist in Qiskit proper, but is nevertheless extremely useful
-to have.  These methods are used throughout the example codes for
-Kaleidoscope.
-
 .. toctree::
   :maxdepth: 1
   :caption: API reference
@@ -35,5 +28,3 @@ Kaleidoscope.
 
   Interactive figures<apidocs/interactive>
   IBM Quantum system visualizations<apidocs/backends>
-  Qiskit services <apidocs/services>
-  Qiskit addons <apidocs/overload>

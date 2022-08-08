@@ -21,13 +21,12 @@ Installation is simple:
 
 Or if your adventurous you can install from `source code on Github <https://github.com/nonhermitian/kaleidoscope>`_.
 
+
 Running in Jupyter Lab
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Running Kaleidoscope, and Plotly in general, in the Jupyter Lab environment requires
 some `additional extensions to be installed <https://plotly.com/python/getting-started/>`_.
-
-
 
 
 Qiskit functionality
@@ -40,4 +39,3 @@ of Qiskit and the IBM Quantum devices requires the following installations:
 
    pip install qiskit-terra>=0.14
    pip install qiskit-ibmq-provider>=0.7
-   pip install qiskit-aer>=0.5
