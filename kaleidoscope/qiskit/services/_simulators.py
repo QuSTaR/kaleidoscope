@@ -33,7 +33,7 @@ import warnings
 import threading
 import qiskit
 from qiskit import Aer
-from qiskit.providers import BaseBackend
+from qiskit.providers.backend import Backend
 from qiskit.providers.aer.noise import NoiseModel
 from qiskit.providers.models import QasmBackendConfiguration, PulseBackendConfiguration
 from ._account import Account
@@ -59,7 +59,7 @@ class _Credentials():
         self.project = 'project'
 
 
-class DeviceSimulator(BaseBackend):
+class DeviceSimulator(Backend):
     """This is a simulator for a real IBMQ system.
 
     This class can be used as a drop in replacement for a IBMQ quantum
