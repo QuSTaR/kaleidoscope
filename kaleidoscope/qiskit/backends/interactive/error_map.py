@@ -37,7 +37,7 @@ import matplotlib as mpl
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from qiskit.providers.models.backendproperties import BackendProperties
-from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
+from qiskit_ibm_runtime import IBMBackend
 from qiskit.providers.fake_provider import FakeBackend
 from kaleidoscope.errors import KaleidoscopeError
 from kaleidoscope.colors.utils import find_text_color
@@ -85,7 +85,7 @@ def system_error_map(backend,
             system_error_map(backend)
 
     """
-    if not isinstance(backend, (IBMQBackend, FakeBackend, BackendProperties)):
+    if not isinstance(backend, (IBMBackend, FakeBackend, BackendProperties)):
         raise KaleidoscopeError('Input is not a valid backend or properties object.')
 
     if isinstance(backend, BackendProperties):
