@@ -130,7 +130,7 @@ def system_error_map(backend,
                           plot_bgcolor=background_color,
                           paper_bgcolor=background_color,
                           width=figsize[0], height=figsize[1],
-                          margin=dict(t=60, l=0, r=0, b=0)
+                          margin=dict(t=60, l=30, r=0, b=0)
                           )
         out = PlotlyWidget(fig)
         return out
