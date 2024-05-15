@@ -5,10 +5,9 @@ Bloch sphere
 .. jupyter-execute::
 
    import numpy as np
-   from qiskit import QuantumCircuit
-   from qiskit.quantum_info import DensityMatrix
-   import kaleidoscope.qiskit
-   from kaleidoscope import bloch_sphere
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import DensityMatrix, Statevector, partial_trace
+from kaleidoscope import bloch_sphere
 
 Vectors on the Bloch sphere
 ===========================
@@ -17,8 +16,8 @@ Single vector
 ~~~~~~~~~~~~~
 .. jupyter-execute::
 
-   vec = [0, 1/np.sqrt(2) , 1/np.sqrt(2)]
-   bloch_sphere(vec)
+  vec = [1/np.sqrt(2), 0, 1/np.sqrt(2)]
+bloch_sphere(vec, vectors_color='#00cdef', vectors_alpha=0.95)
 
 
 Single vector with custom color and alpha
