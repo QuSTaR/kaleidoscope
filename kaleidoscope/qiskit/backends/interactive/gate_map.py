@@ -27,7 +27,7 @@
 """Interactive gate map for IBM Quantum Experience devices."""
 
 import plotly.graph_objects as go
-from qiskit.providers.ibmq.ibmqbackend import IBMQBackend
+from qiskit_ibm_runtime import IBMBackend
 from qiskit.providers.fake_provider import FakeBackend
 from qiskit.providers.models.backendproperties import BackendProperties
 from kaleidoscope.errors import KaleidoscopeError
@@ -43,9 +43,9 @@ def system_gate_map(
         qubit_size=None,
         line_width=None,
         font_size=None,
-        qubit_colors="#2f4b7c",
+        qubit_colors="#161616",
         qubit_labels=None,
-        line_colors="#2f4b7c",
+        line_colors="#161616",
         font_color="white",
         background_color='white',
         as_widget=False):
@@ -84,7 +84,7 @@ def system_gate_map(
            backend = pro.backends.ibmq_vigo
            system_gate_map(backend)
     """
-    if not isinstance(backend, (IBMQBackend, FakeBackend, BackendProperties)):
+    if not isinstance(backend, (IBMBackend, FakeBackend, BackendProperties)):
         raise KaleidoscopeError('Input is not a valid backend or properties object.')
 
     if isinstance(backend, BackendProperties):
@@ -102,9 +102,9 @@ def system_gate_map(
 
     if str(n_qubits) in LAYOUTS['layouts'].keys():
         kind = 'generic'
-        if backend.name() in LAYOUTS['special_names']:
-            if LAYOUTS['special_names'][backend.name()] in LAYOUTS['layouts'][str(n_qubits)]:
-                kind = LAYOUTS['special_names'][backend.name()]
+        if backend.name in LAYOUTS['special_names']:
+            if LAYOUTS['special_names'][backend.name] in LAYOUTS['layouts'][str(n_qubits)]:
+                kind = LAYOUTS['special_names'][backend.name]
         grid_data = LAYOUTS['layouts'][str(n_qubits)][kind]
     else:
         fig = go.Figure()

@@ -1,5 +1,5 @@
-qiskit-terra>=0.14
-qiskit-ibmq-provider>=0.7
+qiskit>=1.0
+qiskit-ibm-runtime
 qiskit-aer>=0.5
 pylatexenc
 pytest
